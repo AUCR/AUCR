@@ -1,0 +1,18 @@
+version: "3.4"
+
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: P@ssword123
+    ports:
+      - 10.0.0.16:3306:3306
+    volumes:
+      - ./mysql/:/mysql/
+    networks:
+      - cuckoo
+
+networks:
+  cuckoo:
+    driver: bridge
