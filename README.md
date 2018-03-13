@@ -3,6 +3,7 @@
 [![codecov](https://codecov.io/gh/AUCR/AUCR/branch/master/graph/badge.svg)](https://codecov.io/gh/AUCR/AUCR)
 [![Docker Repository on Quay](https://quay.io/repository/wroersma/aucr/status "Docker Repository on Quay")](https://quay.io/repository/wroersma/aucr)
 [![Coverage Status](https://coveralls.io/repos/github/AUCR/AUCR/badge.svg)](https://coveralls.io/github/AUCR/AUCR)
+[![Code Health](https://landscape.io/github/AUCR/AUCR/master/landscape.svg?style=flat)](https://landscape.io/github/AUCR/AUCR/master)
 
 ## Overview
 Analyst Unknown Cyber Range is a micro services flask framework. 
