@@ -1,0 +1,117 @@
+{% extends 'bootstrap/base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}
+    {% if title %}
+        {{ title }} - AUCR
+    {% else %}
+        {{ _('Welcome to AUCR') }}
+    {% endif %}
+{% endblock %}
+
+{% block styles %}
+    {{super()}}
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue-indigo.min.css">
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for("main.static", filename="js/material.min.js") }}"></script>
+    {{super()}}
+{% endblock %}
+
+{% block navbar %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue-indigo.min.css" />
+    <script defer src="{{ url_for("main.static", filename="js/material.min.js") }}"></script>
+    <!-- Uses a header that scrolls with the text, rather than staying
+      locked at the top -->
+    <div class="mdl-layout mdl-js-layout">
+        <header class="mdl-layout__header mdl-layout__header--scroll">
+            <div class="mdl-layout__header-row">
+                <!-- Title -->
+                <span class="mdl-layout-title" >Analyst Unknown Cyber Range</span>
+                <!-- Add spacer, to align navigation to the right -->
+                {% if g.search_form %}
+                    <form class="navbar-form navbar-left" method="get" action="{{ url_for('auth.search') }}">
+                        <div class="form-group">
+                            {{ g.search_form.q(size=20, class='form-control', placeholder=g.search_form.q.label.text) }}
+                        </div>
+                    </form>
+                {% endif %}
+                <div class="mdl-layout-spacer"></div>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link" href="{{ url_for('main.index') }}">Home</a>
+                    {% if current_user.is_anonymous %}
+                        <a class="mdl-navigation__link" href="{{ url_for('auth.login') }}">Login</a>
+                    {% else %}
+                        <a class="mdl-navigation__link" href="{{ url_for('auth.logout') }}">{{ _('Logout') }}</a>
+                        <a class="mdl-navigation__link" href="{{ url_for('auth.messages') }}">{{ ('Messages') }}
+                            {% set new_messages = current_user.new_messages() %}
+                            <span id="message_count" class="badge" style="visibility: {% if new_messages %}visible
+                                      {% else %}hidden{% endif %};">{{ new_messages }}</span>
+                        </a>
+                        <a class="mdl-badge" href="{{ url_for('auth.user', username=current_user.username) }}">
+                            <img src="{{ current_user.avatar(32) }}">
+                        </a>
+                    {% endif %}
+                </nav>
+            </div>
+        </header>
+        <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">AUCR</span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link" href="{{ url_for('tasks.tasks') }}">{{ _('Tasks') }}</a>
+                <a class="mdl-navigation__link" href="{{ url_for('analysis.analysis') }}">{{ _('Analysis') }}</a>
+                <a class="mdl-navigation__link" href="{{ url_for('reports.reports') }}">{{ _('Reports') }}</a>
+                {% if render_current_user_groups %}
+                {% for item in render_current_user_groups %}
+                    {% if "admin" in item.group_name %}
+                        <a class="mdl-navigation__link" href="{{ url_for('auth.groups') }}">Groups</a>
+                    {% endif %}
+                {% endfor %}
+                {% endif %}
+
+            </nav>
+        </div>
+{% endblock %}
+
+{% block content %}
+        <div class="container">
+            {% if current_user.is_authenticated %}
+                {% with tasks = current_user.get_tasks_in_progress() %}
+                    {% if tasks %}
+                        {% for task in tasks %}
+                            <div class="alert alert-success" role="alert">
+                                {{ task.description }}
+                                <span id="{{ task.id }}-progress">{{ task.get_progress() }}</span>%
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            {% endif %}
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-info" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            {# application content needs to be provided in the app_content block #}
+            {% block app_content %}{% endblock %}
+        </div>
+        <div class="mdl-layout-spacer"></div>
+        <!--Footer-->
+        <footer class="mdl-mega-footer">
+            <div class="mdl-mega-footer__bottom-section">
+                <ul class="mdl-mega-footer__link-list">
+                    <li><a href="{{ url_for('main.about_us') }}">About Us</a></li>
+                    <li><a href="#">Help</a></li>
+                    <li><a href="#">Privacy & Terms</a>
+                </ul>
+            </div>
+        </footer>
+    </div>
+{% endblock %}
+
+

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <main class="mdl-layout__content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>
+                        {{ _('Two Factor Authentication Setup') }}
+                    </h1>
+                    <p>
+                        {{ _('You are almost done! Please start FreeOTP on your smartphone
+                        and scan the following QR Code with it:') }}
+                    </p>
+                    <p>
+                        <img id="qrcode" src="{{ url_for('auth.qrcode') }}">
+                    </p>
+                    <p>I'm done, take me to the <a href="{{ url_for('auth.login') }}">Login</a> page!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

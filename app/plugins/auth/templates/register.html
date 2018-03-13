@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>{{ _('Register') }}</h1>
+        <p>Before you submit this form, please ensure you have <a href="https://fedorahosted.org/freeotp/">FreeOTP</a> installed on your smartphone, as you will need it to complete your registration. Download from <a href="https://itunes.apple.com/us/app/freeotp/id872559395">iTunes</a> | <a href="https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp">Google Play</a></p>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+    <br>
+    <div class="alert alert-danger" role="alert">Note: The next page will show sensitive information. Make sure nobody can see your screen before pressing the Register button.</div>
+{% endblock %}

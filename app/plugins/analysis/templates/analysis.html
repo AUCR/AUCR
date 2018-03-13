@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <main class="mdl-layout__content">
+        <div class="page-content">
+            <h1>{{ _('Analysis') }}</h1>
+            <p>This is a placeholder for analysis app content that is imported
+                form any plugins in this dir This should be a loop that goes
+                through and checks group permissions and shows the user what
+                they can see
+            </p>
+        </div>
+        <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+            <div class="mdl-card mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
+                <table class="mdl-data-table mdl-js-data-table">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Analysis Plugins</th>
+                            <th class="mdl-data-table__cell--non-numeric">Plugin Info</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for items in analysis_info %}
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">{{ items.analysis_name }}</td>
+                            <td>{{ items.description }}</td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+{% endblock %}

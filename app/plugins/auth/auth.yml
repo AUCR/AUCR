@@ -1,0 +1,4 @@
+admin:
+  username: "admin"
+  password: "admin"
+  email: "admin@test.com"

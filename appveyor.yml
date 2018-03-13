@@ -1,0 +1,22 @@
+environment:
+  matrix:
+  - PYTHON: C:\Python36\python.exe
+    platform: Any CPU
+
+before_build:
+  - "%PYTHON% -m pip install virtualenv"
+  - "%PYTHON% -m virtualenv venv"
+  - venv\Scripts\activate.bat
+
+build_script:
+  - pip install -U pip
+
+before_test:
+  - cd C:\projects\aucr
+  - pip install -r requirements.txt
+  - pip install -r test_requirements.txt
+  - py.test tests.py
+  - cd %APPVEYOR_BUILD_FOLDER%
+
+test_script:
+  - py.test coveralls/tests.py --doctest-modules --pep8 coveralls -v --cov coveralls --cov-report term-missing

@@ -1,0 +1,12 @@
+info:
+  project_name: "AUCR"
+  project_start_date: 01/08/2018
+  name: "Analyst Unknown Cyber Range"
+  authors: "Wyatt Roersma, Devin Smith"
+  authors_email: "wyattroersma@gmail.com"
+
+version:
+  major: 0
+  minor: 3
+  revision: 1
+  release: 1
