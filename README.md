@@ -1,7 +1,7 @@
 # AUCR
 [![Build Status](https://travis-ci.org/AUCR/AUCR.svg?branch=master)](https://travis-ci.org/AUCR/AUCR)
 [![codecov](https://codecov.io/gh/AUCR/AUCR/branch/master/graph/badge.svg)](https://codecov.io/gh/AUCR/AUCR)
-[![Docker Repository on Quay](https://quay.io/repository/wroersma/aucr/status?token=118853c0-97b7-4a2f-9d18-4733327f20b6 "Docker Repository on Quay")](https://quay.io/repository/wroersma/aucr)
+[![Docker Repository on Quay](https://quay.io/repository/wroersma/aucr/status "Docker Repository on Quay")](https://quay.io/repository/wroersma/aucr)
 [![Coverage Status](https://coveralls.io/repos/github/AUCR/AUCR/badge.svg?t=THBtvq)](https://coveralls.io/github/AUCR/AUCR)
 
 
