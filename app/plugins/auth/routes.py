@@ -1,6 +1,8 @@
 """AUCR auth routes manages all basic flask app blueprints."""
 # coding=utf-8
 import pyqrcode
+import base64
+import os
 from io import BytesIO
 from datetime import datetime
 from flask import render_template, flash, Blueprint, session,  redirect, url_for, request, current_app, g, jsonify
@@ -34,12 +36,24 @@ def edit_profile():
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
+        user_name = User.query.filter_by(username=current_user.username).first()
+
+        if user_name.otp_secret:
+            current_user.otp_secret = user_name.otp_secret
+        else:
+            current_user.otp_secret = base64.b32encode(os.urandom(64)).decode('utf-8')
         db.session.commit()
+        flash(current_user.otp_secret)
         flash(_('Your user profile changes have been saved!'))
         return redirect(url_for('auth.edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
+        if form.otp_token_checkbox:
+            if form.otp_token_checkbox.data:
+                form.otp_token.data = current_user.otp_token
+        else:
+            form.otp_token_checkbox = current_user.otp_token_checkbox
     return render_template('edit_profile.html', title=_('Edit Profile'), form=form)
 
 

@@ -106,7 +106,8 @@ class EditProfileForm(FlaskForm):
     # TODO make this allow the user to turn on and off the two factor auth and into a tabbed interface
     username = StringField(_l('Username'), validators=[DataRequired()])
     about_me = TextAreaField(_l('About me'), validators=[Length(min=0, max=140)])
-    otp_token = BooleanField(default=False)
+    otp_secret = TextAreaField(_l('OTP Token'), validators=[Length(min=0, max=140)])
+    otp_token_checkbox = BooleanField(default=False)
     submit = SubmitField(_l('Submit'))
 
     def __init__(self, original_username, *args, **kwargs):
