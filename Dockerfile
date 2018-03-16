@@ -1,9 +1,9 @@
 FROM python:3-alpine AS AUCR
 MAINTAINER Wyatt Roersma <wyattroersma@gmail.com>
 
-ENV FLASK_APP=aucr.py
-ENV FLASK_DEBUG=1
-
+RUN mkdir /opt
+RUN mkdir /opt/aucr/
+COPY aucr.py /opt/aucr
 COPY app /opt/aucr/app
 COPY serve.py /opt/aucr
 COPY serve.py /opt/aucr
@@ -12,6 +12,9 @@ COPY LICENSE /opt/aucr
 COPY projectinfo.yml /opt/aucr
 COPY requirements.txt /opt/aucr
 COPY config.py /opt/aucr
+
+ENV FLASK_APP=aucr.py
+ENV FLASK_DEBUG=1
 
 WORKDIR /opt/aucr
 
@@ -37,4 +40,6 @@ RUN apk add --no-cache \
     py-pillow \
     openssl-dev
 
-CMD ["python", "serve.py"]
+RUN flask db init
+RUN flask db upgrade
+CMD ["flask", "run"]

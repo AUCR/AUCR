@@ -26,6 +26,7 @@ def get_groups():
 
 
 @api_page.route('/groups', methods=['POST'])
+@token_auth.login_required
 def create_group() -> object:
     """API create new group call."""
     data = request.get_json() or {}

@@ -74,8 +74,7 @@ class TaskTable(db.Model):
     task_subject = db.Column(db.String(256), index=True)
     task_category = db.Column(db.String, db.ForeignKey('task_category.task_category_name'))
     business_level_awareness = db.Column(db.String, db.ForeignKey('group.group_name'))
-    # TODO figure this out
-    # main_business_coverage = db.ManyToManyField(BusinessCoverage, related_name='incidents_affecting_main', blank=True)
+    main_business_coverage = db.Column(db.String, db.ForeignKey('business_coverage.business_coverage'))
     current_state = db.Column(db.String(10), db.ForeignKey('task_states.id'), index=True)
 
     def __repr__(self):

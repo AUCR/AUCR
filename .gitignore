@@ -44,3 +44,4 @@ aucr.db
 logs/
 migrations/
 /app/plugins/cases/
+upload/*zip
