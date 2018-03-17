@@ -2,12 +2,12 @@ version: "3.4"
 
 services:
   aucr:
-    image: quay.io/repository/wroersma/aucr
-    depends_on:
-     - elasticsearch
-     - rabbitmq
+    image: aucr
+    ports:
+      - 5000:5000
     networks:
      - aucr
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.2
     ports:
@@ -17,6 +17,7 @@ services:
       ES_JAVA_OPTS: "-Xms16g -Xmx16g"
     networks:
       - aucr
+
   kibana:
     image: docker.elastic.co/kibana/kibana:6.2.2
     ports:
@@ -25,17 +26,21 @@ services:
       - aucr
     depends_on:
       - elasticsearch
+
   rabbitmq:
     image: rabbitmq
     ports:
       - 5672:5672
+    networks:
+      - aucr
+
   mysql:
     image: mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: P@ssword123
     ports:
-      - 3306:3306
+      - 3307:3306
     volumes:
       - ./mysql/:/mysql/
     networks:

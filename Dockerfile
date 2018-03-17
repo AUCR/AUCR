@@ -14,7 +14,6 @@ COPY requirements.txt /opt/aucr
 COPY config.py /opt/aucr
 
 ENV FLASK_APP=aucr.py
-ENV FLASK_DEBUG=1
 
 WORKDIR /opt/aucr
 
@@ -40,6 +39,4 @@ RUN apk add --no-cache \
     py-pillow \
     openssl-dev
 
-RUN flask db init
-RUN flask db upgrade
-CMD ["flask", "run"]
+CMD ["flask", "run", "--host=0.0.0.0"]

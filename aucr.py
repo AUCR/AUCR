@@ -1,11 +1,11 @@
 """The AUCR FLASK APP."""
 # coding=utf-8
 import logging
-from app import create_app, db
+from app import aucr_app, db
 from app.plugins.main import cli
 from app.plugins.auth.models import User, Message, Notification, Task
 from app import YamlInfo
-app = create_app()
+app = aucr_app()
 cli.register(app)
 logging.info("Getting Project Info")
 run = YamlInfo("projectinfo.yml", "strip", "LICENSE")
