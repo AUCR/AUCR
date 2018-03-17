@@ -33,11 +33,11 @@ class ReportTable(db.Model):
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     group_access = db.Column(db.String, db.ForeignKey('group.group_name'))
     is_starred = db.Column(db.Boolean, default=False)
-    task_subject = db.Column(db.String, db.ForeignKey('task_category.task_subject'))
+    # task_subject = db.Column(db.String, db.ForeignKey('task_category.task_subject'))
     task_category = db.Column(db.String, db.ForeignKey('task_category.task_category_name'))
     business_level_awareness = db.Column(db.String, db.ForeignKey('group.group_name'))
     # main_business_coverage = db.ManyToManyField(BusinessCoverage, related_name='incidents_affecting_main', blank=True)
-    current_state = db.Column(db.String(10), db.ForeignKey('report_states.id'), index=True)
+    # current_state = db.Column(db.String(10), db.ForeignKey('report_states.id'), index=True)
 
     def __repr__(self):
         """Official Report Table database name object representation."""
