@@ -64,7 +64,7 @@ class Log(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     log_name = db.Column(db.String(128), index=True)
     time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_name = username
+
     def __repr__(self):
         """Log table change tracking."""
         return '<Log {}>'.format(self.report_name)
