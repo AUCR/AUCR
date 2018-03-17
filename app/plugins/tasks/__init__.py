@@ -2,7 +2,7 @@
 # coding=utf-8
 from app.plugins.tasks.routes import tasks_page
 # If you want the model to create the a table for the database at run time, import it here in the init
-from app.plugins.tasks.models import TasksPlugins
+from app.plugins.tasks import models
 
 
 def load(app):

@@ -94,3 +94,17 @@ class TaskStates(db.Model):
     def __repr__(self):
         """Official Task States database name object representation."""
         return '<TaskStates {}>'.format(self.task_state_name)
+
+
+class Tags(db.Model):
+    """Tag default database table format for tasks_plugin."""
+
+    __tablename__ = 'tags'
+    id = db.Column(db.Integer, primary_key=True)
+    tag_name = db.Column(db.String(128), index=True)
+    description = db.Column(db.String(256), index=True)
+    time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+    def __repr__(self):
+        """Official Tag Table database name object representation."""
+        return '<Tags {}>'.format(self.tag_name)
