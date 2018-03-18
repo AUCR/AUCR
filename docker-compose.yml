@@ -1,33 +1,42 @@
 version: "3.4"
 
 services:
-  aucr:
-    image: aucr
-    ports:
-      - 5000:5000
-    networks:
-     - aucr
-
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.2
     ports:
       - 9200:9200
-      - 9300:9300
+    container_name: elasticsearch
     environment:
-      ES_JAVA_OPTS: "-Xms16g -Xmx16g"
+      cluster.name: docker-aucr
+      ES_JAVA_OPTS: -Xms2g -Xmx2g
+      bootstrap.memory_lock: "true"
+      xpack.security.enabled: "false"
+      xpack.monitoring.enabled: "false"
+      xpack.ml.enabled: "false"
+      xpack.watcher.enabled: "false"
+      discovery.type: single-node
+      discovery.zen.minimum_master_nodes: 1
+    volumes:
+      - ./es-data:/usr/share/elasticsearch/data
     networks:
       - aucr
 
   kibana:
     image: docker.elastic.co/kibana/kibana:6.2.2
+    container_name: kibana
     ports:
       - 5601:5601
     networks:
       - aucr
     depends_on:
       - elasticsearch
+    environment:
+      elasticsearch: 10.100.0.205
+    env_file:
+      - ./config-file.env
 
   rabbitmq:
+    container_name: rabbitmq
     image: rabbitmq
     ports:
       - 5672:5672
@@ -35,10 +44,12 @@ services:
       - aucr
 
   mysql:
+    container_name: mysql
     image: mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: P@ssword123
+      MYSQL_DATABASE: aucr
     ports:
       - 3307:3306
     volumes:

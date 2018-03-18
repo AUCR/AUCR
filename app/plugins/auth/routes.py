@@ -13,7 +13,7 @@ from app.plugins.auth.forms import LoginForm, RegistrationForm, ResetPasswordReq
      CreateGroupForm, RemoveUserFromGroup, MessageForm, EditProfileForm
 from app.plugins.auth.email import send_password_reset_email
 from app.plugins.auth.utils import check_group
-from app.plugins.auth.models import Group, Message, User, Notification
+from app.plugins.auth.models import Group, Message, User, Notification, Post
 from app.plugins.errors.handlers import render_error_page_template
 
 auth_page = Blueprint('auth', __name__, template_folder='templates')
@@ -67,8 +67,8 @@ def messages():
     page = request.args.get('page', 1, type=int)
     messages_list = current_user.messages_received.order_by(Message.timestamp.desc()).paginate(
                page, current_app.config['POSTS_PER_PAGE'], False)
-    next_url = url_for('main.messages', page=messages_list.next_num) if messages_list.has_next else None
-    prev_url = url_for('main.messages', page=messages_list.prev_num) if messages_list.has_prev else None
+    next_url = url_for('auth.messages', page=messages_list.next_num) if messages_list.has_next else None
+    prev_url = url_for('auth.messages', page=messages_list.prev_num) if messages_list.has_prev else None
     return render_template('messages.html', messages=messages_list.items, next_url=next_url, prev_url=prev_url)
 
 
@@ -84,7 +84,7 @@ def send_message(recipient):
         recipient_user.add_notification('unread_message_count', recipient_user.new_messages())
         db.session.commit()
         flash(_('Your message has been sent.'))
-        return redirect(url_for('main.user', username=recipient))
+        return redirect(url_for('auth.user', username=recipient))
     return render_template('send_message.html', title=_('Send Message'), form=form, recipient=recipient)
 
 
@@ -111,7 +111,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         session['username'] = user.username
-        return redirect(url_for('auth.two_factor_setup'))
+        return redirect(url_for('auth.login'))
     return render_template('register.html', title=_('Register'), form=form)
 
 
@@ -245,7 +245,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user.otp_secret is not None:
+        if user is not None and user.otp_secret is not None:
             otp_auth_check = user.verify_totp(form.token.data)
         else:
             otp_auth_check = True
@@ -275,10 +275,12 @@ def logout():
 def search():
     """AUCR search plugin flask blueprint."""
     if not g.search_form.validate():
-        return redirect(url_for('explore'))
+        return redirect(url_for('search'))
     page = request.args.get('page', 1, type=int)
+    posts, total = Post.search(g.search_form.q.data, page, current_app.config['POSTS_PER_PAGE'])
     messages, total = Message.search(g.search_form.q.data, page, current_app.config['POSTS_PER_PAGE'])
     next_url = url_for('search', q=g.search_form.q.data, page=page + 1) \
         if total > page * current_app.config['POSTS_PER_PAGE'] else None
     prev_url = url_for('search', q=g.search_form.q.data, page=page - 1) if page > 1 else None
-    return render_template('search.html', title=_('Search'), messages=messages, next_url=next_url, prev_url=prev_url)
+    return render_template('search.html', title=_('Search'), messages=messages, next_url=next_url, prev_url=prev_url,
+                           posts=posts)

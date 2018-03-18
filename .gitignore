@@ -45,3 +45,8 @@ logs/
 migrations/
 /app/plugins/cases/
 upload/*zip
+/deployment/apache2/certs/README
+/deployment/apache2/certs/privkey.pem
+/deployment/apache2/certs/fullchain.pem
+/deployment/apache2/certs/cert.pem
+/deployment/nginx/certs/

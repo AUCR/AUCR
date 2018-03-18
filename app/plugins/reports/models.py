@@ -12,6 +12,7 @@ from flask_babel import _, lazy_gettext as _l
 class ReportPlugins(db.Model):
     """The Report Plugins models defines default database format for report_plugin."""
 
+    __tablename__ = 'report_plugins'
     id = db.Column(db.Integer, primary_key=True)
     report_name = db.Column(db.String(128), index=True)
     description = db.Column(db.String(256), index=True)
@@ -30,12 +31,12 @@ class ReportTable(db.Model):
     report_name = db.Column(db.String(128), index=True)
     description = db.Column(db.String(256), index=True)
     time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
-    group_access = db.Column(db.String, db.ForeignKey('group.group_name'))
+    # created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # group_access = db.Column(db.String(128), db.ForeignKey('groups.group_name'))
     is_starred = db.Column(db.Boolean, default=False)
     # task_subject = db.Column(db.String, db.ForeignKey('task_category.task_subject'))
-    task_category = db.Column(db.String, db.ForeignKey('task_category.task_category_name'))
-    business_level_awareness = db.Column(db.String, db.ForeignKey('group.group_name'))
+    # task_category = db.Column(db.String(128), db.ForeignKey('task_category.task_category_name'))
+    # business_level_awareness = db.Column(db.String(128), db.ForeignKey('group.group_name'))
     # main_business_coverage = db.ManyToManyField(BusinessCoverage, related_name='incidents_affecting_main', blank=True)
     # current_state = db.Column(db.String(10), db.ForeignKey('report_states.id'), index=True)
 

@@ -52,3 +52,4 @@ pyqrcode
 onetimepass
 flask-bcrypt
 google-api-python-client
+PyMySQL

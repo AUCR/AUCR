@@ -27,7 +27,7 @@ class SearchableMixin(object):
     @classmethod
     def search(cls, expression, page, per_page):
         """Return searchable data from ES."""
-        ids, total = query_index(cls.__tablename__, expression, page, per_page)
+        ids, total = query_index(str(cls.__tablename__), expression, page, per_page)
         if total == 0:
             return cls.query.filter_by(id=0), 0
         when = []
@@ -48,12 +48,13 @@ class SearchableMixin(object):
     @classmethod
     def after_commit(cls, session):
         """Return changed database searchable tagged fields in ES."""
-        for obj in session._changes['add']:
-            add_to_index(cls.__tablename__, obj)
-        for obj in session._changes['update']:
-            add_to_index(cls.__tablename__, obj)
-        for obj in session._changes['delete']:
-            remove_from_index(cls.__tablename__, obj)
+        if session._changes:
+            for obj in session._changes['add']:
+                add_to_index(cls.__tablename__, obj)
+            for obj in session._changes['update']:
+                add_to_index(cls.__tablename__, obj)
+            for obj in session._changes['delete']:
+                remove_from_index(cls.__tablename__, obj)
         session._changes = None
 
     @classmethod
@@ -285,8 +286,11 @@ def insert_initial_user_values(*args, **kwargs):
     admin_data = run.get()
     for items in admin_data:
         hashed_password = generate_password_hash(admin_data[items]["password"])
+        default_groups = Groups.__call__(group_name="admin")
+        db.session.add(default_groups)
+        db.session.commit()
         default_admin = User.__call__(username=items, password_hash=hashed_password, email=admin_data[items]["email"])
-        admin_group = Group.__call__(group_name="admin", username=items)
+        admin_group = Group.__call__(group_name=1, username=1)
         db.session.add(admin_group)
         db.session.add(default_admin)
         db.session.commit()
@@ -301,11 +305,27 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+class Post(SearchableMixin, db.Model):
+    __searchable__ = ['body']
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(140))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    language = db.Column(db.String(5))
+
+    def __repr__(self):
+        return '<Post {}>'.format(self.body)
+
+
+db.event.listen(db.session, 'before_commit', Post.before_commit)
+db.event.listen(db.session, 'after_commit', Post.after_commit)
+
+
 class Message(SearchableMixin, db.Model):
     """Database table for User messages."""
 
-    __tablename__ = 'message'
     __searchable__ = ['body']
+    __tablename__ = 'message'
     id = db.Column(db.Integer, primary_key=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -317,7 +337,7 @@ class Message(SearchableMixin, db.Model):
         return '<Message {}>'.format(self.body)
 
 
-db.event.listen(db.session, 'before_commit', Message.before_commit)
+db.event.listen(db.session, 'before_commit', Message.after_commit)
 db.event.listen(db.session, 'after_commit', Message.after_commit)
 
 
@@ -372,3 +392,5 @@ class Award(db.Model):
     def __repr__(self):
         """Return string representation of the Award Object."""
         return '<Award {}>'.format(self.award_name)
+
+

@@ -2,7 +2,7 @@
 # coding=utf-8
 from app.plugins.auth.routes import auth_page
 # If you want the model to create the a table for the database at run time, import it here in the init
-from app.plugins.auth.models import Group
+from app.plugins.auth import models
 from app.plugins.auth.api.users import api_page
 from app.plugins.auth.api.groups import api_page as group_api
 

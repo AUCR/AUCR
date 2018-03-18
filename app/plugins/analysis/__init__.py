@@ -2,7 +2,7 @@
 # coding=utf-8
 from app.plugins.analysis.routes import analysis_page
 # If you want the model to create the a table for the database at run time, import it here in the init
-from app.plugins.analysis.models import AnalysisPlugins, FileUpload, AnalysisTable
+from app.plugins.analysis import models
 from app.plugins.analysis.api.upload import api_page
 
 
