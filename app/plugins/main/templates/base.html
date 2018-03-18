@@ -28,21 +28,23 @@
     <!-- Uses a header that scrolls with the text, rather than staying
       locked at the top -->
     <div class="mdl-layout mdl-js-layout">
-        <div class="mdl-layout__drawer">
-            <span class="mdl-layout-title">AUCR</span>
-            <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="{{ url_for('tasks.tasks') }}">{{ _('Tasks') }}</a>
-                <a class="mdl-navigation__link" href="{{ url_for('analysis.analysis') }}">{{ _('Analysis') }}</a>
-                <a class="mdl-navigation__link" href="{{ url_for('reports.reports') }}">{{ _('Reports') }}</a>
-                {% if render_current_user_groups %}
-                    {% for item in render_current_user_groups %}
-                        {% if "admin" in item.group_name %}
-                            <a class="mdl-navigation__link" href="{{ url_for('auth.groups') }}">Groups</a>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            </nav>
-        </div>
+        {% if not current_user.is_anonymous %}
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout-title">AUCR</span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link" href="{{ url_for('tasks.tasks') }}">{{ _('Tasks') }}</a>
+                    <a class="mdl-navigation__link" href="{{ url_for('analysis.analysis') }}">{{ _('Analysis') }}</a>
+                    <a class="mdl-navigation__link" href="{{ url_for('reports.reports') }}">{{ _('Reports') }}</a>
+                    {% if render_current_user_groups %}
+                        {% for item in render_current_user_groups %}
+                            {% if "admin" in item.group_name %}
+                                <a class="mdl-navigation__link" href="{{ url_for('auth.groups') }}">Groups</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </nav>
+            </div>
+        {% endif %}
         <header class="mdl-layout__header mdl-layout__header--scroll">
             <div class="mdl-layout__header-row">
                 <!-- Title -->
