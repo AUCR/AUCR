@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <h1>{{ _('Messages') }}</h1>
+    <h3>{{ _('Messages') }}</h3>
     {% for post in messages %}
         {% include '_post.html' %}
     {% endfor %}

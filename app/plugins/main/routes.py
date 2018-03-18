@@ -42,3 +42,14 @@ def about_us():
     """Return the about AUCR page."""
     return render_template('about_us.html', title=_('About Us'))
 
+
+@main_template_page.route('/help', methods=['GET'])
+def help_page():
+    """Return the about AUCR page."""
+    return render_template('help.html', title=_('Help'))
+
+
+@main_template_page.route('/privacy', methods=['GET'])
+def privacy():
+    """Return the about AUCR page."""
+    return render_template('privacy.html', title=_('Privacy & Terms'))
