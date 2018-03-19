@@ -28,10 +28,11 @@
     <!-- Uses a header that scrolls with the text, rather than staying
       locked at the top -->
     <div class="mdl-layout mdl-js-layout">
-        {% if not current_user.is_anonymous %}
-            <div class="mdl-layout__drawer">
-                <span class="mdl-layout-title">AUCR</span>
-                <nav class="mdl-navigation">
+        <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">AUCR</span>
+            <nav class="mdl-navigation">
+                {% if not current_user.is_anonymous %}
+                    <!-- Place all registered user pages here -->
                     <a class="mdl-navigation__link" href="{{ url_for('tasks.tasks') }}">{{ _('Tasks') }}</a>
                     <a class="mdl-navigation__link" href="{{ url_for('analysis.analysis') }}">{{ _('Analysis') }}</a>
                     <a class="mdl-navigation__link" href="{{ url_for('reports.reports') }}">{{ _('Reports') }}</a>
@@ -42,9 +43,12 @@
                             {% endif %}
                         {% endfor %}
                     {% endif %}
-                </nav>
-            </div>
-        {% endif %}
+                {% else %}
+                    <a class="mdl-navigation__link" href="{{ url_for('auth.login') }}">Login</a>
+                {% endif %}
+                <a class="mdl-navigation__link" href="{{ url_for('auth.leaderboard') }}">{{ _('Leaderboard') }}</a>
+            </nav>
+        </div>
         <header class="mdl-layout__header mdl-layout__header--scroll">
             <div class="mdl-layout__header-row">
                 <!-- Title -->
