@@ -7,7 +7,7 @@ from app import db
 class TasksPlugins(db.Model):
     """The TasksPlugins models Class defines the default database format for tasks_plugin."""
 
-    # TODO add all the possible fields we should be using
+    __tablename__ = 'task_plugins'
     id = db.Column(db.Integer, primary_key=True)
     task_name = db.Column(db.String(128), index=True)
     description = db.Column(db.String(256), index=True)
@@ -68,14 +68,13 @@ class TaskTable(db.Model):
     task_name = db.Column(db.String(128), index=True)
     description = db.Column(db.String(256), index=True)
     time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    # created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
-    # group_access = db.Column(db.String(128), db.ForeignKey('group.group_name'))
+    created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    group_access = db.Column(db.String(128), db.ForeignKey('groups.group_name'))
     is_starred = db.Column(db.Boolean, default=False)
     task_subject = db.Column(db.String(256), index=True)
-    # task_category = db.Column(db.String(64), db.ForeignKey('task_category.task_category_name'))
-    # business_level_awareness = db.Column(db.String(128), db.ForeignKey('group.group_name'))
-    # main_business_coverage = db.Column(db.String(128), db.ForeignKey('business_coverage.business_coverage'))
-    # current_state = db.Column(db.Integer, db.ForeignKey('task_states.id'), index=True)
+    task_category = db.Column(db.String(128), db.ForeignKey('task_category.task_category_name'))
+    main_business_coverage = db.Column(db.String(128), db.ForeignKey('business_coverage.business_coverage'))
+    current_state = db.Column(db.Integer, db.ForeignKey('task_states.id'), index=True)
 
     def __repr__(self):
         """Official Task Table database name object representation."""

@@ -5,15 +5,14 @@ RUN mkdir /opt
 RUN mkdir /opt/aucr/
 COPY aucr.py /opt/aucr
 COPY app /opt/aucr/app
-COPY serve.py /opt/aucr
-COPY serve.py /opt/aucr
 COPY babel.cfg /opt/aucr
 COPY LICENSE /opt/aucr
 COPY projectinfo.yml /opt/aucr
 COPY requirements.txt /opt/aucr
 COPY config.py /opt/aucr
-
+RUN mkdir /opt/aucr/upload
 ENV FLASK_APP=aucr.py
+
 
 WORKDIR /opt/aucr
 
@@ -29,7 +28,7 @@ RUN apk add --no-cache \
     libffi-dev \
     py-pillow \
     openssl-dev \
-  && pip install -r requirements.txt \
+  && pip install -r requirements.txt --upgrade \
   && apk del --purge gcc \
     libc-dev \
     musl-dev \
@@ -39,4 +38,5 @@ RUN apk add --no-cache \
     py-pillow \
     openssl-dev
 
+EXPOSE 5000
 CMD ["flask", "run", "--host=0.0.0.0"]

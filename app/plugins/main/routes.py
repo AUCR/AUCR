@@ -14,7 +14,7 @@ main_template_page = Blueprint('main', __name__, static_folder='static', templat
 
 
 @main_template_page.before_app_request
-def before_request()-> None:
+def before_request() -> None:
     """Set user last seen time user."""
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
