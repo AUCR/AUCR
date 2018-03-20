@@ -284,3 +284,9 @@ def search():
     prev_url = url_for('search', q=g.search_form.q.data, page=page - 1) if page > 1 else None
     return render_template('search.html', title=_('Search'), messages=messages, next_url=next_url, prev_url=prev_url,
                            posts=posts)
+
+
+@auth_page.route('/leaderboard', methods=['GET'])
+def leaderboard():
+    """Return the leaderboard AUCR page."""
+    return render_template('leaderboard.html', title=_('Leaderboard'))

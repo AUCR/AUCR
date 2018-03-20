@@ -31,16 +31,22 @@
         <div class="mdl-layout__drawer">
             <span class="mdl-layout-title">AUCR</span>
             <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="{{ url_for('tasks.tasks') }}">{{ _('Tasks') }}</a>
-                <a class="mdl-navigation__link" href="{{ url_for('analysis.analysis') }}">{{ _('Analysis') }}</a>
-                <a class="mdl-navigation__link" href="{{ url_for('reports.reports') }}">{{ _('Reports') }}</a>
-                {% if render_current_user_groups %}
-                    {% for item in render_current_user_groups %}
-                        {% if "admin" in item.group_name %}
-                            <a class="mdl-navigation__link" href="{{ url_for('auth.groups') }}">Groups</a>
-                        {% endif %}
-                    {% endfor %}
+                {% if not current_user.is_anonymous %}
+                    <!-- Place all registered user pages here -->
+                    <a class="mdl-navigation__link" href="{{ url_for('tasks.tasks') }}">{{ _('Tasks') }}</a>
+                    <a class="mdl-navigation__link" href="{{ url_for('analysis.analysis') }}">{{ _('Analysis') }}</a>
+                    <a class="mdl-navigation__link" href="{{ url_for('reports.reports') }}">{{ _('Reports') }}</a>
+                    {% if render_current_user_groups %}
+                        {% for item in render_current_user_groups %}
+                            {% if "admin" in item.group_name %}
+                                <a class="mdl-navigation__link" href="{{ url_for('auth.groups') }}">Groups</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% else %}
+                    <a class="mdl-navigation__link" href="{{ url_for('auth.login') }}">Login</a>
                 {% endif %}
+                <a class="mdl-navigation__link" href="{{ url_for('auth.leaderboard') }}">{{ _('Leaderboard') }}</a>
             </nav>
         </div>
         <header class="mdl-layout__header mdl-layout__header--scroll">

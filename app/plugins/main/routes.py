@@ -45,11 +45,11 @@ def about_us():
 
 @main_template_page.route('/help', methods=['GET'])
 def help_page():
-    """Return the about AUCR page."""
+    """Return the Help AUCR page."""
     return render_template('help.html', title=_('Help'))
 
 
 @main_template_page.route('/privacy', methods=['GET'])
 def privacy():
-    """Return the about AUCR page."""
+    """Return the Privacy AUCR page."""
     return render_template('privacy.html', title=_('Privacy & Terms'))
