@@ -24,8 +24,8 @@ auth_page = Blueprint('auth', __name__, template_folder='templates')
 def user(username):
     """User function returns the username url path."""
     username = User.query.filter_by(username=username).first_or_404()
-    # page = request.args.get('page', 1, type=int)
-    return render_template('user.html', user=username)
+    page = request.args.get('page', 1, type=int)
+    return render_template('user.html', user=username, page=page)
 
 
 @auth_page.route('/edit_profile', methods=['GET', 'POST'])
@@ -106,11 +106,12 @@ def register():
         return redirect(url_for('index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User.__call__(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
+        user_name = User.__call__(username=form.username.data, email=form.email.data)
+        user_name.set_password(form.password.data)
+        db.session.add(user_name)
         db.session.commit()
-        session['username'] = user.username
+        session['username'] = user_name.username
+        flash(_('Congratulations, you are now a registered user!'))
         return redirect(url_for('auth.login'))
     return render_template('register.html', title=_('Register'), form=form)
 
@@ -122,9 +123,9 @@ def reset_password_request():
         return redirect(url_for('index'))
     form = ResetPasswordRequestForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user:
-            send_password_reset_email(user)
+        user_name = User.query.filter_by(email=form.email.data).first()
+        if user_name:
+            send_password_reset_email(user_name)
         flash(_('If that is a valid email the instructions have been sent to reset your password'))
         return redirect(url_for('auth.login'))
     return render_template('reset_password_request.html', title=_('Reset Password'), form=form)
@@ -135,12 +136,12 @@ def reset_password(token):
     """User reset password with token AUCR auth plugin blueprint."""
     if current_user.is_authenticated:
         return redirect(url_for('index'))
-    user = User.verify_reset_password_token(token)
-    if not user:
+    user_name = User.verify_reset_password_token(token)
+    if not user_name:
         return redirect(url_for('index'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
-        user.set_password(form.password.data)
+        user_name.set_password(form.password.data)
         db.session.commit()
         flash(_('Your password has been reset.'))
         return redirect(url_for('auth.login'))
@@ -200,8 +201,8 @@ def two_factor_setup():
     """Two factory auth user setup page."""
     if 'username' not in session:
         return redirect(url_for('main.index'))
-    user = User.query.filter_by(username=session['username']).first()
-    if user is None:
+    user_name = User.query.filter_by(username=session['username']).first()
+    if user_name is None:
         return redirect(url_for('main.index'))
     # since this page contains the sensitive qrcode
     # make sure the browser does not cache it
@@ -218,16 +219,16 @@ def qrcode():
     """Two factor auth qrcode handling."""
     if 'username' not in session:
         render_error_page_template(404)
-    user = User.query.filter_by(username=session['username']).first()
-    if user is None:
+    user_name = User.query.filter_by(username=session['username']).first()
+    if user_name is None:
         render_error_page_template(404)
 
     # for added security, remove username from session
     # render qrcode for FreeTOTP
-    url = pyqrcode.create(user.get_totp_uri())
+    url = pyqrcode.create(user_name.get_totp_uri())
     stream = BytesIO()
     url.svg(stream, scale=3)
-    flash(user.otp_secret)
+    flash(user_name.otp_secret)
     del session['username']
     return stream.getvalue(), 200, {
         'Content-Type': 'image/svg+xml',
@@ -244,20 +245,24 @@ def login():
         return redirect(url_for('main.index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user is not None and user.otp_secret is not None:
-            otp_auth_check = user.verify_totp(form.token.data)
+        user_name = User.query.filter_by(username=form.username.data).first()
+        if user_name is not None and user_name.otp_secret is not None:
+            otp_auth_check = user_name.verify_totp(form.token.data)
+        elif user_name is None:
+            otp_auth_check = False
         else:
             otp_auth_check = True
-        if user is None or not user.check_password(form.password.data) or otp_auth_check is False:
-                user.verify_totp(form.token.data)
+        if user_name is None or not user_name.check_password(form.password.data) or otp_auth_check:
+            if otp_auth_check:
+                user_name.verify_totp(form.token.data)
+            else:
                 flash('Invalid username, password or token.')
                 return redirect(url_for('auth.login'))
 
-        login_user(user, remember=form.remember_me.data)
-        login_user(user)
+        login_user(user_name, remember=form.remember_me.data)
+        login_user(user_name)
         # log user in
-        login_user(user)
+        login_user(user_name)
         flash('You are now logged in!')
         return redirect(url_for('main.index'))
     return render_template('login.html', title=_('Sign In'), form=form)
@@ -278,12 +283,12 @@ def search():
         return redirect(url_for('search'))
     page = request.args.get('page', 1, type=int)
     posts, total = Post.search(g.search_form.q.data, page, current_app.config['POSTS_PER_PAGE'])
-    messages, total = Message.search(g.search_form.q.data, page, current_app.config['POSTS_PER_PAGE'])
+    search_messages, total = Message.search(g.search_form.q.data, page, current_app.config['POSTS_PER_PAGE'])
     next_url = url_for('search', q=g.search_form.q.data, page=page + 1) \
         if total > page * current_app.config['POSTS_PER_PAGE'] else None
     prev_url = url_for('search', q=g.search_form.q.data, page=page - 1) if page > 1 else None
-    return render_template('search.html', title=_('Search'), messages=messages, next_url=next_url, prev_url=prev_url,
-                           posts=posts)
+    return render_template('search.html', title=_('Search'), messages=search_messages, next_url=next_url,
+                           prev_url=prev_url, posts=posts)
 
 
 @auth_page.route('/leaderboard', methods=['GET'])
