@@ -1,6 +1,20 @@
 version: "3.4"
 
 services:
+
+  mysql:
+    container_name: mysql
+    image: mysql
+    restart: always
+    ports:
+      - 3307:3306
+    volumes:
+      - ./mysql/:/mysql/
+    env_file:
+      - ./config-file.env
+    networks:
+      - aucr
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.2
     ports:
@@ -30,8 +44,6 @@ services:
       - aucr
     depends_on:
       - elasticsearch
-    environment:
-      elasticsearch: 10.100.0.205
     env_file:
       - ./config-file.env
 
@@ -43,19 +55,21 @@ services:
     networks:
       - aucr
 
-  mysql:
-    container_name: mysql
-    image: mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: P@ssword123
-      MYSQL_DATABASE: aucr
+  aucr:
+    container_name: aucr_web
+    image: aucr
     ports:
-      - 3307:3306
+      - 5000:5000
     volumes:
-      - ./mysql/:/mysql/
+      - ./upload:/opt/aucr/upload
     networks:
       - aucr
+    depends_on:
+      - mysql
+      - elasticsearch
+      - rabbitmq
+    env_file:
+      - ./config-file.env
 
 networks:
   aucr:

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aucr
+  labels:
+    name: aucr
+spec:
+  containers:
+    - name: aucr
+      image: aucr
+      imagePullPolicy: Always
+  restartPolicy: Never

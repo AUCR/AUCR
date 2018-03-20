@@ -8,7 +8,7 @@ from app.plugins.tasks.models import TasksPlugins
 tasks_page = Blueprint('tasks', __name__, template_folder='templates')
 
 
-@tasks_page.route('', methods=['GET'])
+@tasks_page.route('/tasks', methods=['GET'])
 @login_required
 def tasks():
     """Return AUCR task plugin flask app tasks blueprint."""

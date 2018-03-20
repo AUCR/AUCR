@@ -1,7 +1,7 @@
 """Models.py tasks plugin database library table models."""
 # coding=utf-8
 from datetime import datetime
-from app import db
+from app import db, YamlInfo
 
 
 class TasksPlugins(db.Model):
@@ -30,6 +30,19 @@ class TaskCategory(db.Model):
     def __repr__(self):
         """Official Task Category Table database name object representation."""
         return '<TaskCategory {}>'.format(self.task_category_name)
+
+
+def insert_initial_category_values(*args, **kwargs):
+    """Insert Task category default database values from a yaml template file."""
+    run = YamlInfo("app/plugins/tasks/category.yaml", "none", "none")
+    category_data = run.get()
+    for items in category_data:
+        new_category_table_row = TaskCategory(task_category_name=items)
+        db.session.add(new_category_table_row)
+        db.session.commit()
+
+
+db.event.listen(TaskCategory.__table__, 'after_create', insert_initial_category_values)
 
 
 class BusinessCoverage(db.Model):
@@ -107,3 +120,48 @@ class Tags(db.Model):
     def __repr__(self):
         """Official Tag Table database name object representation."""
         return '<Tags {}>'.format(self.tag_name)
+
+
+class Comments(db.Model):
+    """Comment default database table format for tasks_plugin."""
+
+    __tablename__ = 'task_comments'
+    id = db.Column(db.Integer, primary_key=True)
+    comment = db.Column(db.String(1024), index=True)
+    time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+    def __repr__(self):
+        """Official Comments Table database name object representation."""
+        return '<Comments {}>'.format(self.comment)
+
+
+class TrafficLightProtocol(db.Model):
+    """TLP default database table format for tasks_plugin."""
+
+    __tablename__ = 'task_tlp'
+    id = db.Column(db.Integer, primary_key=True)
+    color_name = db.Column(db.String(5), index=True)
+    when_description = db.Column(db.String(256), index=True)
+    how_description = db.Column(db.String(512), index=True)
+    quick_description = db.Column(db.String(128), index=True)
+
+    def __repr__(self):
+        """Official TLP Table database name object representation."""
+        return '<TrafficLightProtocol {}>'.format(self.color_name)
+
+
+def insert_initial_tlp_values(*args, **kwargs):
+    """Insert TLP default database values from a yaml template file."""
+    run = YamlInfo("app/plugins/tasks/tlp.yaml", "none", "none")
+    tlp_data = run.get()
+    for items in tlp_data:
+        new_tlp_table_row = TrafficLightProtocol(
+                              color_name=items, quick_description=tlp_data[items]
+                              ["quick_description"], how_description=tlp_data[items]["how_description"],
+                              when_description=tlp_data[items]["when_description"]
+        )
+        db.session.add(new_tlp_table_row)
+        db.session.commit()
+
+
+db.event.listen(TrafficLightProtocol.__table__, 'after_create', insert_initial_tlp_values)

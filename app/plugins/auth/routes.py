@@ -152,7 +152,7 @@ def reset_password(token):
 @login_required
 def groups():
     """AUCR group's route flask blueprints."""
-    if check_group("admin") is True:
+    if check_group("1") is True:
         group_info = Group.query.order_by(Group.group_name).all()
         form_remove_user_from_group = RemoveUserFromGroup
         return render_template('groups.html', group_info=group_info, form=form_remove_user_from_group)
@@ -164,7 +164,7 @@ def groups():
 @login_required
 def create_group():
     """Create a new group."""
-    if check_group("admin") is True:
+    if check_group("1") is True:
         form = CreateGroupForm()
         if form.validate_on_submit():
             group_name = Group(group_name=form.group_name.data, username=form.admin_user.data)
@@ -182,7 +182,7 @@ def create_group():
 @login_required
 def remove_user_from_group():
     """AUCR auth plugin group flask app blueprint to remove a user."""
-    if check_group("admin") is True:
+    if check_group("1") is True:
         form = RemoveUserFromGroup()
         if form.validate_on_submit():
             Group.query.filter_by(group_name=form.group_name.data, username=form.username.data).delete()

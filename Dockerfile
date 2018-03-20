@@ -10,7 +10,6 @@ COPY LICENSE /opt/aucr
 COPY projectinfo.yml /opt/aucr
 COPY requirements.txt /opt/aucr
 COPY config.py /opt/aucr
-RUN mkdir /opt/aucr/upload
 ENV FLASK_APP=aucr.py
 
 
