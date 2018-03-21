@@ -11,17 +11,21 @@ before_install:
 - pip install pycodestyle
 - pip install pydocstyle
 - pip install tox
+- pip install pytest
 install:
 - pip install -r requirements.txt
 script:
 - coverage run tests.py
 - codecov
+- pytest coveralls/tests.py --doctest-modules --pep8 coveralls -v --cov coveralls --cov-report term-missing
 
 matrix:
   include:
   - python: 3.6
     env: TOXENV=py36
-after_success: coverage combine && codecov
+after_success:
+- coverage combine && codecov
+- coveralls
 notifications:
   email:
     on_success: always
