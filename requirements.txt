@@ -1,3 +1,4 @@
+tox
 alembic
 asn1crypto
 Babel
@@ -41,7 +42,6 @@ requests
 rq
 rsa
 six
-SQLAlchemy
 SQLAlchemy-Utils
 ujson
 urllib3
