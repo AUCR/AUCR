@@ -1,38 +1,29 @@
 language: python
 python:
-  - "3.6"
-  - "3.6-dev"  # 3.6 development branch
-# command to install dependencies
-
-
+- 3.6
+- 3.6-dev
 before_install:
-    - sudo apt-get update
-    - sudo apt-get -y install python-pip
-    - sudo pip install --upgrade pip
-    - pip install --upgrade pip
-    - pip install codecov
-    - pip install pycodestyle
-    - pip install pydocstyle
-    - pip install tox
-
+- sudo apt-get update
+- sudo apt-get -y install python-pip
+- sudo pip install --upgrade pip
+- pip install --upgrade pip
+- pip install codecov
+- pip install pycodestyle
+- pip install pydocstyle
+- pip install tox
 install:
-# command to run tests
-  - pip install -r requirements.txt
-  
+- pip install -r requirements.txt
 script:
-  - coverage run tests.py
-#  - pycodestyle --exclude=migrations --max-line-length=120
-#  - tox
-
+- coverage run tests.py
 matrix:
   include:
   - python: 3.6
     env: TOXENV=py36
-
 after_success:
-  - codecov
-
+- codecov
 notifications:
   email:
     on_success: always
     on_failure: always
+  slack:
+    secure: HIPMqLDYBGGxfKLOAg/bEiUMPZa1HJzOvpGUPHPPnXWx7PfgSpm5B/aFhEsY1xxsAsHmN0eEZ46XNEVEtpT0iCecjfBzZCuDVBcxD2g6SD1NaQvdBc2qsLr7EjtqVNURXSAggTgkNhNU4ethIpCV3of8m6P+uI2Yx+71HrH3c7I7qVhT/9Yx7RlS/biMqkJaMgfIe8EjnB5vKFMNfUyWjN9YsXCSjMlfjC/Xka7VJTd5O1HGpc6fyJkVwtk7rYUi+FnmSgFt5OssUTrmZc+NTuyYBBt0x2y/231p9guJHjQM0hxed+moZBIw6tgrsrZxkYotkYb+uEbsEvNM/tv9wTzLc5Zb8P0V+UQKCrn3enVOoS4xXS5UoVLi9pg1XNZtDGjkSyvXn43lK8SM6O1IaZDryNczTv22itdvDB71m0/gedLxcD8CrDMY9LMd04FW2PuRq8Mlk7cr90ZkrOMWs6mOEF5oV9OiawVWOmOsqI8ae+zxjtaVbv6OAAr9fePDOyss9KocrQ2itb9GcPQ/89bKwMW5g2tAKwlXJtSG2tGif/qvHt6uLSEE+2MA9Aw75kRY9uO2QdnocXK9bqndmiM4uC7ClzdtjwM/BPF4QYVDWK2IBbsuSUOQ3X3IJ237u67VtFjtxgCPS5AxqWb4/3goxOKoBjIl4zOi2BuI5GA=

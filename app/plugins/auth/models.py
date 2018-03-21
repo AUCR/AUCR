@@ -107,7 +107,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
     last_message_read_time = db.Column(db.DateTime)
     notifications = db.relationship('Notification', backref='user', lazy='dynamic')
     tasks = db.relationship('Task', backref='user', lazy='dynamic')
-    otp_secret = db.Column(db.String(64))
+    otp_secret = db.Column(db.String(120))
 
     def __repr__(self):
         """Return string representation of the User Database Object Table."""
