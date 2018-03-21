@@ -1,4 +1,3 @@
-tox
 alembic
 asn1crypto
 Babel

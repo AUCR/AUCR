@@ -15,12 +15,14 @@ install:
 - pip install -r requirements.txt
 script:
 - coverage run tests.py
+- coverage run serve.py
+- pytest test.py --cov=codecov
+
 matrix:
   include:
   - python: 3.6
     env: TOXENV=py36
-after_success:
-- codecov
+after_success: coverage combine && codecov
 notifications:
   email:
     on_success: always

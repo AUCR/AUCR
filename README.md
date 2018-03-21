@@ -4,6 +4,8 @@
 [![Docker Repository on Quay](https://quay.io/repository/wroersma/aucr/status "Docker Repository on Quay")](https://quay.io/repository/wroersma/aucr)
 [![Coverage Status](https://coveralls.io/repos/github/AUCR/AUCR/badge.svg)](https://coveralls.io/github/AUCR/AUCR)
 [![Code Health](https://landscape.io/github/AUCR/AUCR/master/landscape.svg?style=flat)](https://landscape.io/github/AUCR/AUCR/master)
+[![AUCR Slack](https://slack.aucr.io/badge.svg)](https://aucr.slack.com/)
+
 
 ## Overview
 Analyst Unknown Cyber Range is a micro services flask framework. 
