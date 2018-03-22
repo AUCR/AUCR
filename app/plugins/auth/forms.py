@@ -65,7 +65,6 @@ class CreateGroupForm(FlaskForm):
     admin_user = StringField(_l('Admin Name'), validators=[DataRequired()])
     submit = SubmitField('Create the Group')
 
-    @staticmethod
     def validate_admin_user(self, admin_user):
         """Validate proper permissions."""
         admin_user = User.query.filter_by(username=admin_user.data).first()

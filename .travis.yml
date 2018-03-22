@@ -12,12 +12,13 @@ before_install:
 - pip install pydocstyle
 - pip install tox
 - pip install pytest
+- pip install python-coveralls
 install:
 - pip install -r requirements.txt
+
 script:
 - coverage run tests.py
 - codecov
-
 matrix:
   include:
   - python: 3.6

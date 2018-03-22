@@ -19,7 +19,7 @@ class TasksPlugins(db.Model):
 
 
 class TaskCategory(db.Model):
-    """Tasks Category models class defines default database format for tasks_plugin."""
+    """Task Category models class default database format for tasks_plugin."""
 
     __tablename__ = 'task_category'
     id = db.Column(db.Integer, primary_key=True)
@@ -108,6 +108,19 @@ class TaskStates(db.Model):
         return '<TaskStates {}>'.format(self.task_state_name)
 
 
+def insert_initial_tasks_states_values(*args, **kwargs):
+    """Insert TLP default database values from a yaml template file."""
+    run = YamlInfo("app/plugins/tasks/task_states.yaml", "none", "none")
+    tlp_data = run.get()
+    for items in tlp_data:
+        new_task_state_table_row = TaskStates(task_state_name=items)
+        db.session.add(new_task_state_table_row)
+        db.session.commit()
+
+
+db.event.listen(TaskStates.__table__, 'after_create', insert_initial_tasks_states_values)
+
+
 class Tags(db.Model):
     """Tag default database table format for tasks_plugin."""
 
@@ -165,3 +178,28 @@ def insert_initial_tlp_values(*args, **kwargs):
 
 
 db.event.listen(TrafficLightProtocol.__table__, 'after_create', insert_initial_tlp_values)
+
+
+class Severity(db.Model):
+    """Severity default database table format for tasks_plugin."""
+
+    __tablename__ = 'task_severity'
+    id = db.Column(db.Integer, primary_key=True)
+    severity = db.Column(db.Integer, index=True)
+
+    def __repr__(self):
+        """Official TLP Table database name object representation."""
+        return '<Severity {}>'.format(self.severity)
+
+
+def insert_initial_severity_values(*args, **kwargs):
+    """Insert severity default database values from a yaml template file."""
+    run = YamlInfo("app/plugins/tasks/severity.yaml", "none", "none")
+    severity_data = run.get()
+    for items in severity_data:
+        new_severity_table_row = Severity(severity=items)
+        db.session.add(new_severity_table_row)
+        db.session.commit()
+
+
+db.event.listen(Severity.__table__, 'after_create', insert_initial_severity_values)
