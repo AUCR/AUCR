@@ -1,0 +1,26 @@
+<nav class="mdl-navigation">
+    {% if current_user.is_anonymous %}
+        {% if request.url_rule.endpoint != "auth.login" %}
+            <a class="mdl-navigation__link" href="{{ url_for('auth.login') }}">Login</a>
+        {% endif %}
+    {% else %}
+        {% if g.search_form %}
+            <form class="navbar-form navbar-left" method="get" action="{{ url_for('auth.search') }}">
+                <div class="form-group">
+                    {{ g.search_form.q(size=20, class='form-control', placeholder=g.search_form.q.label.text) }}
+                </div>
+            </form>
+        {% endif %}
+        <a class="mdl-navigation__link" href="{{ url_for('auth.messages') }}">{{ ('Messages') }}
+            {% if current_user.new_messages() %}
+                {% set new_messages = current_user.new_messages() %}
+                <span id="message_count" class="badge" style="visibility: {% if new_messages %}visible
+                      {% else %}hidden{% endif %};">{{ new_messages }}</span>
+            {% endif %}
+        </a>
+        <a class="mdl-navigation__link" href="{{ url_for('auth.logout') }}">{{ _('Logout') }}</a>
+        <a class="mdl-badge" href="{{ url_for('auth.user', username=current_user.username) }}">
+            <img src="{{ current_user.avatar(32) }}">
+        </a>
+    {% endif %}
+</nav>

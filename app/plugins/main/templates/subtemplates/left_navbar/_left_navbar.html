@@ -1,0 +1,22 @@
+<nav class="mdl-navigation">
+    {% if current_user.is_anonymous %}
+        <a class="mdl-navigation__link" href="{{ url_for('auth.login') }}">Login</a>
+    {% else %}
+        {# subtemplate navbar containing pages available to all authenticated users #}
+        {% include "subtemplates/left_navbar/_user_navbar.html" %}
+        {% if render_current_user_groups %}
+            {# if the user belongs to a group then loop and get the specialty
+            subtemplates for those groups
+            TODO: remove hardcoded "admin" and just compare group to subtemplate #}
+            {% for item in render_current_user_groups %}
+                {% if "admin" in item.group_name %}
+                    {# subtemplate navbar containing pages available to all
+                    authenticated admin users #}
+                    {% include "subtemplates/left_navbar/_admin_navbar.html" %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+    {# All visitors and users of the site will be able to see these pages #}
+    <a class="mdl-navigation__link" href="{{ url_for('auth.leaderboard') }}">{{ _('Leaderboard') }}</a>
+</nav>
