@@ -18,6 +18,7 @@ from app.plugins import init_task_plugins
 from app.plugins import init_task_plugins
 from logging.handlers import SMTPHandler, RotatingFileHandler
 from yaml_info.yamlinfo import YamlInfo
+from app.build_navbar import BuildNavBar
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -31,6 +32,7 @@ mail = Mail()
 bootstrap = Bootstrap()
 moment = Moment()
 babel = Babel()
+build_navbar = BuildNavBar()
 
 
 def create_app(config_class=Config):
@@ -44,6 +46,8 @@ def create_app(config_class=Config):
     bootstrap.init_app(app)
     moment.init_app(app)
     babel.init_app(app)
+    build_navbar.get_yaml()
+    build_navbar.create_links()
     app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
         if app.config['ELASTICSEARCH_URL'] else None
     app.redis = Redis.from_url(app.config['REDIS_URL'])
