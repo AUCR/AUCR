@@ -17,7 +17,7 @@ from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash
 from flask_bcrypt import check_password_hash
 from datetime import datetime
-from app import YamlInfo
+from yaml_info.yamlinfo import YamlInfo
 from app.plugins.reports.storage.elasticsearch import add_to_index, remove_from_index, query_index
 
 

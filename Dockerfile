@@ -27,6 +27,7 @@ RUN apk add --no-cache \
     libffi-dev \
     py-pillow \
     openssl-dev \
+  && pip install PyYAML \
   && pip install -r requirements.txt --upgrade \
   && apk del --purge gcc \
     libc-dev \

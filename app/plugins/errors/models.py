@@ -2,7 +2,7 @@
 #  coding=utf-8
 from app import db
 from datetime import datetime
-from app import YamlInfo
+from yaml_info.yamlinfo import YamlInfo
 
 
 class Errors(db.Model):

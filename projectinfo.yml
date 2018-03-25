@@ -4,9 +4,16 @@ info:
   name: "Analyst Unknown Cyber Range"
   authors: "Wyatt Roersma, Devin Smith"
   authors_email: "wyattroersma@gmail.com"
+  description: "AUCR is a flask micro services framework."
+  license: 'GPL-3.0'
+  classifiers:
+    - 'Development Status :: 4 - Beta'
+    - 'Intended Audience :: Developers'
+    - 'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)'
+    - 'Programming Language :: Python :: 3.6'
 
 version:
   major: 0
   minor: 3
   revision: 1
-  release: 1
+  release: 2

@@ -50,3 +50,9 @@ upload/*zip
 /deployment/apache2/certs/fullchain.pem
 /deployment/apache2/certs/cert.pem
 /deployment/nginx/certs/
+deployment/apache2/certs/
+mysql/
+upload/
+config-file.env
+es-data/
+travis.log

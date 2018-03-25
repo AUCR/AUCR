@@ -3,7 +3,6 @@
 import logging
 import os
 import rq
-import yaml
 from redis import Redis
 from config import Config
 from elasticsearch import Elasticsearch
@@ -18,28 +17,7 @@ from flask_babel import Babel, lazy_gettext as _l
 from app.plugins import init_task_plugins
 from app.plugins import init_task_plugins
 from logging.handlers import SMTPHandler, RotatingFileHandler
-
-
-class YamlInfo:
-    """ProjectInfo Class gets and loads the project information like authors, version and license."""
-
-    yaml_info_dict = {}
-
-    def __init__(self, yaml_config_file, option, input_file) -> None:
-        """Load project information and license info."""
-        with open(yaml_config_file, 'rb') as input_config_file_object:
-            project_info_strings = input_config_file_object.read()
-        self.yaml_info_dict = yaml.load(project_info_strings)
-        if option == "strip":
-            if input_file == "LICENSE":
-                with open("LICENSE") as license_file:
-                    license_strings = license_file.read()
-                self.yaml_info_dict["license"] = license_strings.strip('\n')
-
-    def get(self) -> dict:
-        """Return project_info as a dict."""
-        return self.yaml_info_dict
-
+from yaml_info.yamlinfo import YamlInfo
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -57,16 +35,6 @@ babel = Babel()
 
 def create_app(config_class=Config):
     """Start AUCR app flask object."""
-    logging.info("Getting Project Info")
-    run = YamlInfo("projectinfo.yml", "strip", "LICENSE")
-    project_data = run.get()
-    project_info_data = project_data["info"]
-    project_version_data = project_data["version"]
-    # Nice Formatting Suggestion from iofault
-    __version__ = "%(major)s.%(minor)s.%(revision)s" % project_version_data
-    logging.info("Starting AUCR v" + __version__)
-    for items in project_info_data:
-        logging.info(str(items) + ":" + str(project_info_data[items]))
     app = Flask(__name__)
     app.config.from_object(config_class)
     db.init_app(app)
@@ -119,6 +87,7 @@ def create_app(config_class=Config):
 
 def aucr_app():
     """AUCR app flask function framework create and get things started."""
+    YamlInfo("projectinfo.yml", "projectinfo", "LICENSE")
     app = create_app()
     app.secret_key = os.urandom(64)
     app.app_context().push()
