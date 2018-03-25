@@ -18,7 +18,7 @@ from app.plugins import init_task_plugins
 from app.plugins import init_task_plugins
 from logging.handlers import SMTPHandler, RotatingFileHandler
 from yaml_info.yamlinfo import YamlInfo
-from app.build_navbar import BuildNavBar
+from app.navbar.build_navbar import BuildNavBar
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
