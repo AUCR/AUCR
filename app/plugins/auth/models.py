@@ -238,7 +238,7 @@ class Group(db.Model):
 
     __tablename__ = 'group'
     id = db.Column(db.Integer, primary_key=True)
-    group_name = db.Column(db.Integer, db.ForeignKey('groups.id'))
+    group_name = db.Column(db.Integer, db.ForeignKey('groups.id'), index=True)
     username = db.Column(db.Integer, db.ForeignKey('user.id'))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 

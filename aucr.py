@@ -2,6 +2,7 @@
 # coding=utf-8
 from app import aucr_app, db
 from app.plugins.auth.models import User, Message, Notification, Task
+
 app = aucr_app()
 
 

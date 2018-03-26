@@ -1,20 +1,20 @@
 <nav class="mdl-navigation">
     {% if current_user.is_anonymous %}
-        {% include "subtemplates/left_navbar/links/_nonuser.html" %}
+        {% include "links/_nonuser.html" %}
     {% else %}
         {# subtemplate navbar containing pages available to all authenticated users #}
-        {% include "subtemplates/left_navbar/links/_user.html" %}
+        {% include "links/_user.html" %}
         {% if render_current_user_groups %}
             {# if the user belongs to a group then loop and get the specialty subtemplates for those groups
             TODO: remove hardcoded "admin" and just compare group to subtemplate #}
             {% for item in render_current_user_groups %}
-                {% if "admin" in item.group_name %}
+                {% if "admin" in item%}
                     {# subtemplate navbar containing pages available to all authenticated admin users #}
-                    {% include "subtemplates/left_navbar/links/_admin.html" %}
+                    {% include "links/admin/_admin.html" %}
                 {% endif %}
             {% endfor %}
         {% endif %}
     {% endif %}
     {# All visitors and users of the site will be able to see these pages #}
-    {% include "subtemplates/left_navbar/links/_basic.html" %}
+    {% include "links/_basic.html" %}
 </nav>

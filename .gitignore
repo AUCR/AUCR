@@ -56,3 +56,4 @@ upload/
 config-file.env
 es-data/
 travis.log
+/app/plugins/Horatio/
