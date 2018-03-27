@@ -12,18 +12,10 @@ Analyst Unknown Cyber Range is a micro services flask framework.
 
 
 ## Developer setup
-Just run the server.py in debug mode from pycharm for the best development environment. It will auto generate the database for you!
-
-        serve.py 
-
-
-
-Example Setup with Temporary an  example yara_plugin and just running with flask
+Example Setup with Temporary an  example and just running with flask. If you use pycharm you can setup flask app to debug through the code.
 
     export FLASK_APP=aucr.py
     export FLASK_DEBUG=1
-    flask db init
-    flask db upgrade
     flask run
 
 
