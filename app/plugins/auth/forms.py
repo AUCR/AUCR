@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from flask_babel import _, lazy_gettext as _l
-from app.plugins.auth.models import User, Group
+from app.plugins.auth.models import User, Group, Groups
 
 
 class LoginForm(FlaskForm):
@@ -81,7 +81,7 @@ class RemoveUserFromGroup(FlaskForm):
 
     def validate_group_name(self, group_name):
         """Check possible group duplicates."""
-        group_name = Group.query.filter_by(group_name=group_name.data).first()
+        group_name = Groups.query.filter_by(group_name=group_name.data).first()
         if group_name is None:
             raise ValidationError(_("Please use a different Group Name as we can't find that"))
 

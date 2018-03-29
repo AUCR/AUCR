@@ -13,7 +13,7 @@ from app.plugins.auth.forms import LoginForm, RegistrationForm, ResetPasswordReq
      CreateGroupForm, RemoveUserFromGroup, MessageForm, EditProfileForm
 from app.plugins.auth.email import send_password_reset_email
 from app.plugins.auth.utils import check_group
-from app.plugins.auth.models import Group, Message, User, Notification, Post
+from app.plugins.auth.models import Group, Message, User, Notification, Post, Groups
 from app.plugins.errors.handlers import render_error_page_template
 
 auth_page = Blueprint('auth', __name__, template_folder='templates')
@@ -167,7 +167,11 @@ def create_group():
     if check_group("1") is True:
         form = CreateGroupForm()
         if form.validate_on_submit():
-            group_name = Group(group_name=form.group_name.data, username=form.admin_user.data)
+            create_group_name = Groups(group_name=form.group_name.data)
+            db.session.add(create_group_name)
+            db.session.commit()
+            user_id = User.query.filter_by(username=form.admin_user.data).first()
+            group_name = Group(group_name=create_group_name.id, username=user_id.id)
             db.session.add(group_name)
             db.session.commit()
             group_create_message = str('The group ' + str(group_name.group_name) + ' has been created!')
