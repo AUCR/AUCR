@@ -1,7 +1,7 @@
 """AUCR report plugin database table library models."""
 # coding=utf-8
 from app import db
-from datetime import datetime
+import udatetime
 from flask import request
 from flask_wtf import FlaskForm
 from wtforms import StringField
@@ -16,7 +16,7 @@ class ReportPlugins(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     report_name = db.Column(db.String(128), index=True)
     description = db.Column(db.String(256), index=True)
-    time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
         """Official Report Plugins Table database name object representation."""
@@ -30,7 +30,7 @@ class ReportTable(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     report_name = db.Column(db.String(128), index=True)
     description = db.Column(db.String(256), index=True)
-    time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     group_access = db.Column(db.String(128), db.ForeignKey('groups.group_name'))
     is_starred = db.Column(db.Boolean, default=False)
@@ -62,7 +62,7 @@ class Log(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     log_name = db.Column(db.String(128), index=True)
-    time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
         """Log table change tracking."""

@@ -1,10 +1,10 @@
 """AUCR auth routes manages all basic flask app blueprints."""
 # coding=utf-8
+import udatetime
 import pyqrcode
 import base64
 import os
 from io import BytesIO
-from datetime import datetime
 from flask import render_template, flash, Blueprint, session,  redirect, url_for, request, current_app, g, jsonify
 from flask_login import login_user, current_user, login_required, logout_user
 from flask_babel import _
@@ -61,7 +61,7 @@ def edit_profile():
 @login_required
 def messages():
     """Return user message flask app blueprint route."""
-    current_user.last_message_read_time = datetime.utcnow()
+    current_user.last_message_read_time = udatetime.utcnow()
     current_user.add_notification('unread_message_count', 0)
     db.session.commit()
     page = request.args.get('page', 1, type=int)

@@ -1,7 +1,7 @@
 """Errors plugin models.py is the error table database handler."""
 #  coding=utf-8
 from app import db
-from datetime import datetime
+import udatetime
 from yaml_info.yamlinfo import YamlInfo
 
 
@@ -12,7 +12,7 @@ class Errors(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     error_name = db.Column(db.String(128), index=True)
     error_message = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
         """AUCR HTTP Error return self."""

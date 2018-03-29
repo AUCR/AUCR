@@ -1,6 +1,6 @@
 """Models.py tasks plugin database library table models."""
 # coding=utf-8
-from datetime import datetime
+import udatetime
 from app import db, YamlInfo
 
 
@@ -11,7 +11,7 @@ class TasksPlugins(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task_name = db.Column(db.String(128), index=True)
     description = db.Column(db.String(256), index=True)
-    time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
         """Official Tasks Plugins Table database name object representation."""
@@ -25,7 +25,7 @@ class TaskCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task_category_name = db.Column(db.String(128), index=True)
     description = db.Column(db.String(256), index=True)
-    time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
         """Official Task Category Table database name object representation."""
@@ -52,7 +52,7 @@ class BusinessCoverage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     business_coverage = db.Column(db.String(128), index=True)
     description = db.Column(db.String(256), index=True)
-    time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
         """Official Business Coverage Table database name object representation."""
@@ -66,7 +66,7 @@ class Label(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     label_name = db.Column(db.String(128), index=True)
     description = db.Column(db.String(256), index=True)
-    time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
         """Official Label Table database name object representation."""
@@ -80,7 +80,7 @@ class TaskTable(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task_name = db.Column(db.String(128), index=True)
     description = db.Column(db.String(256), index=True)
-    time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     group_access = db.Column(db.String(128), db.ForeignKey('groups.group_name'))
     is_starred = db.Column(db.Boolean, default=False)
@@ -101,7 +101,7 @@ class TaskStates(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task_state_name = db.Column(db.String(128), index=True)
     description = db.Column(db.String(256), index=True)
-    time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
         """Official Task States database name object representation."""
@@ -128,7 +128,7 @@ class Tags(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tag_name = db.Column(db.String(128), index=True)
     description = db.Column(db.String(256), index=True)
-    time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
         """Official Tag Table database name object representation."""
@@ -141,7 +141,7 @@ class Comments(db.Model):
     __tablename__ = 'task_comments'
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.String(1024), index=True)
-    time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
         """Official Comments Table database name object representation."""

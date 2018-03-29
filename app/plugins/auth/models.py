@@ -1,5 +1,6 @@
 """The auth models.py defines all the database tables we need for our auth plugin."""
 # coding=utf-8
+import udatetime
 import base64
 import ujson as json
 import os
@@ -16,7 +17,6 @@ from flask import current_app, url_for
 from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash
 from flask_bcrypt import check_password_hash
-from datetime import datetime
 from yaml_info.yamlinfo import YamlInfo
 from app.plugins.reports.storage.elasticsearch import add_to_index, remove_from_index, query_index
 
@@ -97,7 +97,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     about_me = db.Column(db.String(140))
-    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    last_seen = db.Column(db.DateTime, default=udatetime.utcnow)
     token = db.Column(db.String(120), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
     groups = db.relationship('Group', foreign_keys='Group.username', backref='author', lazy='dynamic')
@@ -152,7 +152,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     def new_messages(self):
         """Check and return new messages for current user."""
-        last_read_time = self.last_message_read_time or datetime(1900, 1, 1)
+        last_read_time = self.last_message_read_time or udatetime.from_string("1900-01-01T00:00:00.000000")
         return Message.query.filter_by(recipient=self).filter(Message.timestamp > last_read_time).count()
 
     def add_notification(self, name, data):
@@ -203,23 +203,23 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     def get_token(self, expires_in=3600):
         """Generate and return a token for user auth."""
-        now = datetime.utcnow()
-        if self.token and self.token_expiration > now + timedelta(seconds=60):
+        now = udatetime.utcnow()
+        if self.token and self.token_expiration > udatetime.to_string(now - timedelta(seconds=60)):
             return self.token
         self.token = base64.b64encode(os.urandom(64)).decode('utf-8')
-        self.token_expiration = now + timedelta(seconds=expires_in)
+        self.token_expiration = udatetime.to_string(now - timedelta(seconds=expires_in))
         db.session.add(self)
         return self.token
 
     def revoke_token(self):
         """Check and expire user token if expiration time is True."""
-        self.token_expiration = datetime.utcnow() - timedelta(seconds=1)
+        self.token_expiration = udatetime.utcnow() - timedelta(seconds=1)
 
     @staticmethod
     def check_token(token):
         """Check a token against user token."""
         user = User.query.filter_by(token=token).first()
-        if user is None or user.token_expiration < datetime.utcnow():
+        if user is None or user.token_expiration < udatetime.utcnow():
             return None
         return user
 
@@ -240,7 +240,7 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     group_name = db.Column(db.Integer, db.ForeignKey('groups.id'), index=True)
     username = db.Column(db.Integer, db.ForeignKey('user.id'))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
         """Return string representation of Group Database Object Table."""
@@ -263,7 +263,7 @@ class Groups(db.Model):
     __tablename__ = 'groups'
     id = db.Column(db.Integer, primary_key=True)
     group_name = db.Column(db.String(128), index=True)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
         """Return string representation of the Groups Database Object Table."""
@@ -313,7 +313,7 @@ class Post(SearchableMixin, db.Model):
     __searchable__ = ['body']
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     language = db.Column(db.String(5))
 
@@ -334,7 +334,7 @@ class Message(SearchableMixin, db.Model):
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
         """Return string representation of the Message Database Object Table."""
@@ -391,7 +391,7 @@ class Award(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     award_name = db.Column(db.String(128), index=True)
     username = db.Column(db.Integer, db.ForeignKey('user.id'))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
         """Return string representation of the Award Object."""

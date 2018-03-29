@@ -1,7 +1,7 @@
 """AUCR main plugin path importer for all plugins flask app blueprints."""
 # coding=utf-8
 import logging
-from datetime import datetime
+import udatetime
 from flask import render_template, request, g
 from flask_babel import _, get_locale
 from flask_login import current_user, login_required
@@ -17,7 +17,7 @@ main_template_page = Blueprint('main', __name__, static_folder='static', templat
 def before_request() -> None:
     """Set user last seen time user."""
     if current_user.is_authenticated:
-        current_user.last_seen = datetime.utcnow()
+        current_user.last_seen =udatetime.utcnow()
         db.session.commit()
         g.search_form = SearchForm()
     g.locale = str(get_locale())
