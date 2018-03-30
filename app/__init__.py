@@ -14,10 +14,9 @@ from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_babel import Babel, lazy_gettext as _l
-from app.plugins import init_task_plugins
-from app.plugins import init_task_plugins
 from logging.handlers import SMTPHandler, RotatingFileHandler
 from yaml_info.yamlinfo import YamlInfo
+from app.plugins import init_task_plugins
 from app.navbar.build_navbar import BuildNavBar
 
 logging.basicConfig(level=logging.INFO)

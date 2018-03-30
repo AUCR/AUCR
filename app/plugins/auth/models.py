@@ -18,7 +18,7 @@ from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash
 from flask_bcrypt import check_password_hash
 from yaml_info.yamlinfo import YamlInfo
-from app.plugins.reports.storage.elasticsearch import add_to_index, remove_from_index, query_index
+from app.plugins.reports.storage.elastic_search import add_to_index, remove_from_index, query_index
 
 
 class SearchableMixin(object):

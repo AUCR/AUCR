@@ -3,14 +3,12 @@
 # !/usr/bin/env python
 import unittest
 from config import Config
-from app.plugins.main.email import send_email
-from flask_wtf import CSRFProtect
 from app import create_app, db
-from app.plugins.main.email import send_async_email
 from app.plugins.main import main_page
 from app.plugins.auth.models import User, Group
 from app.plugins.auth.utils import check_group
-from app.plugins.auth.email import send_password_reset_email
+from app.plugins.auth.email import send_password_reset_email, send_async_email, send_email
+from flask_wtf import CSRFProtect
 
 csrf = CSRFProtect()
 
