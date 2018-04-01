@@ -17,7 +17,7 @@ main_template_page = Blueprint('main', __name__, static_folder='static', templat
 def before_request() -> None:
     """Set user last seen time user."""
     if current_user.is_authenticated:
-        current_user.last_seen =udatetime.utcnow()
+        current_user.last_seen = udatetime.utcnow()
         db.session.commit()
         g.search_form = SearchForm()
     g.locale = str(get_locale())
