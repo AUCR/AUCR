@@ -21,7 +21,7 @@ setup(
     include_package_data=True,
     install_requires=requirements,
     packages=find_packages(exclude=['docs', 'tests', 'tests.*', 'tools', 'utils']),
-    url='aucr.io',
+    url=project_data["info"]["url"],
     license=project_data["info"]["license"],
     author=project_data["info"]["authors"],
     author_email=project_data["info"]["authors_email"],

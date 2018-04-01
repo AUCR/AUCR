@@ -22,7 +22,7 @@ Example Setup with Temporary an  example and just running with flask. If you use
 ## Example API Usage
 Example API calls to generate an auth token and using it to query data using http 0.9.2
 
-    http --auth admin:admin POST http://localhost:8080/auth/tokens
+    http --auth admin:admin POST https://aucr.io/auth/tokens
     
     HTTP/1.0 200 OK
     Content-Length: 106
@@ -34,7 +34,7 @@ Example API calls to generate an auth token and using it to query data using htt
         "token": "tTa0fv4+7oUdEZQcw0HiBwzMbPoYJPXZK63WvKvboNhDB1GJ3f0OIl+3Lio3UAAf31+B1qtz+NZSc+4FI6vO/w=="
     }
     
-    http GET http://localhost:8080/api/groups/1 "Authorization:Bearer tTa0fv4+7oUdEZQcw0HiBwzMbPoYJPXZK63WvKvboNhDB1GJ3f0OIl+3Lio3UAAf31+B1qtz+NZSc+4FI6vO/w=="
+    http GET https://aucr.io/api/groups/1 "Authorization:Bearer tTa0fv4+7oUdEZQcw0HiBwzMbPoYJPXZK63WvKvboNhDB1GJ3f0OIl+3Lio3UAAf31+B1qtz+NZSc+4FI6vO/w=="
     HTTP/1.0 200 OK
     Content-Length: 112
     Content-Type: application/json

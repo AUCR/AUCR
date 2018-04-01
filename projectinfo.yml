@@ -11,9 +11,11 @@ info:
     - 'Intended Audience :: Developers'
     - 'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)'
     - 'Programming Language :: Python :: 3.6'
+  url: 'aucr.io'
+
 
 version:
   major: 0
   minor: 3
   revision: 1
-  release: 3
+  release: 4
