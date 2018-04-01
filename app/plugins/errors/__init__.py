@@ -2,7 +2,7 @@
 # coding=utf-8
 from app.plugins.errors.routes import errors_page
 # If you want the model to create the a table for the database at run time, import it here in the init
-from app.plugins.errors.models import Errors
+from app.plugins.errors import models
 
 
 def load(app):

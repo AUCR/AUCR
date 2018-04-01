@@ -14,6 +14,7 @@ from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_babel import Babel, lazy_gettext as _l
+from flask_socketio import SocketIO
 from logging.handlers import SMTPHandler, RotatingFileHandler
 from yaml_info.yamlinfo import YamlInfo
 from app.plugins import init_task_plugins
@@ -32,28 +33,17 @@ bootstrap = Bootstrap()
 moment = Moment()
 babel = Babel()
 build_navbar = BuildNavBar()
+socketio = SocketIO()
 
 
 def create_app(config_class=Config):
     """Start AUCR app flask object."""
     app = Flask(__name__)
     app.config.from_object(config_class)
-    db.init_app(app)
-    migrate.init_app(app, db)
-    login.init_app(app)
-    mail.init_app(app)
-    bootstrap.init_app(app)
-    moment.init_app(app)
-    babel.init_app(app)
-    build_navbar.get_yaml()
-    build_navbar.create_links()
     app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
         if app.config['ELASTICSEARCH_URL'] else None
     app.redis = Redis.from_url(app.config['REDIS_URL'])
     app.task_queue = rq.Queue('aucr-tasks', connection=app.redis)
-    init_task_plugins(app)
-    from app.plugins.main import main_page as main_bp
-    app.register_blueprint(main_bp)
     if not app.debug and not app.testing:
         if app.config['MAIL_SERVER']:
             auth = None
@@ -84,7 +74,17 @@ def create_app(config_class=Config):
             app.logger.addHandler(file_handler)
         app.logger.setLevel(logging.INFO)
         app.logger.info('AUCR startup')
+    db.init_app(app)
+    migrate.init_app(app, db)
+    login.init_app(app)
+    mail.init_app(app)
+    bootstrap.init_app(app)
+    moment.init_app(app)
+    babel.init_app(app)
+    build_navbar.get_yaml()
+    build_navbar.create_links()
     init_task_plugins(app)
+    socketio.init_app(app)
     return app
 
 

@@ -54,3 +54,5 @@ google-api-python-client
 PyMySQL
 yamlinfo
 udatetime
+greenlet
+flask-socketio
