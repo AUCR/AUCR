@@ -10,7 +10,7 @@
     <script type="text/javascript" charset="utf-8">
         var socket;
         $(document).ready(function(){
-            socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
+            socket = io.connect('http://' + document.domain + ':' + location.port + '/room');
             socket.on('connect', function() {
                 socket.emit('joined', {});
             });
@@ -34,9 +34,7 @@
         function leave_room() {
             socket.emit('left', {}, function() {
                 socket.disconnect();
-
-                // go back to the login page
-                window.location.href = "{{ url_for('chat.chat_index') }}";
+                window.location.href = "{{ url_for('auth.login') }}";
             });
         }
     </script>
@@ -46,7 +44,7 @@
     <main class="mdl-layout__content">
         <h2>{{ room }}</h2>
         <textarea id="chat" cols="80" rows="20"></textarea><br><br>
-        <input id="text" size="80" placeholder="Enter your message here"><br><br>
+        <input id="text" size="80" placeholder="Enter your chat message here"><br><br>
         <a href="#" onclick="leave_room();">Leave this room</a>
     </main>
 {% endblock %}

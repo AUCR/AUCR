@@ -1,6 +1,7 @@
 """AUCR chat plugin."""
 # coding=utf-8
 from app.plugins.chat.routes import chat_page
+from app.plugins.chat import routes, events
 
 
 def load(app):

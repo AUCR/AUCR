@@ -56,3 +56,4 @@ yamlinfo
 udatetime
 greenlet
 flask-socketio
+eventlet
