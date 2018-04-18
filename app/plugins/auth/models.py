@@ -10,7 +10,7 @@ import rq
 import onetimepass
 from app import login
 from app import db
-from datetime import timedelta
+from datetime import timedelta, datetime
 from hashlib import md5
 from time import time
 from flask import current_app, url_for
@@ -204,10 +204,10 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
     def get_token(self, expires_in=3600):
         """Generate and return a token for user auth."""
         now = udatetime.utcnow()
-        if self.token and self.token_expiration > udatetime.to_string(now - timedelta(seconds=60)):
+        if self.token and self.token_expiration > now - timedelta(seconds=60):
             return self.token
         self.token = base64.b64encode(os.urandom(64)).decode('utf-8')
-        self.token_expiration = udatetime.to_string(now - timedelta(seconds=expires_in))
+        self.token_expiration = now + timedelta(seconds=expires_in)
         db.session.add(self)
         return self.token
 
@@ -218,8 +218,9 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
     @staticmethod
     def check_token(token):
         """Check a token against user token."""
+        now = datetime.utcnow()
         user = User.query.filter_by(token=token).first()
-        if user is None or user.token_expiration < udatetime.utcnow():
+        if user is None or user.token_expiration < now:
             return None
         return user
 
