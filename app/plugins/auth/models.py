@@ -203,7 +203,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     def get_token(self, expires_in=3600):
         """Generate and return a token for user auth."""
-        now = udatetime.utcnow()
+        now = datetime.utcnow()
         if self.token and self.token_expiration > now - timedelta(seconds=60):
             return self.token
         self.token = base64.b64encode(os.urandom(64)).decode('utf-8')
@@ -249,10 +249,11 @@ class Group(db.Model):
 
     def to_dict(self):
         """Return dictionary object type for Group database Table API calls."""
+        group_object = Groups.query.filter_by(id=self.group_name).first()
         data = {
             'id': self.id,
-            'username': self.username,
-            'group_name': self.group_name,
+            'username_id': self.username,
+            'group_name': group_object.group_name,
             'time_stamp': self.timestamp.isoformat() + 'Z',
         }
         return data
