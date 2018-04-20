@@ -203,7 +203,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     def get_token(self, expires_in=3600):
         """Generate and return a token for user auth."""
-        now = datetime.utcnow().replace(tzinfo=None)
+        now = udatetime.utcnow().replace(tzinfo=None)
         if self.token and self.token_expiration > now - timedelta(seconds=60):
             return self.token
         self.token = base64.b64encode(os.urandom(64)).decode('utf-8')
@@ -219,7 +219,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
     @staticmethod
     def check_token(token):
         """Check a token against user token."""
-        now = datetime.utcnow().replace(tzinfo=None)
+        now = udatetime.utcnow().replace(tzinfo=None)
         user = User.query.filter_by(token=token).first()
         if user is None or user.token_expiration < now:
             return None
