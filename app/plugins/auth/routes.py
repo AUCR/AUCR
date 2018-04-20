@@ -61,7 +61,8 @@ def edit_profile():
 @login_required
 def messages():
     """Return user message flask app blueprint route."""
-    current_user.last_message_read_time = udatetime.utcnow()
+    current_user.last_message_read_time = \
+        udatetime.utcnow().replace(tzinfo=None)
     current_user.add_notification('unread_message_count', 0)
     db.session.commit()
     page = request.args.get('page', 1, type=int)
