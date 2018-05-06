@@ -1,3 +1,4 @@
+PyYAML
 alembic
 asn1crypto
 Babel
@@ -35,7 +36,6 @@ python-dateutil
 python-dotenv
 python-editor
 pytz
-PyYAML
 redis
 requests
 rq
@@ -54,3 +54,6 @@ google-api-python-client
 PyMySQL
 yamlinfo
 udatetime
+greenlet
+flask-socketio
+eventlet

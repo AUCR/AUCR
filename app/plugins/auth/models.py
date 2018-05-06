@@ -203,23 +203,25 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     def get_token(self, expires_in=3600):
         """Generate and return a token for user auth."""
-        now = udatetime.utcnow()
-        if self.token and self.token_expiration > udatetime.to_string(now - timedelta(seconds=60)):
+        now = udatetime.utcnow().replace(tzinfo=None)
+        if self.token and self.token_expiration > now - timedelta(seconds=60):
             return self.token
         self.token = base64.b64encode(os.urandom(64)).decode('utf-8')
-        self.token_expiration = udatetime.to_string(now - timedelta(seconds=expires_in))
+        self.token_expiration = now + timedelta(seconds=expires_in)
         db.session.add(self)
         return self.token
 
     def revoke_token(self):
         """Check and expire user token if expiration time is True."""
-        self.token_expiration = udatetime.utcnow() - timedelta(seconds=1)
+        self.token_expiration = \
+            udatetime.utcnow().replace(tzinfo=None) - timedelta(seconds=1)
 
     @staticmethod
     def check_token(token):
         """Check a token against user token."""
+        now = udatetime.utcnow().replace(tzinfo=None)
         user = User.query.filter_by(token=token).first()
-        if user is None or user.token_expiration < udatetime.utcnow():
+        if user is None or user.token_expiration < now:
             return None
         return user
 
@@ -248,10 +250,11 @@ class Group(db.Model):
 
     def to_dict(self):
         """Return dictionary object type for Group database Table API calls."""
+        group_object = Groups.query.filter_by(id=self.group_name).first()
         data = {
             'id': self.id,
-            'username': self.username,
-            'group_name': self.group_name,
+            'username_id': self.username,
+            'group_name': group_object.group_name,
             'time_stamp': self.timestamp.isoformat() + 'Z',
         }
         return data
@@ -396,5 +399,3 @@ class Award(db.Model):
     def __repr__(self):
         """Return string representation of the Award Object."""
         return '<Award {}>'.format(self.award_name)
-
-

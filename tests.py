@@ -27,6 +27,7 @@ def test_auth():
 class TestConfig(Config):
     """Unittests default config."""
 
+    DEBUG = True
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
     ELASTICSEARCH_URL = None
@@ -92,7 +93,7 @@ class UserModelCase(unittest.TestCase):
         db.session.commit()
         with app.test_client() as test_error_code:
             test_auth_groups = test_error_code.get('test')
-            self.assertEqual(test_auth_groups.data, b'403')
+            self.assertEqual(test_auth_groups.data, b'{\n  "error": "Unknown error"\n}\n')
 
     def test_user_reset_password(self):
         """Test AUCR auth plugin reset password."""

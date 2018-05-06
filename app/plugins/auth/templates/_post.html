@@ -13,8 +13,7 @@
                     </a>
                 </span>
             {% endset %}
-            {{ _('%(username)s said %(when)s',
-                username=user_link, when=moment(post.timestamp).fromNow()) }}
+            {{ _('%(username)s said %(when)s', username=user_link, when=moment(post.timestamp).fromNow()) }}
             <br>
             <span id="post{{ post.id }}">{{ post.body }}</span>
             {% if post.language and post.language != g.locale %}
