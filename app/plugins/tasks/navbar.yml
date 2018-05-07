@@ -1,2 +1,6 @@
 user:
-  'Tasks': 'tasks.tasks'
+  'Tasks': 'tasks'
+
+admin:
+  'Cases': 'case.cases'
+  'Case Creation': 'case.create'
