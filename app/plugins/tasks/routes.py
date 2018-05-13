@@ -4,7 +4,7 @@ from flask import Blueprint, render_template
 from flask_login import login_required
 # If you want the model to create the a table for the database at run time, import it here in the init
 from app.plugins.tasks.models import TasksPlugins
-from app.plugins.auth.utils import get_groups
+from app.plugins.auth.utils import get_group_permission_navbar
 
 tasks_page = Blueprint('tasks', __name__, template_folder='templates')
 
@@ -14,6 +14,5 @@ tasks_page = Blueprint('tasks', __name__, template_folder='templates')
 def tasks():
     """Return AUCR task plugin flask app tasks blueprint."""
     task_info = TasksPlugins.query.all()
-    current_user_groups = get_groups()
     return render_template('tasks.html', title='Tasks', task_info=task_info,
-                           render_current_user_groups=current_user_groups)
+                           current_user_navbar=get_group_permission_navbar())

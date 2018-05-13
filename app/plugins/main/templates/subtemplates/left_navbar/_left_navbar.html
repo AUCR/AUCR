@@ -3,15 +3,12 @@
         {% include "links/_nonuser.html" %}
     {% else %}
         {# subtemplate navbar containing pages available to all authenticated users #}
-        {% include "links/_user.html" %}
-        {% if render_current_user_groups %}
+        {% if current_user_navbar %}
             {# if the user belongs to a group then loop and get the specialty subtemplates for those groups
             TODO: remove hardcoded "admin" and just compare group to subtemplate #}
-            {% for item in render_current_user_groups %}
-                {% if "admin" in item%}
-                    {# subtemplate navbar containing pages available to all authenticated admin users #}
-                    {% include "links/admin/_admin.html" %}
-                {% endif %}
+            {% for item in current_user_navbar %}
+                {# subtemplate navbar containing pages available to all authenticated admin users #}
+                {% include item %}
             {% endfor %}
         {% endif %}
     {% endif %}

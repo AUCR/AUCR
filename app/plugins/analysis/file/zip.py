@@ -29,5 +29,5 @@ def compress_zip_file_map(file_object, file_path):
 
 
 def encrypt_zip_file(password, zip_file, directory_to_encrypt):
-    """subprocess call to encrypt zip file."""
+    """Subprocess call to encrypt zip file."""
     subprocess.call(['7z', 'a', str("-p" + password), '-y', zip_file] + directory_to_encrypt)

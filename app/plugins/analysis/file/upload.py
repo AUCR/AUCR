@@ -1,6 +1,7 @@
 """AUCR main analysis plugin api features."""
 # coding=utf-8
 import os
+from flask import current_app
 from flask_login import current_user
 from app import db
 from app.plugins.analysis.models import FileUpload
@@ -14,3 +15,8 @@ def create_upload_file(file, upload_folder) -> str:
     db.session.add(uploaded_file)
     db.session.commit()
     return file_hash
+
+
+def allowed_file(filename):
+    """Return filename if allowed"""
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']

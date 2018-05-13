@@ -12,7 +12,7 @@ from app import db
 from app.plugins.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, \
      CreateGroupForm, RemoveUserFromGroup, MessageForm, EditProfileForm
 from app.plugins.auth.email import send_password_reset_email
-from app.plugins.auth.utils import check_group
+from app.plugins.auth.utils import check_group, get_group_permission_navbar
 from app.plugins.auth.models import Group, Message, User, Notification, Post, Groups
 from app.plugins.errors.handlers import render_error_page_template
 
@@ -25,7 +25,8 @@ def user(username):
     """User function returns the username url path."""
     username = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
-    return render_template('user.html', user=username, page=page)
+    return render_template('user.html', user=username, page=page,
+                           current_user_navbar=get_group_permission_navbar())
 
 
 @auth_page.route('/edit_profile', methods=['GET', 'POST'])
@@ -54,7 +55,8 @@ def edit_profile():
                 form.otp_token.data = current_user.otp_token
         else:
             form.otp_token_checkbox = current_user.otp_token_checkbox
-    return render_template('edit_profile.html', title=_('Edit Profile'), form=form)
+    return render_template('edit_profile.html', title=_('Edit Profile'), form=form,
+                           render_current_user_groups_nav=get_group_permission_navbar())
 
 
 @auth_page.route('/messages')
@@ -70,7 +72,8 @@ def messages():
                page, current_app.config['POSTS_PER_PAGE'], False)
     next_url = url_for('auth.messages', page=messages_list.next_num) if messages_list.has_next else None
     prev_url = url_for('auth.messages', page=messages_list.prev_num) if messages_list.has_prev else None
-    return render_template('messages.html', messages=messages_list.items, next_url=next_url, prev_url=prev_url)
+    return render_template('messages.html', messages=messages_list.items, next_url=next_url, prev_url=prev_url,
+                           current_user_navbar=get_group_permission_navbar())
 
 
 @auth_page.route('/send_message/<recipient>', methods=['GET', 'POST'])
@@ -86,7 +89,8 @@ def send_message(recipient):
         db.session.commit()
         flash(_('Your message has been sent.'))
         return redirect(url_for('auth.user', username=recipient))
-    return render_template('send_message.html', title=_('Send Message'), form=form, recipient=recipient)
+    return render_template('send_message.html', title=_('Send Message'), form=form, recipient=recipient,
+                           current_user_navbar=get_group_permission_navbar())
 
 
 @auth_page.route('/notifications')
@@ -129,7 +133,8 @@ def reset_password_request():
             send_password_reset_email(user_name)
         flash(_('If that is a valid email the instructions have been sent to reset your password'))
         return redirect(url_for('auth.login'))
-    return render_template('reset_password_request.html', title=_('Reset Password'), form=form)
+    return render_template('reset_password_request.html', title=_('Reset Password'), form=form,
+                           current_user_navbar=get_group_permission_navbar())
 
 
 @auth_page.route('/reset_password/<token>', methods=['GET', 'POST'])
@@ -146,7 +151,7 @@ def reset_password(token):
         db.session.commit()
         flash(_('Your password has been reset.'))
         return redirect(url_for('auth.login'))
-    return render_template('reset_password.html', form=form)
+    return render_template('reset_password.html', form=form, current_user_navbar=get_group_permission_navbar())
 
 
 @auth_page.route('/groups', methods=['GET', 'POST'])
@@ -156,7 +161,8 @@ def groups():
     if check_group("1") is True:
         group_info = Group.query.order_by(Group.group_name).all()
         form_remove_user_from_group = RemoveUserFromGroup
-        return render_template('groups.html', group_info=group_info, form=form_remove_user_from_group)
+        return render_template('groups.html', group_info=group_info, form=form_remove_user_from_group,
+                               current_user_navbar=get_group_permission_navbar())
     else:
         return render_error_page_template(403)
 
@@ -178,7 +184,7 @@ def create_group():
             group_create_message = str('The group ' + str(group_name.group_name) + ' has been created!')
             flash(_(group_create_message))
             return redirect(url_for('auth.groups'))
-        return render_template('create_group.html', form=form)
+        return render_template('create_group.html', form=form, current_user_navbar=get_group_permission_navbar())
     else:
         return render_error_page_template(403)
 
@@ -196,7 +202,8 @@ def remove_user_from_group():
                                        'has been removed from ' + str(form.group_name.data) + "!")
             flash(_(group_create_message))
             return redirect(url_for('auth.groups'))
-        return render_template('remove_user_from_group.html', form=form)
+        return render_template('remove_user_from_group.html', form=form,
+                               current_user_navbar=get_group_permission_navbar())
     else:
         return render_error_page_template(403)
 
@@ -293,10 +300,11 @@ def search():
         if total > page * current_app.config['POSTS_PER_PAGE'] else None
     prev_url = url_for('search', q=g.search_form.q.data, page=page - 1) if page > 1 else None
     return render_template('search.html', title=_('Search'), messages=search_messages, next_url=next_url,
-                           prev_url=prev_url, posts=posts)
+                           prev_url=prev_url, posts=posts, current_user_navbar=get_group_permission_navbar())
 
 
 @auth_page.route('/leaderboard', methods=['GET'])
 def leaderboard():
     """Return the leaderboard AUCR page."""
-    return render_template('leaderboard.html', title=_('Leaderboard'))
+    return render_template('leaderboard.html', title=_('Leaderboard'),
+                           current_user_navbar=get_group_permission_navbar())

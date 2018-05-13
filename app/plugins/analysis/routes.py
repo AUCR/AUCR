@@ -7,13 +7,9 @@ from werkzeug.utils import secure_filename
 # If you want the model to create the a table for the database at run time, import it here in the init
 from app.plugins.analysis.file.upload import create_upload_file
 from app.plugins.analysis.models import AnalysisPlugins
+from app.plugins.analysis.file.upload import allowed_file
 
 analysis_page = Blueprint('analysis', __name__, template_folder='templates')
-
-
-def allowed_file(filename):
-    """Return filename if allowed"""
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
 
 
 @analysis_page.route('', methods=['GET'])

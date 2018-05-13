@@ -27,3 +27,13 @@ def check_group(group_test):
                     return True
         else:
             return False
+
+
+def get_group_permission_navbar():
+    """Return group nav list from database."""
+    user_groups_ids["items"] = Group.query.filter_by(username=current_user.id).all()
+    user_groups_links = []
+    for items in user_groups_ids["items"]:
+        group_object = Groups.query.filter_by(id=items.id).first()
+        user_groups_links.append(str("subtemplates/left_navbar/links/_" + group_object.group_name + ".html"))
+    return user_groups_links
