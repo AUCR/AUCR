@@ -1,5 +1,3 @@
-basic:
-  'Leaderboard': 'auth.leaderboard'
 nonuser:
   'Login': 'auth.login'
 admin:

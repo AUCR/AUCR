@@ -1,2 +1,3 @@
 user:
   'Reports': 'reports.reports'
+  'Leaderboard': 'reports.get_leaderboard'

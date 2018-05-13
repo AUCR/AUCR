@@ -115,6 +115,9 @@ def register():
         user_name.set_password(form.password.data)
         db.session.add(user_name)
         db.session.commit()
+        user_group = Group.__call__(group_name=2, username=user_name.id)
+        db.session.add(user_group)
+        db.session.commit()
         session['username'] = user_name.username
         flash(_('Congratulations, you are now a registered user!'))
         return redirect(url_for('auth.login'))
@@ -302,9 +305,3 @@ def search():
     return render_template('search.html', title=_('Search'), messages=search_messages, next_url=next_url,
                            prev_url=prev_url, posts=posts, current_user_navbar=get_group_permission_navbar())
 
-
-@auth_page.route('/leaderboard', methods=['GET'])
-def leaderboard():
-    """Return the leaderboard AUCR page."""
-    return render_template('leaderboard.html', title=_('Leaderboard'),
-                           current_user_navbar=get_group_permission_navbar())

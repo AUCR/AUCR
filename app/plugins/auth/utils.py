@@ -34,6 +34,6 @@ def get_group_permission_navbar():
     user_groups_ids["items"] = Group.query.filter_by(username=current_user.id).all()
     user_groups_links = []
     for items in user_groups_ids["items"]:
-        group_object = Groups.query.filter_by(id=items.id).first()
+        group_object = Groups.query.filter_by(id=items.group_name).first()
         user_groups_links.append(str("subtemplates/left_navbar/links/_" + group_object.group_name + ".html"))
     return user_groups_links
