@@ -1,4 +1,2 @@
-nonuser:
-  'Login': 'auth.login'
-admin:
-  'Groups': 'auth.groups'
+tasks:
+  admin: {'Create Group': 'auth.create_group'}

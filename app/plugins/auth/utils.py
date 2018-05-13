@@ -1,8 +1,10 @@
 """AUCR auth plugin call utility library."""
 # coding=utf-8
+import glob
 from flask import session
 from flask_login import current_user
 from app.plugins.auth.models import Group, Groups
+from yaml_info.yamlinfo import YamlInfo
 
 user_groups_ids = {}
 
@@ -32,8 +34,16 @@ def check_group(group_test):
 def get_group_permission_navbar():
     """Return group nav list from database."""
     user_groups_ids["items"] = Group.query.filter_by(username=current_user.id).all()
-    user_groups_links = []
+    user_groups_links = {}
     for items in user_groups_ids["items"]:
         group_object = Groups.query.filter_by(id=items.group_name).first()
-        user_groups_links.append(str("subtemplates/left_navbar/links/_" + group_object.group_name + ".html"))
+        for filename in glob.iglob('app/plugins/**/navbar.yml', recursive=True):
+            menu_links = YamlInfo(filename, "none", "none")
+            run = menu_links.get()
+            try:
+                if run["tasks"][group_object.group_name]:
+                    for items in run["tasks"][group_object.group_name]:
+                        user_groups_links["tasks"] = run["tasks"][group_object.group_name]
+            except:
+                pass
     return user_groups_links

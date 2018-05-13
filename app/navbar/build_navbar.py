@@ -1,6 +1,7 @@
 # coding=utf-8
 import glob
 import yaml
+
 from string import Template
 
 
@@ -24,19 +25,32 @@ class BuildNavBar(object):
 
     @staticmethod
     def write_links(dict_to_write):
-        """Write out the links to their respective files"""
+        """Write link out to file."""
         for file_to_write, links_to_write in dict_to_write.items():
-            filename = 'app/plugins/main/templates/subtemplates/left_navbar/links/_{}.html'.format(file_to_write)
-            with open(filename, 'w') as output_file:
-                for links in links_to_write:
-                    output_file.writelines(links + "\n")
+                filename = 'app/plugins/main/templates/subtemplates/left_navbar/links/_{}.html'.format(file_to_write)
+                with open(filename, 'w') as output_file:
+                    for links in links_to_write:
+                        if "tasks" in links:
+                            if str(file_to_write) == "user":
+                                output_file.writelines(links + "\n")
+                        else:
+                            if str(file_to_write) != "tasks":
+                                output_file.writelines(links + "\n")
 
     def create_links(self):
         """Use YAML dictionary to create links and send to write_links method for final output"""
         link_template = Template(
             '<a class="mdl-navigation__link" href="{{ url_for(\'$link_view\') }}">{{ _(\'$link_text\') }}</a>')
+        tasks_template = Template(
+            '<li class="mdl-menu__item"><a class="mdl-navigation__link" href="{{ url_for(\'$link_view\') }}">{{ _(\'$link_text\') }}</a></li>')
         for list_to_build, link_attributes in self.yaml_dict.items():
             temp_list = []
             for link_text, link_view in link_attributes.items():
                 temp_list.append(link_template.substitute(link_view=link_view, link_text=link_text))
             self.write_links({list_to_build: temp_list})
+        tasks_list = self.yaml_dict["tasks"]
+        #for list_to_build, link_attributes in tasks_list.items():
+            #temp_list = []
+            #for link_text, link_view in link_attributes.items():
+            #    temp_list.append(tasks_template.substitute(link_view=link_view, link_text=link_text))
+            #self.write_links({list_to_build: temp_list})
