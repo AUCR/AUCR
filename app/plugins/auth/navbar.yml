@@ -1,2 +1,9 @@
 tasks:
-  admin: {'Create Group': 'auth.create_group'}
+  admin: [
+    CreateGroup: 'auth.create_group'
+    ]
+
+reports:
+  admin: [
+    Group: 'auth.groups'
+    ]

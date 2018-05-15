@@ -15,6 +15,30 @@
             {% endfor %}
             </ul>
         {% endif %}
+        {% if current_user_navbar %}
+            <a id="menu-analysis" class="mdl-navigation__link">{{ _('Analysis') }}
+                <i class="material-icons">keyboard_arrow_right</i>
+            </a>
+            <ul class="mdl-menu mdl-js-menu" for="menu-analysis">
+            {% for item in current_user_navbar.analysis %}
+                {% for item2 in item %}
+                <li class="mdl-menu__item"><a class="mdl-navigation__link" href="{{ url_for(item[item2]) }}">{{ item2 }}</a></li>
+                {% endfor %}
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% if current_user_navbar %}
+            <a id="menu-reports" class="mdl-navigation__link">{{ _('Reports') }}
+                <i class="material-icons">keyboard_arrow_right</i>
+            </a>
+            <ul class="mdl-menu mdl-js-menu" for="menu-reports">
+            {% for item in current_user_navbar.reports %}
+                {% for item2 in item %}
+                <li class="mdl-menu__item"><a class="mdl-navigation__link" href="{{ url_for(item[item2]) }}">{{ item2 }}</a></li>
+                {% endfor %}
+            {% endfor %}
+            </ul>
+        {% endif %}
     {% endif %}
     {# All visitors and users of the site will be able to see these pages #}
 </nav>
