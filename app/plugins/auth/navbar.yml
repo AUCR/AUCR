@@ -1,6 +1,9 @@
-basic:
-  'Leaderboard': 'auth.leaderboard'
-nonuser:
-  'Login': 'auth.login'
-admin:
-  'Groups': 'auth.groups'
+tasks:
+  admin: [
+    CreateGroup: 'auth.create_group'
+    ]
+
+reports:
+  admin: [
+    Group: 'auth.groups'
+    ]

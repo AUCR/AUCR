@@ -3,18 +3,42 @@
         {% include "links/_nonuser.html" %}
     {% else %}
         {# subtemplate navbar containing pages available to all authenticated users #}
-        {% include "links/_user.html" %}
-        {% if render_current_user_groups %}
-            {# if the user belongs to a group then loop and get the specialty subtemplates for those groups
-            TODO: remove hardcoded "admin" and just compare group to subtemplate #}
-            {% for item in render_current_user_groups %}
-                {% if "admin" in item%}
-                    {# subtemplate navbar containing pages available to all authenticated admin users #}
-                    {% include "links/admin/_admin.html" %}
-                {% endif %}
+        {% if current_user_navbar %}
+            <a id="menu-tasks" class="mdl-navigation__link">{{ _('Tasks') }}
+                <i class="material-icons">keyboard_arrow_right</i>
+            </a>
+            <ul class="mdl-menu mdl-js-menu" for="menu-tasks">
+            {% for item in current_user_navbar.tasks %}
+                {% for item2 in item %}
+                <li class="mdl-menu__item"><a class="mdl-navigation__link" href="{{ url_for(item[item2]) }}">{{ item2 }}</a></li>
+                {% endfor %}
             {% endfor %}
+            </ul>
+        {% endif %}
+        {% if current_user_navbar %}
+            <a id="menu-analysis" class="mdl-navigation__link">{{ _('Analysis') }}
+                <i class="material-icons">keyboard_arrow_right</i>
+            </a>
+            <ul class="mdl-menu mdl-js-menu" for="menu-analysis">
+            {% for item in current_user_navbar.analysis %}
+                {% for item2 in item %}
+                <li class="mdl-menu__item"><a class="mdl-navigation__link" href="{{ url_for(item[item2]) }}">{{ item2 }}</a></li>
+                {% endfor %}
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% if current_user_navbar %}
+            <a id="menu-reports" class="mdl-navigation__link">{{ _('Reports') }}
+                <i class="material-icons">keyboard_arrow_right</i>
+            </a>
+            <ul class="mdl-menu mdl-js-menu" for="menu-reports">
+            {% for item in current_user_navbar.reports %}
+                {% for item2 in item %}
+                <li class="mdl-menu__item"><a class="mdl-navigation__link" href="{{ url_for(item[item2]) }}">{{ item2 }}</a></li>
+                {% endfor %}
+            {% endfor %}
+            </ul>
         {% endif %}
     {% endif %}
     {# All visitors and users of the site will be able to see these pages #}
-    {% include "links/_basic.html" %}
 </nav>

@@ -1,7 +1,7 @@
 """AUCR analysis plugin database table library models."""
 # coding=utf-8
-from app import db
 import udatetime
+from app import db
 
 
 class AnalysisPlugins(db.Model):
@@ -53,7 +53,7 @@ class FileUpload(db.Model):
         return '<FileUpload {}>'.format(self.file_hash)
 
     def to_dict(self):
-        """Return dictionary object type for API File Upload calls."""
+        """Return dictionary object type for API File Upload call."""
         data = {
             'id': self.id,
             'file_hash': self.file_hash,

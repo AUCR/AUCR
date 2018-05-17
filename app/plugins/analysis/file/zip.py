@@ -1,6 +1,7 @@
 """Zip file parsing"""
 # coding=utf-8
 import hashlib
+import subprocess
 from zipfile import ZipFile
 
 
@@ -18,10 +19,15 @@ def compress_zip_file_map(file_object, file_path):
     file_md5_hash = hashlib.md5()
     file_map = file_object.read()
     file_md5_hash.update(file_map)
-    file_hash = file_md5_hash.hexdigest()
+    file_hash: object = file_md5_hash.hexdigest()
     full_file_path_and_name = str(file_path + "/" + file_hash + ".zip")
     with ZipFile(full_file_path_and_name, 'w') as compressed_zip_file:
         compressed_zip_file.writestr(file_hash, file_map)
         compressed_zip_file.close()
 
     return file_hash
+
+
+def encrypt_zip_file(password, zip_file, directory_to_encrypt):
+    """Subprocess call to encrypt zip file."""
+    subprocess.call(['7z', 'a', str("-p" + password), '-y', zip_file] + directory_to_encrypt)
