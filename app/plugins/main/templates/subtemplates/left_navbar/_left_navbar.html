@@ -1,38 +1,38 @@
 <nav class="mdl-navigation">
     {% if current_user.is_anonymous %}
-        {% include "links/_nonuser.html" %}
+        <a class="mdl-navigation__link" href="{{ url_for('auth.login') }}">{{ _('Login') }}</a>"
     {% else %}
         {# subtemplate navbar containing pages available to all authenticated users #}
-        {% if current_user_navbar %}
+        {% if session.navbar %}
             <a id="menu-tasks" class="mdl-navigation__link">{{ _('Tasks') }}
                 <i class="material-icons">keyboard_arrow_right</i>
             </a>
             <ul class="mdl-menu mdl-js-menu" for="menu-tasks">
-            {% for item in current_user_navbar.tasks %}
+            {% for item in session.navbar.tasks %}
                 {% for item2 in item %}
                 <li class="mdl-menu__item"><a class="mdl-navigation__link" href="{{ url_for(item[item2]) }}">{{ item2 }}</a></li>
                 {% endfor %}
             {% endfor %}
             </ul>
         {% endif %}
-        {% if current_user_navbar %}
+        {% if session.navbar %}
             <a id="menu-analysis" class="mdl-navigation__link">{{ _('Analysis') }}
                 <i class="material-icons">keyboard_arrow_right</i>
             </a>
             <ul class="mdl-menu mdl-js-menu" for="menu-analysis">
-            {% for item in current_user_navbar.analysis %}
+            {% for item in session.navbar.analysis %}
                 {% for item2 in item %}
                 <li class="mdl-menu__item"><a class="mdl-navigation__link" href="{{ url_for(item[item2]) }}">{{ item2 }}</a></li>
                 {% endfor %}
             {% endfor %}
             </ul>
         {% endif %}
-        {% if current_user_navbar %}
+        {% if session.navbar %}
             <a id="menu-reports" class="mdl-navigation__link">{{ _('Reports') }}
                 <i class="material-icons">keyboard_arrow_right</i>
             </a>
             <ul class="mdl-menu mdl-js-menu" for="menu-reports">
-            {% for item in current_user_navbar.reports %}
+            {% for item in session.navbar.reports %}
                 {% for item2 in item %}
                 <li class="mdl-menu__item"><a class="mdl-navigation__link" href="{{ url_for(item[item2]) }}">{{ item2 }}</a></li>
                 {% endfor %}

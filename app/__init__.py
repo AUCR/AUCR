@@ -18,7 +18,6 @@ from flask_socketio import SocketIO
 from logging.handlers import SMTPHandler, RotatingFileHandler
 from yaml_info.yamlinfo import YamlInfo
 from app.plugins import init_task_plugins
-from app.navbar.build_navbar import BuildNavBar
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -32,7 +31,7 @@ mail = Mail()
 bootstrap = Bootstrap()
 moment = Moment()
 babel = Babel()
-build_navbar = BuildNavBar()
+
 socketio = SocketIO()
 
 
@@ -81,8 +80,6 @@ def create_app(config_class=Config):
     bootstrap.init_app(app)
     moment.init_app(app)
     babel.init_app(app)
-    build_navbar.get_yaml()
-    build_navbar.create_links()
     init_task_plugins(app)
     socketio.init_app(app)
     return app

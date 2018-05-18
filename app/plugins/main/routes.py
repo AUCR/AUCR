@@ -8,7 +8,7 @@ from flask_login import current_user, login_required
 from app import db
 from flask import Blueprint
 from app.plugins.reports.forms import SearchForm
-from app.plugins.auth.utils import get_group_permission_navbar
+
 
 main_template_page = Blueprint('main', __name__, static_folder='static', template_folder='templates')
 
@@ -31,7 +31,7 @@ def index():
     page = request.args.get('page', 1, type=int)
     try:
         return render_template('index.html', title=_('Home'), page=page,
-                               current_user_navbar=get_group_permission_navbar())
+                               )
     except AttributeError:
         logging.info("No groups found for this user")
         return render_template('index.html', title=_('Home'), page=page)
