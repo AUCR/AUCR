@@ -1,3 +1,2 @@
-user:
-  'Reports': 'reports.reports'
-  'Leaderboard': 'reports.get_leaderboard'
+reports:
+  user: [Leaderboard: 'reports.get_leaderboard']

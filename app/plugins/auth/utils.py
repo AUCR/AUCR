@@ -51,6 +51,7 @@ def get_group_permission_navbar():
     user_groups_links = {}
     tasks_list = []
     analysis_list = []
+    main_list = []
     reports_list = []
     for items in user_groups_ids["items"]:
         group_object = Groups.query.filter_by(id=items.group_name).first()
@@ -66,7 +67,11 @@ def get_group_permission_navbar():
             reports_result_list = generate_navbar_list_item("reports", run, group_object.group_name, reports_list)
             if reports_result_list:
                 reports_list = reports_result_list
+            main_result_list = generate_navbar_list_item("main", run, group_object.group_name, main_list)
+            if main_result_list:
+                main_list = main_result_list
     user_groups_links["tasks"] = tasks_list
     user_groups_links["reports"] = reports_list
     user_groups_links["analysis"] = analysis_list
+    user_groups_links["main"] = main_list
     return user_groups_links

@@ -39,6 +39,14 @@
             {% endfor %}
             </ul>
         {% endif %}
+        {# Main Navbar settings #}
+        {% if session.navbar %}
+            {% for item in session.navbar.main %}
+                {% for item2 in item %}
+                <a class="mdl-navigation__link" href="{{ url_for(item[item2]) }}">{{ item2 }}</a>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
     {% endif %}
     {# All visitors and users of the site will be able to see these pages #}
 </nav>

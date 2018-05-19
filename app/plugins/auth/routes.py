@@ -19,14 +19,22 @@ from app.plugins.errors.handlers import render_error_page_template
 auth_page = Blueprint('auth', __name__, template_folder='templates')
 
 
+@auth_page.route('/users')
+@login_required
+def users():
+    """User function returns the username url path."""
+    users_list = User.query.order_by(User.username).all()
+    page = request.args.get('page', 1, type=int)
+    return render_template('users.html', top_user=users_list, page=page)
+
+
 @auth_page.route('/user/<username>')
 @login_required
 def user(username):
     """User function returns the username url path."""
     username = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
-    return render_template('user.html', user=username, page=page,
-                           )
+    return render_template('user.html', user=username, page=page)
 
 
 @auth_page.route('/edit_profile', methods=['GET', 'POST'])
@@ -133,8 +141,7 @@ def reset_password_request():
             send_password_reset_email(user_name)
         flash(_('If that is a valid email the instructions have been sent to reset your password'))
         return redirect(url_for('auth.login'))
-    return render_template('reset_password_request.html', title=_('Reset Password'), form=form,
-                           )
+    return render_template('reset_password_request.html', title=_('Reset Password'), form=form)
 
 
 @auth_page.route('/reset_password/<token>', methods=['GET', 'POST'])
