@@ -19,7 +19,7 @@ access_log /var/log/aucr_access.log;
 error_log /var/log/aucr_error.log;
 location / {
 # forward application requests to the gunicorn server
-proxy_pass http://10.100.0.205:5000;
+proxy_pass http://aucr.io:5000;
 proxy_redirect off;
 proxy_set_header Host $host;
 proxy_set_header X-Real-IP $remote_addr;

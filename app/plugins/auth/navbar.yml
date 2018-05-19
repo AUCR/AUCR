@@ -4,6 +4,9 @@ tasks:
     ]
 
 reports:
+  user: [
+    Users: 'auth.users'
+    ]
   admin: [
     Group: 'auth.groups'
     ]
