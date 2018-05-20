@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="{{ url_for("main.static", filename="css/material.blue-indigo.min.css") }}">
     <link rel="stylesheet" href="{{ url_for("main.static", filename="css/main.css") }}">
+    <link rel="stylesheet" href="{{ url_for("main.static", filename="css/mdl-selectfield.min.css") }}">
 {% endblock %}
 
 {% block scripts %}
@@ -22,6 +23,7 @@
     {# Script block for static scripts #}
     <script src="{{ url_for("main.static", filename="js/material.min.js") }}"></script>
     <script src="{{ url_for("main.static", filename="js/main.js") }}"></script>
+    <script src="{{ url_for("main.static", filename="js/mdl-selectfield.min.js") }}"></script>
     {{ moment.include_moment() }}
     {{ moment.lang(g.locale) }}
     <script>
