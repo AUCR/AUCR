@@ -2,13 +2,16 @@
 """Default unittests to automate functional testing of AUCR code."""
 # !/usr/bin/env python
 import unittest
+import time
 from config import Config
+from flask_wtf import CSRFProtect
 from app import create_app, db
 from app.plugins.main import main_page
 from app.plugins.auth.models import User, Group, Groups
-from app.plugins.auth.utils import check_group
+from app.plugins.auth.utils import check_group, get_group_permission_navbar
 from app.plugins.auth.email import send_password_reset_email, send_async_email, send_email
-from flask_wtf import CSRFProtect
+from app.plugins.analysis.file.zip import encrypt_zip_file, decrypt_zip_file_map, compress_zip_file_map
+from app.plugins.analysis.file.upload import create_upload_file
 
 csrf = CSRFProtect()
 
@@ -32,6 +35,7 @@ class TestConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
     ELASTICSEARCH_URL = None
     LANGUAGES = ['en']
+    LOG_TO_STDOUT = 1
 
 
 class UserModelCase(unittest.TestCase):
@@ -116,6 +120,18 @@ information about how to avoid this problem.''')
         test_recipients = ["test1@test.com", "test2@test.com"]
         test_result = send_email("Test Subject", "test3@test.com", test_recipients, "Test Message", "Nothing")
         send_async_email(app, test_result)
+
+    def test_zip_encrypt(self):
+        app = self.app
+        encrypt_zip_file("infected", "test.zip", ["app/plugins/main/static/img/loading.gif"])
+        test_file = decrypt_zip_file_map("test.zip", "infected")
+        test_result = create_upload_file(test_file, "upload")
+        self.assertEqual("73e57937304d89f251e7e540a24b095a", test_result)
+
+    def test_navbar_builder(self):
+        test_navbar = get_group_permission_navbar()
+        test_value = test_navbar["tasks"][0]
+        self.assertTrue(test_value)
 
 
 if __name__ == '__main__':

@@ -47,7 +47,11 @@ def generate_navbar_list_item(item, navbar_dict, group_name, generated_navbar_li
 
 def get_group_permission_navbar():
     """Return group nav list from database."""
-    user_groups_ids["items"] = Group.query.filter_by(username=current_user.id).all()
+    if current_user:
+        current_user_id = current_user.id
+    else:
+        current_user_id = 1
+    user_groups_ids["items"] = Group.query.filter_by(username=current_user_id).all()
     user_groups_links = {}
     tasks_list = []
     analysis_list = []

@@ -5,7 +5,7 @@ import subprocess
 from zipfile import ZipFile
 
 
-def decrypt_zip_file_map(encrypted_zip, encrypted_file_password) -> bytes:
+def decrypt_zip_file_map(encrypted_zip, encrypted_file_password):
     """Return a decrypted zip file map bytes object."""
     encrypted_zip_file = ZipFile(encrypted_zip)
     for file in encrypted_zip_file.namelist():
@@ -17,7 +17,10 @@ def decrypt_zip_file_map(encrypted_zip, encrypted_file_password) -> bytes:
 def compress_zip_file_map(file_object, file_path):
     """Return md5 hash of a compressed file."""
     file_md5_hash = hashlib.md5()
-    file_map = file_object.read()
+    if type(file_object) is not bytes:
+        file_map = file_object.read()
+    else:
+        file_map = file_object
     file_md5_hash.update(file_map)
     file_hash: object = file_md5_hash.hexdigest()
     full_file_path_and_name = str(file_path + "/" + file_hash + ".zip")
