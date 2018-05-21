@@ -124,7 +124,7 @@ information about how to avoid this problem.''')
     def test_zip_encrypt(self):
         app = self.app
         encrypt_zip_file("infected", "test.zip", ["app/plugins/main/static/img/loading.gif"])
-        test_file = decrypt_zip_file_map("test.zip", "infected")
+        test_file = decrypt_zip_file_map("upload/test.zip", "infected")
         test_result = create_upload_file(test_file, "upload")
         self.assertEqual("73e57937304d89f251e7e540a24b095a", test_result)
 

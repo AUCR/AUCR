@@ -31,6 +31,15 @@ def compress_zip_file_map(file_object, file_path):
     return file_hash
 
 
-def encrypt_zip_file(password, zip_file, directory_to_encrypt):
+def get_file_hash(file_name):
+    file_md5_hash = hashlib.md5()
+    file_md5_hash.update(file_name.read())
+    file_hash: object = file_md5_hash.hexdigest()
+    with open(str(file_hash), 'wb') as read_file:
+        read_file.write(file_name.read())
+    return file_hash
+
+
+def encrypt_zip_file(password, zip_file, items_to_encrypt):
     """Subprocess call to encrypt zip file."""
-    subprocess.call(['7z', 'a', str("-p" + password), '-y', zip_file] + directory_to_encrypt)
+    subprocess.call(['7z', 'a', str("-p" + password), '-y', str("upload/" + zip_file)] + items_to_encrypt)

@@ -24,6 +24,7 @@ class Config(object):
     MS_TRANSLATOR_KEY = os.environ.get('MS_TRANSLATOR_KEY')
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
     FILE_FOLDER = os.environ.get('FILE_FOLDER') or os.path.join(basedir, 'upload')
+    OBJECT_STORAGE = os.environ.get('OBJECT_STORAGE') or None
     ALLOWED_EXTENSIONS = os.environ.get('ALLOWED_EXTENSIONS') or ['txt', 'pdf', 'png', 'jpg',
                                                                   'jpeg', 'gif', 'doc', 'docx', 'exe']
     REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
