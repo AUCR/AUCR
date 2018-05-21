@@ -6,8 +6,8 @@ from flask_login import login_required
 from werkzeug.utils import secure_filename
 # If you want the model to create the a table for the database at run time, import it here in the init
 from app.plugins.analysis.models import AnalysisPlugins
+from app.plugins.tasks.mq import index_mq_aucr_task
 from app.plugins.analysis.file.upload import allowed_file, create_upload_file
-from app.plugins.analysis.file.zip import get_file_hash
 from app.plugins.reports.storage.googlecloudstorage import upload_blob
 from multiprocessing import Process, Queue
 
@@ -23,9 +23,7 @@ def analysis():
 
 
 def upload_to_gcp_and_remove(file_hash):
-    file_name = str("upload/" + file_hash + ".zip")
-    upload_blob(current_app.config['FILE_FOLDER'], file_name, file_hash)
-    os.remove(file_name)
+    index_mq_aucr_task(rabbit_mq_server=current_app.config['RABBITMQ_SERVER'], task_name=file_hash, routing_key="file")
 
 
 @analysis_page.route('/upload_file', methods=['GET', 'POST'])

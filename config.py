@@ -29,3 +29,14 @@ class Config(object):
                                                                   'jpeg', 'gif', 'doc', 'docx', 'exe']
     REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
     POSTS_PER_PAGE = 25
+    RABBITMQ_SERVER = os.environ.get('RABBITMQ_SERVER') or 'localhost'
+    RABBITMQ_PORT = os.environ.get('RABBITMQ_PORT') or '5672'
+    RABBITMQ_USERNAME = os.environ.get('RABBITMQ_USERNAME') or 'guest'
+    RABBITMQ_PASSWORD = os.environ.get('RABBITMQ_USERNAME') or 'guest'
+    RABBITMQ_URL = "amqp://{username}:{password}@{host}:{port}".format(
+                    username=RABBITMQ_USERNAME,
+                    password=RABBITMQ_PASSWORD,
+                    host=RABBITMQ_SERVER,
+                    # rabbitmq_server
+                    port=RABBITMQ_PORT
+                    )
