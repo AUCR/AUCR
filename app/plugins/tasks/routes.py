@@ -14,5 +14,4 @@ tasks_page = Blueprint('tasks', __name__, template_folder='templates')
 def tasks():
     """Return AUCR task plugin flask app tasks blueprint."""
     task_info = TasksPlugins.query.all()
-    return render_template('tasks.html', title='Tasks', task_info=task_info,
-                           )
+    return render_template('tasks.html', title='Tasks', task_info=task_info)

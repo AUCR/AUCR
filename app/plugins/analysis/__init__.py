@@ -11,7 +11,7 @@ from app.plugins.analysis.file.upload import call_back
 
 
 def load(app):
-    """"Load function registers analysis plugin blueprint to flask."""
+    """"Load function registers analysis plugin blueprint to flask app."""
     tasks = "file"
     app.register_blueprint(analysis_page, url_prefix='/analysis')
     app.register_blueprint(api_page, url_prefix='/analysis')

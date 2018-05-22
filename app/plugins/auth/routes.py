@@ -120,7 +120,7 @@ def register():
         user_name.set_password(form.password.data)
         db.session.add(user_name)
         db.session.commit()
-        user_group = Group.__call__(group_name=2, username=user_name.id)
+        user_group = Group.__call__(group_name=2, username_id=user_name.id)
         db.session.add(user_group)
         db.session.commit()
         session['username'] = user_name.username
@@ -285,7 +285,8 @@ def login():
         session["groups"] = get_groups()
         flash('You are now logged in!')
         return redirect(url_for('main.index'))
-    return render_template('login.html', title=_('Sign In'), form=form)
+    page = request.args.get('page', 1, type=int)
+    return render_template('login.html', title=_('Sign In'), form=form, page=page)
 
 
 @auth_page.route('/logout')

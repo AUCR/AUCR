@@ -12,10 +12,10 @@ user_groups_ids = {}
 
 def get_groups():
     """Return group list from database."""
-    user_groups_ids["items"] = Group.query.filter_by(username=current_user.id).all()
+    user_groups_ids["items"] = Group.query.filter_by(username_id=current_user.id).all()
     user_groups = []
     for items in user_groups_ids["items"]:
-        group_object = Groups.query.filter_by(id=items.id).first()
+        group_object = Groups.query.filter_by(id=items.group_name).first()
         user_groups.append(group_object.group_name)
     return user_groups
 
@@ -23,7 +23,7 @@ def get_groups():
 def check_group(group_test):
     """Return a True or False group check."""
     if session is not None:
-        test_group_id = Group.query.filter_by(username=current_user.id).all()
+        test_group_id = Group.query.filter_by(username_id=current_user.id).all()
         test_group = Groups.query.filter_by(id=test_group_id.id).all()
         if test_group:
             for group_items in test_group:
@@ -51,7 +51,7 @@ def get_group_permission_navbar():
         current_user_id = current_user.id
     else:
         current_user_id = 1
-    user_groups_ids["items"] = Group.query.filter_by(username=current_user_id).all()
+    user_groups_ids["items"] = Group.query.filter_by(username_id=current_user_id).all()
     user_groups_links = {}
     tasks_list = []
     analysis_list = []

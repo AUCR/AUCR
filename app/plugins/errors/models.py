@@ -16,7 +16,7 @@ class Errors(db.Model):
 
     def __repr__(self):
         """AUCR HTTP Error return self."""
-        return '<Error {}>'.format(self.error_name)
+        return '<Errors {}>'.format(self.error_name)
 
 
 def insert_initial_error_values(*args, **kwargs):

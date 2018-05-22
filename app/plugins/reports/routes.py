@@ -16,16 +16,12 @@ search_page = Blueprint('search', __name__, template_folder='templates')
 @login_required
 def reports():
     """Return AUCR report plugin flask app report blueprint."""
-
     reports_info = ReportPlugins.query.all()
-    return render_template('reports.html', title='Reports', report_info=reports_info,
-                           )
+    return render_template('reports.html', title='Reports', report_info=reports_info)
 
 
 @reports_page.route('/leaderboard', methods=['GET'])
 @login_required
 def get_leaderboard():
     """Return the leaderboard AUCR page."""
-
-    return render_template('leaderboard.html', title=_('Leaderboard'),
-                           )
+    return render_template('leaderboard.html', title=_('Leaderboard'))

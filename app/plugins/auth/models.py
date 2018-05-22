@@ -100,7 +100,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
     last_seen = db.Column(db.DateTime, default=udatetime.utcnow)
     token = db.Column(db.String(120), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
-    groups = db.relationship('Group', foreign_keys='Group.username', backref='author', lazy='dynamic')
+    groups = db.relationship('Group', foreign_keys='Group.username_id', backref='author', lazy='dynamic')
     messages_sent = db.relationship('Message', foreign_keys='Message.sender_id', backref='author', lazy='dynamic')
     messages_received = db.relationship('Message', foreign_keys='Message.recipient_id',
                                         backref='recipient', lazy='dynamic')
@@ -241,7 +241,7 @@ class Group(db.Model):
     __tablename__ = 'group'
     id = db.Column(db.Integer, primary_key=True)
     group_name = db.Column(db.Integer, db.ForeignKey('groups.id'), index=True)
-    username = db.Column(db.Integer, db.ForeignKey('user.id'))
+    username_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
@@ -250,11 +250,11 @@ class Group(db.Model):
 
     def to_dict(self):
         """Return dictionary object type for Group database Table API calls."""
-        group_object = Groups.query.filter_by(id=self.group_name).first()
+        group_object = Groups.query.filter_by(id=self.id).first()
         data = {
             'id': self.id,
-            'username_id': self.username,
             'group_name': group_object.group_name,
+            'username_id': self.username_id,
             'time_stamp': self.timestamp.isoformat() + 'Z',
         }
         return data
@@ -276,7 +276,7 @@ class Groups(db.Model):
         """Return dictionary object type for Group table database API calls."""
         data = {
             'id': self.id,
-            'username': self.group_name,
+            'group_name': self.group_name,
             'last_seen': self.timestamp.isoformat() + 'Z',
             'about_me': self.about_me
         }
@@ -295,8 +295,8 @@ def insert_initial_user_values(*args, **kwargs):
         db.session.add(default_user_groups)
         db.session.commit()
         default_admin = User.__call__(username=items, password_hash=hashed_password, email=admin_data[items]["email"])
-        admin_group = Group.__call__(group_name=1, username=1)
-        user_group = Group.__call__(group_name=2, username=1)
+        admin_group = Group.__call__(group_name=1, username_id=1)
+        user_group = Group.__call__(group_name=2, username_id=1)
         db.session.add(admin_group)
         db.session.add(user_group)
         db.session.add(default_admin)
