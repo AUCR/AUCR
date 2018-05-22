@@ -284,6 +284,7 @@ def login():
         session["navbar"] = get_group_permission_navbar()
         session["groups"] = get_groups()
         flash('You are now logged in!')
+        page = request.args.get('page', 1, type=int)
         return redirect(url_for('main.index'))
     page = request.args.get('page', 1, type=int)
     return render_template('login.html', title=_('Sign In'), form=form, page=page)

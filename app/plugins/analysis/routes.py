@@ -26,6 +26,16 @@ def upload_to_gcp_and_remove(file_hash):
     index_mq_aucr_task(rabbit_mq_server=current_app.config['RABBITMQ_SERVER'], task_name=file_hash, routing_key="file")
 
 
+def get_upload_file_hash(file):
+    if current_app.config['OBJECT_STORAGE']:
+        file_hash = str(create_upload_file(file, os.path.join("upload/")))
+        p = Process(target=upload_to_gcp_and_remove, args=(file_hash,))
+        p.start()
+    else:
+        file_hash = create_upload_file(file, os.path.join(current_app.config['FILE_FOLDER']))
+    return file_hash
+
+
 @analysis_page.route('/upload_file', methods=['GET', 'POST'])
 @login_required
 def upload_file():
@@ -43,11 +53,6 @@ def upload_file():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            if current_app.config['OBJECT_STORAGE']:
-                file_hash = str(create_upload_file(file, os.path.join("upload/")))
-                p = Process(target=upload_to_gcp_and_remove, args=(file_hash,))
-                p.start()
-            else:
-                file_hash = create_upload_file(file, os.path.join(current_app.config['FILE_FOLDER']))
+            file_hash = get_upload_file_hash(file)
             flash("The " + str(filename) + " md5:" + file_hash + " has been uploaded!")
     return render_template('upload_file.html', title='Upload File')

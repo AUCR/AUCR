@@ -92,7 +92,7 @@ class UserModelCase(unittest.TestCase):
         db.session.add(create_group_name)
         db.session.commit()
         user_id = User.query.filter_by(username=self.test_user.username).first()
-        group_name = Group(group_name=create_group_name.id, username=user_id.id)
+        group_name = Group(group_name=create_group_name.id, username_id=user_id.id)
         db.session.add(group_name)
         db.session.commit()
         with app.test_client() as test_error_code:
