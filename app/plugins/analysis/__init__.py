@@ -1,4 +1,4 @@
-"""Analysis AUCR import __init__ that creates the analysis module framework."""
+"""Analysis AUCR import __init__ that creates analysis plugin module framework."""
 # coding=utf-8
 import os
 from app.plugins.analysis.routes import analysis_page
@@ -20,5 +20,5 @@ def load(app):
     rabbitmq_username = os.environ.get('RABBITMQ_USERNAME')
     rabbitmq_password = os.environ.get('RABBITMQ_PASSWORD')
     if test == "gcp":
-        p = Process(target=get_a_task_mq, args=(tasks, call_back, rabbitmq_server, rabbitmq_username,rabbitmq_password))
+        p = Process(target=get_a_task_mq, args=(tasks, call_back, rabbitmq_server, rabbitmq_username, rabbitmq_password))
         p.start()
