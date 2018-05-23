@@ -1,18 +1,18 @@
 """AUCR main analysis plugin api features."""
 # coding=utf-8
 import os
-from logging import info
 from flask import current_app
 from flask_login import current_user
 from app import db
 from app.plugins.analysis.models import FileUpload
 from app.plugins.analysis.file.zip import compress_zip_file_map
 from app.plugins.reports.storage.googlecloudstorage import upload_blob
+from app.plugins.tasks.mq import index_mq_aucr_report
 
 
 def call_back(ch, method, properties, file_hash):
     file_hash = file_hash.decode('utf8')
-    info(" [x] Received %r" % file_hash)
+    index_mq_aucr_report(("Processing file_hash " + file_hash), "localhost")
     file_name = str("upload/" + file_hash + ".zip")
     upload_blob("aucr", file_name, file_hash)
     os.remove(file_name)

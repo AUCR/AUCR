@@ -261,31 +261,31 @@ def login():
         # if user is logged in we get out of here
         return redirect(url_for('main.index'))
     form = LoginForm()
-
-    if form.validate_on_submit():
-        user_name = User.query.filter_by(username=form.username.data).first()
-        if user_name is not None and user_name.otp_secret is not None:
-            otp_auth_check = user_name.verify_totp(form.token.data)
-        elif user_name is None:
-            otp_auth_check = False
-        else:
-            otp_auth_check = True
-        if user_name is None or not user_name.check_password(form.password.data) or otp_auth_check:
-            if otp_auth_check:
-                user_name.verify_totp(form.token.data)
+    if request.method == "POST":
+        if form.validate_on_submit():
+            user_name = User.query.filter_by(username=form.username.data).first()
+            if user_name is not None and user_name.otp_secret is not None:
+                otp_auth_check = user_name.verify_totp(form.token.data)
+            elif user_name is None:
+                otp_auth_check = False
             else:
-                flash('Invalid username, password or token.')
-                return redirect(url_for('auth.login'))
+                otp_auth_check = True
+            if user_name is None or not user_name.check_password(form.password.data) or otp_auth_check:
+                if otp_auth_check:
+                    user_name.verify_totp(form.token.data)
+                else:
+                    flash('Invalid username, password or token.')
+                    return redirect(url_for('auth.login'))
 
-        login_user(user_name, remember=form.remember_me.data)
-        login_user(user_name)
-        # log user in
-        login_user(user_name)
-        session["navbar"] = get_group_permission_navbar()
-        session["groups"] = get_groups()
-        flash('You are now logged in!')
-        page = request.args.get('page', 1, type=int)
-        return redirect(url_for('main.index'))
+            login_user(user_name, remember=form.remember_me.data)
+            login_user(user_name)
+            # log user in
+            login_user(user_name)
+            session["navbar"] = get_group_permission_navbar()
+            session["groups"] = get_groups()
+            flash('You are now logged in!')
+            page = request.args.get('page', 1, type=int)
+            return redirect(url_for('main.index'))
     page = request.args.get('page', 1, type=int)
     return render_template('login.html', title=_('Sign In'), form=form, page=page)
 

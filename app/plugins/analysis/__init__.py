@@ -15,5 +15,10 @@ def load(app):
     tasks = "file"
     app.register_blueprint(analysis_page, url_prefix='/analysis')
     app.register_blueprint(api_page, url_prefix='/analysis')
-    p = Process(target=get_a_task_mq, args=(tasks, call_back, os.environ.get('RABBITMQ_SERVER'),))
-    p.start()
+    test = os.environ.get('OBJECT_STORAGE')
+    rabbitmq_server = os.environ.get('RABBITMQ_SERVER')
+    rabbitmq_username = os.environ.get('RABBITMQ_USERNAME')
+    rabbitmq_password = os.environ.get('RABBITMQ_PASSWORD')
+    if test == "gcp":
+        p = Process(target=get_a_task_mq, args=(tasks, call_back, rabbitmq_server, rabbitmq_username,rabbitmq_password))
+        p.start()

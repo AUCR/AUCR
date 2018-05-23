@@ -36,7 +36,7 @@ socketio = SocketIO()
 
 
 def create_app(config_class=Config):
-    """Start AUCR app flask object."""
+    """Return AUCR app flask object."""
     app = Flask(__name__)
     app.config.from_object(config_class)
     app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
@@ -73,6 +73,12 @@ def create_app(config_class=Config):
             app.logger.addHandler(file_handler)
         app.logger.setLevel(logging.INFO)
         app.logger.info('AUCR startup')
+
+    return app
+
+
+def init_app(app):
+    """AUCR app flask function init."""
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
@@ -89,6 +95,7 @@ def aucr_app():
     """AUCR app flask function framework create and get things started."""
     YamlInfo("projectinfo.yml", "projectinfo", "LICENSE")
     app = create_app()
+    app = init_app(app)
     app.secret_key = os.urandom(64)
     app.app_context().push()
     db.create_all()
