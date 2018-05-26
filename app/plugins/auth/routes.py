@@ -180,11 +180,11 @@ def create_group():
     if "admin" in session["groups"]:
         form = CreateGroupForm()
         if form.validate_on_submit():
-            create_group_name = Groups(group_name=form.group_name.data)
+            create_group_name = Groups(name=form.groups_id.data)
             db.session.add(create_group_name)
             db.session.commit()
             user_id = User.query.filter_by(username=form.admin_user.data).first()
-            group_name = Group(group_name=create_group_name.id, username=user_id.id)
+            group_name = Group(group_id=create_group_name.id, username=user_id.id)
             db.session.add(group_name)
             db.session.commit()
             group_create_message = str('The group ' + str(group_name.group_name) + ' has been created!')
