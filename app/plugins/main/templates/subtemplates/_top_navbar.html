@@ -11,14 +11,15 @@
                 </div>
             </form>
         {% endif %}
-        <a class="mdl-navigation__link" href="{{ url_for('auth.messages') }}">{{ ('Messages') }}
+        <a class="mdl-navigation__link" href="{{ url_for('auth.messages') }}">
+            <i class="material-icons">email</i>
             {% if current_user.new_messages() %}
                 {% set new_messages = current_user.new_messages() %}
                 <span id="message_count" class="badge" style="visibility: {% if new_messages %}visible
                       {% else %}hidden{% endif %};">{{ new_messages }}</span>
             {% endif %}
         </a>
-        <a class="mdl-navigation__link" href="{{ url_for('auth.logout') }}">{{ _('Logout') }}</a>
+        <a class="mdl-navigation__link" href="{{ url_for('auth.logout') }}"><i class="material-icons">exit_to_app</i></a>
         <a class="mdl-badge" href="{{ url_for('auth.user', username=current_user.username) }}">
             <img src="{{ current_user.avatar(32) }}">
         </a>

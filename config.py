@@ -24,7 +24,17 @@ class Config(object):
     MS_TRANSLATOR_KEY = os.environ.get('MS_TRANSLATOR_KEY')
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
     FILE_FOLDER = os.environ.get('FILE_FOLDER') or os.path.join(basedir, 'upload')
+    OBJECT_STORAGE = os.environ.get('OBJECT_STORAGE') or None
     ALLOWED_EXTENSIONS = os.environ.get('ALLOWED_EXTENSIONS') or ['txt', 'pdf', 'png', 'jpg',
-                                                                  'jpeg', 'gif', 'doc', 'docx', 'exe']
+                                                                  'jpeg', 'gif', 'doc', 'docx', 'exe', 'yar', 'zip']
     REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
     POSTS_PER_PAGE = 25
+    RABBITMQ_SERVER = os.environ.get('RABBITMQ_SERVER') or 'localhost'
+    RABBITMQ_PORT = os.environ.get('RABBITMQ_PORT') or '5672'
+    RABBITMQ_USERNAME = os.environ.get('RABBITMQ_USERNAME') or 'guest'
+    RABBITMQ_PASSWORD = os.environ.get('RABBITMQ_USERNAME') or 'guest'
+    RABBITMQ_URL = "amqp://{username}:{password}@{host}:{port}".format(
+                    username=RABBITMQ_USERNAME,
+                    password=RABBITMQ_PASSWORD,
+                    host=RABBITMQ_SERVER,
+                    port=RABBITMQ_PORT)

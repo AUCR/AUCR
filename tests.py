@@ -1,14 +1,64 @@
 # coding=utf-8
 """Default unittests to automate functional testing of AUCR code."""
 # !/usr/bin/env python
+import os
+import tempfile
+import pytest
 import unittest
+import time
 from config import Config
-from app import create_app, db
+from flask_wtf import CSRFProtect
+from app import create_app, db, aucr_app, init_app
 from app.plugins.main import main_page
 from app.plugins.auth.models import User, Group, Groups
-from app.plugins.auth.utils import check_group
+from app.plugins.auth.utils import check_group, get_group_permission_navbar
 from app.plugins.auth.email import send_password_reset_email, send_async_email, send_email
-from flask_wtf import CSRFProtect
+from app.plugins.analysis.file.zip import encrypt_zip_file, decrypt_zip_file_map, compress_zip_file_map
+from app.plugins.analysis.file.upload import create_upload_file
+
+
+@pytest.fixture
+def client():
+    aucr = create_app()
+    db_fd, aucr.config['DATABASE'] = tempfile.mkstemp()
+    aucr.config['TESTING'] = True
+    client = aucr.test_client()
+
+    with aucr.app_context():
+        init_app(aucr)
+
+    yield client
+    os.close(db_fd)
+
+
+def test_main_route(client):
+    """Start with a blank database."""
+
+    rv = client.get('/main/')
+    assert 302 == rv.status_code
+
+
+def test_password_hashing(client):
+    """Test auth plugin password hashing."""
+    test_password_user = User.__call__(username="test1")
+    # These are randomly generated passwords for a longer complexity check to ensure this works as expected
+    test_password_user.set_password("0Qk9Bata3EO69U5T2qH57lAV1r67Wu")
+    assert not test_password_user.check_password("wrong")
+    assert test_password_user.check_password("0Qk9Bata3EO69U5T2qH57lAV1r67Wu")
+
+
+def test_login(client):
+    test = client.get('/auth/login')
+    token = b'IjY0YmZiZTM5ZTQwOThhMmYwYWVhYmI1NGE4ZTg4ZTgzMTJiZmNlNTYi.DeWf1A.3MhxY9anNaUwgn2BTWmKCEDGDtk'
+    test2 = client.post('/auth/login', data=dict(username="admin", password="admin", token=token, submit=True), follow_redirects=True)
+    test3 = client.get('/main/')
+    return test
+
+
+def test_logout(client):
+    return client.get('/auth/logout', follow_redirects=True)
+
+
 
 csrf = CSRFProtect()
 
@@ -24,26 +74,15 @@ def test_auth():
         return "403"
 
 
-class TestConfig(Config):
-    """Unittests default config."""
-
-    DEBUG = True
-    TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite://'
-    ELASTICSEARCH_URL = None
-    LANGUAGES = ['en']
-
-
 class UserModelCase(unittest.TestCase):
     """Unittests automated AUCR test case framework."""
 
     def setUp(self):
         """Set up needed base environment data for unittests."""
-        self.app = create_app(TestConfig)
+        self.app = aucr_app()
         self.app_context = self.app.app_context()
         self.app_context.push()
         # Create a default sqlite database for testing
-        db.create_all()
         self.test_user_password = "0Qk9Bata3EO69U5T2qH57lAV1r67Wu"
         test_user = User.__call__(username="test2", email="test2@example.com")
         test_user.set_password(self.test_user_password)
@@ -80,42 +119,6 @@ class UserModelCase(unittest.TestCase):
         if tests_errors_user is None or not tests_errors_user.check_password(self.test_user_password):
             assert b'Invalid username or password'
         self.assertTrue(tests_errors_user)
-
-    def test_http_error_code_plugin(self):
-        """Test error plugin HTTP error code return."""
-        app = self.app
-        create_group_name = Groups(group_name="test")
-        db.session.add(create_group_name)
-        db.session.commit()
-        user_id = User.query.filter_by(username=self.test_user.username).first()
-        group_name = Group(group_name=create_group_name.id, username=user_id.id)
-        db.session.add(group_name)
-        db.session.commit()
-        with app.test_client() as test_error_code:
-            test_auth_groups = test_error_code.get('test')
-            self.assertEqual(test_auth_groups.data, b'{\n  "error": "Unknown error"\n}\n')
-
-    def test_user_reset_password(self):
-        """Test AUCR auth plugin reset password."""
-        app = self.app
-        try:
-            with app.test_client():
-                send_password_reset_email(user=self.test_user)
-        # TODO figure out how to get past the run time error this at least makes sure our password reset works somewhat
-        except RuntimeError as expected_result:
-            test = str(expected_result.args[0])
-            self.assertAlmostEqual(test, '''Working outside of request context.
-
-This typically means that you attempted to use functionality that needed
-an active HTTP request.  Consult the documentation on testing for
-information about how to avoid this problem.''')
-
-    def test_send_mail(self):
-        """This let's test our send email functions to ensure things work as expected."""
-        app = self.app
-        test_recipients = ["test1@test.com", "test2@test.com"]
-        test_result = send_email("Test Subject", "test3@test.com", test_recipients, "Test Message", "Nothing")
-        send_async_email(app, test_result)
 
 
 if __name__ == '__main__':

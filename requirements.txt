@@ -58,3 +58,4 @@ greenlet
 flask-socketio
 eventlet
 google-cloud-storage
+pika

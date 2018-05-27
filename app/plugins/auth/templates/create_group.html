@@ -6,7 +6,11 @@
         <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
             <div class="mdl-card mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
                 <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text">{{ _('Create a Group') }}</h2>
+                    <i class="material-icons">
+                        group_add
+                    </i>
+                    <div class="mdl-layout-spacer"></div>
+                    <h3 class="mdl-card__title-text">{{ _('Create a Group') }}</h3>
                 </div>
                 <div class="mdl-card__supporting-text">
                     {{ _('Please create a group with a default admin user to manage that group') }}
@@ -14,8 +18,12 @@
                 <div class="mdl-card__actions mdl-card--border ">
                     <form class="form" method="post" role="form">
                         {{ form.hidden_tag() }}
-                        {{ wtf.form_field(form.group_name) }}
-                        {{ wtf.form_field(form.admin_user) }}
+                        {% with form_object=subject, form_object_name="group_name", form_object_rows=1, form_object_label="Group Name" %}
+                            {% include "subtemplates/_form_object_textfield.html" %}
+                        {% endwith %}
+                        {% with iterable_thing=groups, dropdown_topic="admin_user", dropdown_label="Group Admin" %}
+                            {% include "subtemplates/_username_dropdown_object.html" %}
+                        {% endwith %}
                         <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                             {{ _('Create the Group') }}
                         </button>
