@@ -29,8 +29,8 @@
                                     </li>
                                 </ul>
                             </th>
-                            <th class="mdl-data-table__cell--non-numeric">Group</th>
-                            <th>Username</th>
+                            <th class="mdl-data-table__cell--non-numeric">Group ID</th>
+                            <th>Username ID</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,8 +44,8 @@
                                     {% set checkbox_items = session.checkbox %}
                                 {% endif %}
                                 </td>
-                                <td class="mdl-data-table__cell--non-numeric">{{ items.group_name }}</td>
-                                <td>{{ items.username }}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{ items.groups_id }}</td>
+                                <td>{{ items.username_id }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

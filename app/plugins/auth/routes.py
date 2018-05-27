@@ -120,7 +120,7 @@ def register():
         user_name.set_password(form.password.data)
         db.session.add(user_name)
         db.session.commit()
-        user_group = Group.__call__(group_name=2, username_id=user_name.id)
+        user_group = Group.__call__(groups_id=2, username_id=user_name.id)
         db.session.add(user_group)
         db.session.commit()
         session['username'] = user_name.username
@@ -166,7 +166,7 @@ def reset_password(token):
 def groups():
     """AUCR group's route flask blueprints."""
     if "admin" in session["groups"]:
-        group_info = Group.query.order_by(Group.group_name).all()
+        group_info = Group.query.order_by(Group.groups_id).all()
         form_remove_user_from_group = RemoveUserFromGroup
         return render_template('groups.html', group_info=group_info, form=form_remove_user_from_group)
     else:
@@ -177,20 +177,22 @@ def groups():
 @login_required
 def create_group():
     """Create a new group."""
+
+    user_info = User.query.all()
     if "admin" in session["groups"]:
-        form = CreateGroupForm()
+        form = CreateGroupForm(request.form)
         if form.validate_on_submit():
-            create_group_name = Groups(name=form.groups_id.data)
+            create_group_name = Groups(name=form.group_name.data)
             db.session.add(create_group_name)
             db.session.commit()
-            user_id = User.query.filter_by(username=form.admin_user.data).first()
-            group_name = Group(group_id=create_group_name.id, username=user_id.id)
+            user_id = User.query.filter_by(id=form.admin_user.data).first()
+            group_name = Group(groups_id=create_group_name.id, username_id=user_id.id)
             db.session.add(group_name)
             db.session.commit()
-            group_create_message = str('The group ' + str(group_name.group_name) + ' has been created!')
+            group_create_message = str('The group ' + str(create_group_name.name) + ' has been created!')
             flash(_(group_create_message))
             return redirect(url_for('auth.groups'))
-        return render_template('create_group.html', form=form)
+        return render_template('create_group.html', form=form, groups=user_info)
     else:
         return render_error_page_template(403)
 
@@ -276,7 +278,6 @@ def login():
                 else:
                     flash('Invalid username, password or token.')
                     return redirect(url_for('auth.login'))
-
             login_user(user_name, remember=form.remember_me.data)
             login_user(user_name)
             # log user in

@@ -2,7 +2,7 @@
 # coding=utf-8
 from flask import flash
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from flask_babel import _, lazy_gettext as _l
 from app.plugins.auth.models import User, Group, Groups
@@ -62,14 +62,20 @@ class CreateGroupForm(FlaskForm):
     """Create groups flask app form field."""
 
     group_name = StringField(_l('Group Name'), validators=[DataRequired()])
-    admin_user = StringField(_l('Admin Name'), validators=[DataRequired()])
+    admin_user = IntegerField(_l('Admin ID'), validators=[DataRequired()])
     submit = SubmitField('Create the Group')
 
     def validate_admin_user(self, admin_user):
         """Validate proper permissions."""
-        admin_user = User.query.filter_by(username=admin_user.data).first()
+        admin_user = User.query.filter_by(id=admin_user.data).first()
         if admin_user is None:
             raise ValidationError(_('Please use a different User Name as this is not a valid user'))
+
+    def validate_group_name(self, group_name):
+        """Check for free group name."""
+        group_name = Groups.query.filter_by(name=group_name.data).first()
+        if group_name:
+            raise ValidationError(_('Please use a different Group name this name is taken'))
 
 
 class RemoveUserFromGroup(FlaskForm):

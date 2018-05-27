@@ -3,7 +3,7 @@
         <select  id={{ dropdown_topic }} name={{ dropdown_topic }} class="required mdl-selectfield__select" required>
             <option value=""></option>
             {% for items in iterable_thing %}
-                <option value={{ items.id }}>{{ items.name }}</option>
+                <option value={{ items.id }}>{{ items.username }}</option>
             {% endfor %}
         </select>
         <label for={{ dropdown_topic }} class="mdl-selectfield__label">{{ dropdown_label  }}</label>

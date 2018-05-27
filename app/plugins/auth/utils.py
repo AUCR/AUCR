@@ -15,7 +15,7 @@ def get_groups():
     user_groups_ids["items"] = Group.query.filter_by(username_id=current_user.id).all()
     user_groups = []
     for items in user_groups_ids["items"]:
-        group_object = Groups.query.filter_by(id=items.id).first()
+        group_object = Groups.query.filter_by(id=items.groups_id).first()
         user_groups.append(group_object.name)
     return user_groups
 

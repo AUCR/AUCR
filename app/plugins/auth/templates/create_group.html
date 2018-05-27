@@ -18,8 +18,12 @@
                 <div class="mdl-card__actions mdl-card--border ">
                     <form class="form" method="post" role="form">
                         {{ form.hidden_tag() }}
-                        {{ wtf.form_field(form.group_name) }}
-                        {{ wtf.form_field(form.admin_user) }}
+                        {% with form_object=subject, form_object_name="group_name", form_object_rows=1, form_object_label="Group Name" %}
+                            {% include "subtemplates/_form_object_textfield.html" %}
+                        {% endwith %}
+                        {% with iterable_thing=groups, dropdown_topic="admin_user", dropdown_label="Group Admin" %}
+                            {% include "subtemplates/_username_dropdown_object.html" %}
+                        {% endwith %}
                         <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                             {{ _('Create the Group') }}
                         </button>

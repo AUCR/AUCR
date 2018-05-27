@@ -277,9 +277,7 @@ class Groups(db.Model):
         data = {
             'id': self.id,
             'name': self.name,
-            'last_seen': self.timestamp.isoformat() + 'Z',
-            'about_me': self.about_me
-        }
+            'last_seen': self.timestamp.isoformat() + 'Z'}
         return data
 
 
