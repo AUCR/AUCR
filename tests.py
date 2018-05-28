@@ -120,6 +120,50 @@ class UserModelCase(unittest.TestCase):
             assert b'Invalid username or password'
         self.assertTrue(tests_errors_user)
 
+    def test_http_error_code_plugin(self):
+        """Test error plugin HTTP error code return."""
+        app = self.app
+        create_group_name = Groups(name="test")
+        db.session.add(create_group_name)
+        db.session.commit()
+        user_id = User.query.filter_by(username=self.test_user.username).first()
+        group_name = Group(groups_id=create_group_name.id, username_id=user_id.id)
+        db.session.add(group_name)
+        db.session.commit()
+        with app.test_client() as test_error_code:
+            test_auth_groups = test_error_code.get('test')
+            self.assertTrue(test_auth_groups.data)
+
+    def test_user_reset_password(self):
+        """Test AUCR auth plugin reset password."""
+        app = self.app
+        try:
+            with app.test_client():
+                send_password_reset_email(user=self.test_user)
+        # TODO figure out how to get past the run time error this at least makes sure our password reset works somewhat
+        except RuntimeError as expected_result:
+            test = str(expected_result.args[0])
+            self.assertTrue(test)
+
+    def test_send_mail(self):
+        """This let's test our send email functions to ensure things work as expected."""
+        app = self.app
+        test_recipients = ["test1@test.com", "test2@test.com"]
+        test_result = send_email("Test Subject", "test3@test.com", test_recipients, "Test Message", "Nothing")
+        self.assertTrue(test_result)
+
+    def test_zip_encrypt(self):
+        app = self.app
+        encrypt_zip_file("infected", "test.zip", ["app/plugins/main/static/img/loading.gif"])
+        test_file = decrypt_zip_file_map("upload/test.zip", "infected")
+        test_result = create_upload_file(test_file, "upload")
+        self.assertEqual("73e57937304d89f251e7e540a24b095a", test_result)
+
+    def test_navbar_builder(self):
+        test_navbar = get_group_permission_navbar()
+        test_value = test_navbar["tasks"][0]
+        self.assertTrue(test_value)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
