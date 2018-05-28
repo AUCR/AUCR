@@ -19,7 +19,9 @@
                       {% else %}hidden{% endif %};">{{ new_messages }}</span>
             {% endif %}
         </a>
-        <a class="mdl-navigation__link" href="{{ url_for('auth.logout') }}"><i class="material-icons">exit_to_app</i></a>
+        <a class="mdl-navigation__link" href="{{ url_for('auth.logout') }}">
+            <i class="material-icons">exit_to_app</i>
+        </a>
         <a class="mdl-badge" href="{{ url_for('auth.user', username=current_user.username) }}">
             <img src="{{ current_user.avatar(32) }}">
         </a>
