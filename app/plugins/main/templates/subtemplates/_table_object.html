@@ -1,3 +1,4 @@
+<div class="mdl-layout-spacer"></div>
 <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
     <div class="mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col
         mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
@@ -21,7 +22,7 @@
                 {% for items in table_dict %}
                     <tr>
                         <td>
-                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+                            <label id="checkbox" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
                                 <input type="checkbox" class="mdl-checkbox__input" />
                             </label>
                         {% if "checked" in input %}
@@ -49,3 +50,4 @@
         </table>
     </div>
 </section>
+<div class="mdl-layout-spacer"></div>
