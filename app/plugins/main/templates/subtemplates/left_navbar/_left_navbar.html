@@ -4,8 +4,10 @@
     {% else %}
         {# subtemplate navbar containing pages available to all authenticated users #}
         {% if session.navbar %}
-            <a id="menu-tasks" class="mdl-navigation__link"><i class="material-icons">add</i>{{ _('Tasks') }}
-                <i class="material-icons">navigate_next</i>
+            <a id="menu-tasks" class="mdl-navigation__link">
+                <i class="material-icons navbar-adjust-right">add</i>
+                    {{ _('Tasks') }}
+                <i class="material-icons move-arrow-right">navigate_next</i>
             </a>
             <ul class="mdl-menu mdl-js-menu" for="menu-tasks">
                 {% for item in session.navbar.tasks %}
@@ -21,9 +23,9 @@
         {% endif %}
         {% if session.navbar %}
             <a id="menu-analysis" class="mdl-navigation__link">
-                <i class="material-icons">assessment</i>
+                <i class="material-icons navbar-adjust-right">assessment</i>
                     {{ _('Analysis') }}
-                <i class="material-icons">navigate_next</i>
+                <i class="material-icons move-arrow-right">navigate_next</i>
             </a>
             <ul class="mdl-menu mdl-js-menu" for="menu-analysis">
                 {% for item in session.navbar.analysis %}
@@ -39,8 +41,8 @@
         {% endif %}
         {% if session.navbar %}
             <a id="menu-reports" class="mdl-navigation__link">
-                <i class="material-icons">storage</i>{{ _('Reports') }}
-                <i class="material-icons">navigate_next</i>
+                <i class="material-icons navbar-adjust-right">storage</i>{{ _('Reports') }}
+                <i class="material-icons move-arrow-right">navigate_next</i>
             </a>
             <ul class="mdl-menu mdl-js-menu" for="menu-reports">
                 {% for item in session.navbar.reports %}
@@ -59,7 +61,7 @@
             {% for item in session.navbar.main %}
                 {% for item2 in item %}
                     <a class="mdl-navigation__link" href="{{ url_for(item[item2]) }}">
-                        <i class="material-icons">{{ item2 }}</i>{{ item2 }}
+                        <i class="material-icons navbar-adjust-right">{{ item2 }}</i>{{ item2 | title }}
                     </a>
                 {% endfor %}
             {% endfor %}

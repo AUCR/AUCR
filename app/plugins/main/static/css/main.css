@@ -1,1 +1,7 @@
-/* Place holder for future custom CSS */
+.navbar-adjust-right {
+    margin-right: .4em;
+}
+
+.move-arrow-right {
+    float: right;
+}
