@@ -1,0 +1,51 @@
+<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+    <div class="mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col
+        mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
+        <table class="mdl-data-table mdl-js-data-table">
+            <thead>
+                <tr>
+                    <th>
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+                            <input type="checkbox" class="mdl-checkbox__input" />
+                        </label>
+                        {% if "checked" in input %}
+                            {% set checkbox_items_header = session.checkbox %}
+                        {% endif %}
+                    </th>
+                    {% for header in table_header %}
+                        <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for items in table_dict %}
+                    <tr>
+                        <td>
+                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+                                <input type="checkbox" class="mdl-checkbox__input" />
+                            </label>
+                        {% if "checked" in input %}
+                            {% set checkbox_items = session.checkbox %}
+                        {% endif %}
+                        </td>
+                            {% for table_data in table_dict[items] %}
+                                <td>{{ table_dict[items][table_data]  }}</td>
+                            {% endfor %}
+                        <td>
+                        <button id="demo-menu"
+                            class="mdl-button mdl-js-button mdl-button--icon">
+                            <i class="material-icons">more_vert</i>
+                        </button>
+                        <ul class="mdl-menu mdl-menu mdl-js-menu mdl-js-ripple-effect"
+                            for="demo-menu">
+                        {% for listitem in table_list %}
+                            <li class="mdl-menu__item">{{ listitem }}</li>
+                        {% endfor %}
+                        </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
