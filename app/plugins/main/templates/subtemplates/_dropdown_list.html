@@ -1,7 +1,7 @@
 <div class="mdl-cell mdl-cell">
     <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
         <select id="data-val" name={{ dropdown_topic }} class="required mdl-selectfield__select" required>
-            <option value=""></option>
+            <option value="">{{ dropdown_value }}</option>
             {% for items in iterable_thing %}
                 <option name={{ dropdown_topic }} value={{ items.0 }}>{{ items.1 }}</option>
             {% endfor %}

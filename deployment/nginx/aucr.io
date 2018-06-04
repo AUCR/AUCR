@@ -19,6 +19,7 @@ access_log /var/log/aucr_access.log;
 error_log /var/log/aucr_error.log;
 location / {
 # forward application requests to the gunicorn server
+include proxy_params;
 proxy_pass http://10.100.0.203:5000;
 proxy_redirect off;
 proxy_set_header Host $host;
@@ -29,5 +30,9 @@ location /static {
 # handle static files directly, without forwarding to the application
 alias /opt/aucr/app/plugins/main/static;
 expires 30d;
+}
+location /socket.io {
+    include proxy_params;
+    proxy_pass http://10.100.0.203:5000/socket.io;
 }
 }

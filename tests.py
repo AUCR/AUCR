@@ -52,6 +52,8 @@ def test_login(client):
     token = b'IjY0YmZiZTM5ZTQwOThhMmYwYWVhYmI1NGE4ZTg4ZTgzMTJiZmNlNTYi.DeWf1A.3MhxY9anNaUwgn2BTWmKCEDGDtk'
     test2 = client.post('/auth/login', data=dict(username="admin", password="admin", token=token, submit=True), follow_redirects=True)
     test3 = client.get('/main/')
+    test4 = client.get('/auth/register')
+    test5 = client.get('/auth/groups')
     return test
 
 
@@ -61,17 +63,6 @@ def test_logout(client):
 
 
 csrf = CSRFProtect()
-
-
-@main_page.route('/test', methods=['GET'])
-@csrf.exempt
-def test_auth():
-    """Test group permissions."""
-    try:
-        if check_group("test"):
-            return "403"
-    except AttributeError:
-        return "403"
 
 
 class UserModelCase(unittest.TestCase):

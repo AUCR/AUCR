@@ -16,7 +16,6 @@ def call_back(ch, method, properties, file_hash):
     index_mq_aucr_report(("Processing file_hash " + file_hash), "localhost")
     file_name = str("upload/" + file_hash + ".zip")
     upload_blob("aucr", file_name, file_hash)
-    os.remove(file_name)
 
 
 def create_upload_file(file, upload_folder) -> str:

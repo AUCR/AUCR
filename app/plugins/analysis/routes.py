@@ -23,10 +23,12 @@ def analysis():
 
 
 def upload_to_gcp_and_remove(file_hash):
+    """MQ Process file."""
     index_mq_aucr_task(rabbit_mq_server=current_app.config['RABBITMQ_SERVER'], task_name=file_hash, routing_key="file")
 
 
 def get_upload_file_hash(file):
+    """Return uploaded file hash."""
     if current_app.config['OBJECT_STORAGE']:
         file_hash = str(create_upload_file(file, os.path.join("upload/")))
         p = Process(target=upload_to_gcp_and_remove, args=(file_hash,))
@@ -46,8 +48,7 @@ def upload_file():
             flash('No file part')
             return redirect(request.url)
         file = request.files['file']
-        # if user does not select file, browser also
-        # submit a empty part without filename
+        # if user does not select file, browser also submit a empty part without filename
         if file.filename == '':
             flash('No selected file, or that file type is not supported')
             return redirect(request.url)

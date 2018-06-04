@@ -15,35 +15,13 @@ services:
     networks:
       - aucr
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.2
-    ports:
-      - 9200:9200
-    container_name: elasticsearch
-    environment:
-      cluster.name: docker-aucr
-      ES_JAVA_OPTS: -Xms2g -Xmx2g
-      bootstrap.memory_lock: "true"
-      xpack.security.enabled: "false"
-      xpack.monitoring.enabled: "false"
-      xpack.ml.enabled: "false"
-      xpack.watcher.enabled: "false"
-      discovery.type: single-node
-      discovery.zen.minimum_master_nodes: 1
-    volumes:
-      - ./es-data:/usr/share/elasticsearch/data
-    networks:
-      - aucr
-
   kibana:
-    image: docker.elastic.co/kibana/kibana:6.2.2
+    image: docker.elastic.co/kibana/kibana:6.2.4
     container_name: kibana
     ports:
       - 5601:5601
     networks:
       - aucr
-    depends_on:
-      - elasticsearch
     env_file:
       - ./config-file.env
 
@@ -55,25 +33,6 @@ services:
     networks:
       - aucr
 
-  aucr:
-    container_name: aucr_web
-    image: aucr
-    ports:
-      - 5000:5000
-    volumes:
-      - ./upload:/opt/aucr/upload
-    networks:
-      - aucr
-    depends_on:
-      - mysql
-      - elasticsearch
-      - rabbitmq
-    env_file:
-      - ./config-file.env
-
 networks:
   aucr:
     driver: bridge
-
-
-
