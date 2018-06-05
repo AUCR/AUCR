@@ -59,8 +59,10 @@ travis.log
 /app/plugins/Horatio/*
 /app/plugins/Sermo/*
 /app/plugins/openstack/*
+/app/plugins/spartan/*
 .pytest_cache/
 Would skip repository app/plugins/Horatio/
 Would skip repository app/plugins/Sermo/
 notepad.py
 serve.py
+/app/plugins/yara/

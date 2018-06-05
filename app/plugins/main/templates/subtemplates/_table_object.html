@@ -30,10 +30,10 @@
                         {% endif %}
                         </td>
                             {% for table_data in table_dict[items] %}
-                                {% if "case_id" not in table_data %}
+                                {% if "id" not in table_data %}
                                     <td>{{ table_dict[items][table_data]  }}
                                     {% else %}
-                                    <td> <a href={{ url_for('tasks.edit_case_route', case_id=  table_dict[items][table_data])}}>{{ table_dict[items][table_data] }}</a></td>
+                                    <td> <a href={{ url_for(url_for_value, id= table_dict[items][table_data])}}>{{ table_dict[items][table_data] }}</a></td>
                                 {% endif %}
                             {% endfor %}
                         <td>
