@@ -5,3 +5,25 @@
 .move-arrow-right {
     float: right;
 }
+
+.content-column {
+    background-color: #f3f3f3;
+    padding: 30px;
+}
+
+.content-grid {
+    max-width: 960px;
+}
+
+.bold-header {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.role {
+    font-size: 15px;
+}
+
+.odd-ball {
+    padding-bottom: 39px;
+}

@@ -42,6 +42,12 @@ def about_us():
     return render_template('about_us.html', title=_('About Us'))
 
 
+@main_template_page.route('/the_team', methods=['GET'])
+def the_team():
+    """Return the About the AUCR Team page."""
+    return render_template('the_team.html', title=_('About The Team'))
+
+
 @main_template_page.route('/help', methods=['GET'])
 def help_page():
     """Return the Help AUCR page."""
