@@ -93,6 +93,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
+    score = db.Column(db.Integer)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
@@ -393,6 +394,8 @@ class Award(db.Model):
     award_name = db.Column(db.String(128), index=True)
     username = db.Column(db.Integer, db.ForeignKey('user.id'))
     timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
+    indicator_id = db.Column(db.Integer)
+    case_id = db.Column(db.Integer)
 
     def __repr__(self):
         """Return string representation of the Award Object."""

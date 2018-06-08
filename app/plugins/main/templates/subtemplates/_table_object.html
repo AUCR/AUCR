@@ -5,47 +5,49 @@
         <table class="mdl-data-table mdl-js-data-table">
             <thead>
                 <tr>
-                    <th>
-                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-                            <input type="checkbox" class="mdl-checkbox__input" />
-                        </label>
-                        {% if "checked" in input %}
-                            {% set checkbox_items_header = session.checkbox %}
-                        {% endif %}
-                    </th>
+{#                    <th>#}
+{#                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">#}
+{#                            <input type="checkbox" class="mdl-checkbox__input" />#}
+{#                        </label>#}
+{#                        {% if "checked" in input %}#}
+{#                            {% set checkbox_items_header = session.checkbox %}#}
+{#                        {% endif %}#}
+{#                    </th>#}
                     {% for header in table_header %}
                         <th>{{ header }}</th>
                     {% endfor %}
                 </tr>
             </thead>
             <tbody>
-                {% for items in table_dict %}
+                {% for k,v in table_dict.items() %}
                     <tr>
-                        <td>
-                            <label id="checkbox" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-                                <input type="checkbox" class="mdl-checkbox__input" />
-                            </label>
-                        {% if "checked" in input %}
-                            {% set checkbox_items = session.checkbox %}
+{#                        <td>#}
+{#                            <label id="checkbox" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">#}
+{#                                <input type="checkbox" class="mdl-checkbox__input" />#}
+{#                            </label>#}
+{#                        {% if "checked" in input %}#}
+{#                            {% set checkbox_items = session.checkbox %}#}
+{#                        {% endif %}#}
+{#                        </td>#}
+                    {% for k2,v2 in v.items() %}
+                        {% if k2 == 'subject' %}
+                            <td> <a href={{ url_for(url_for_value, id= v['id'])}}>{{ v2 }}</a></td>
+                        {% elif "id" != k2  and k2 != 'subject' %}
+                            <td>{{ v2 }}</td>
                         {% endif %}
-                        </td>
-                            {% for table_data in table_dict[items] %}
-                                {% if "id" not in table_data %}
-                                    <td>{{ table_dict[items][table_data]  }}
-                                    {% else %}
-                                    <td> <a href={{ url_for(url_for_value, id= table_dict[items][table_data])}}>{{ table_dict[items][table_data] }}</a></td>
-                                {% endif %}
-                            {% endfor %}
+                    {% endfor %}
                         <td>
-                        <button id="demo-menu"
+                        <button id="demo-menu-{{ v['id'] }}"
                             class="mdl-button mdl-js-button mdl-button--icon">
                             <i class="material-icons">more_vert</i>
                         </button>
                         <ul class="mdl-menu mdl-menu mdl-js-menu mdl-js-ripple-effect"
-                            for="demo-menu">
-                        {% for listitem in table_list %}
-                            <li class="mdl-menu__item">{{ listitem }}</li>
-                        {% endfor %}
+                            for="demo-menu-{{ v['id'] }}">
+
+                        <li class="mdl-menu__item" onclick="window.location.href='{{ url_for(url_for_value, id= v['id'])}}'">Edit</li>
+{#                        {% for listitem in table_list %}#}
+{#                            <li class="mdl-menu__item">{{ listitem }}</li>#}
+{#                        {% endfor %}#}
                         </ul>
                         </td>
                     </tr>
