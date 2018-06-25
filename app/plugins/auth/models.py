@@ -7,7 +7,7 @@ import os
 import jwt
 import redis
 import rq
-import onetimepass
+import pyotp
 from app import login
 from app import db
 from datetime import timedelta
@@ -122,7 +122,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
         """Set two factor token for user."""
         if self.otp_secret is None:
             # generate a random secret
-            self.otp_secret = base64.b32encode(os.urandom(64)).decode('utf-8')
+            self.otp_secret = pyotp.random_base32()
 
     def set_password(self, password):
         """Set the user password."""
@@ -233,7 +233,9 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     def verify_totp(self, token):
         """Check and return if user two factor token for AUCR auth plugin matches."""
-        return onetimepass.valid_totp(token, self.otp_secret)
+        totp = pyotp.TOTP(self.otp_secret)
+        result_totp = totp.verify(token)
+        return result_totp
 
 
 class Group(db.Model):

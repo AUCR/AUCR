@@ -2,8 +2,7 @@
 # coding=utf-8
 import udatetime
 import pyqrcode
-import base64
-import os
+import pyotp
 from io import BytesIO
 from flask import render_template, flash, Blueprint, session,  redirect, url_for, request, current_app, g, jsonify
 from flask_login import login_user, current_user, login_required, logout_user
@@ -50,7 +49,7 @@ def edit_profile():
         if user_name.otp_secret:
             current_user.otp_secret = user_name.otp_secret
         else:
-            current_user.otp_secret = base64.b32encode(os.urandom(64)).decode('utf-8')
+            current_user.otp_secret = pyotp.random_base32()
         db.session.commit()
         flash(current_user.otp_secret)
         flash(_('Your user profile changes have been saved!'))
@@ -266,14 +265,18 @@ def login():
     if request.method == "POST":
         if form.validate_on_submit():
             user_name = User.query.filter_by(username=form.username.data).first()
-            if user_name is None:
-                flash('No UserName')
-                return redirect(url_for('auth.login'))
-            elif not user_name.check_password(form.password.data):
-                flash('Invalid username or password.')
-                return redirect(url_for('auth.login'))
+            if user_name is not None and user_name.otp_secret is not None:
+                otp_auth_check = user_name.verify_totp(form.token.data)
+                if otp_auth_check is False or not user_name.check_password(form.password.data):
+                    flash('Invalid username, password or token.')
+                    return redirect(url_for('auth.login'))
+            if user_name is None or not user_name.check_password(form.password.data):
+                    flash('Invalid username, password or token.')
+                    return redirect(url_for('auth.login'))
             login_user(user_name, remember=form.remember_me.data)
+            login_user(user_name)
             # log user in
+            login_user(user_name)
             session["navbar"] = get_group_permission_navbar()
             session["groups"] = get_groups()
             flash('You are now logged in!')

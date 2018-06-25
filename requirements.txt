@@ -48,7 +48,6 @@ visitor
 Werkzeug
 WTForms
 pyqrcode
-onetimepass
 flask-bcrypt
 google-api-python-client
 PyMySQL
@@ -59,3 +58,4 @@ flask-socketio
 eventlet
 google-cloud-storage
 pika
+pyotp
