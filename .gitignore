@@ -44,7 +44,6 @@ aucr.db
 logs/
 migrations/
 /app/plugins/cases/
-upload/*zip
 /deployment/apache2/certs/README
 /deployment/apache2/certs/privkey.pem
 /deployment/apache2/certs/fullchain.pem
