@@ -8,22 +8,10 @@ services:
     restart: always
     ports:
       - 3307:3306
-    volumes:
-      - ./mysql/:/mysql/
     env_file:
       - ./config-file.env
     networks:
       - aucr
-
-  kibana:
-    image: docker.elastic.co/kibana/kibana:6.2.4
-    container_name: kibana
-    ports:
-      - 5601:5601
-    networks:
-      - aucr
-    env_file:
-      - ./config-file.env
 
   rabbitmq:
     container_name: rabbitmq

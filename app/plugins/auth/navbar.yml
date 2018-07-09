@@ -1,6 +1,3 @@
-tasks:
-  admin: [CreateGroup: 'auth.create_group']
-
-reports:
-  user: [Users: 'auth.users']
-  admin: [Group: 'auth.groups']
+main:
+  user: [people: 'auth.users']
+  admin: [groups: 'auth.groups']

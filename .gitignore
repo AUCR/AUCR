@@ -52,7 +52,6 @@ upload/*zip
 /deployment/nginx/certs/
 deployment/apache2/certs/
 mysql/
-upload/
 config-file.env
 es-data/
 travis.log
