@@ -152,7 +152,7 @@ class UserModelCase(unittest.TestCase):
 
     def test_navbar_builder(self):
         test_navbar = get_group_permission_navbar()
-        test_value = test_navbar["tasks"][0]
+        test_value = test_navbar["main"][0]
         self.assertTrue(test_value)
 
 

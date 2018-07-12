@@ -32,7 +32,7 @@ class Config(object):
     RABBITMQ_SERVER = os.environ.get('RABBITMQ_SERVER') or 'localhost'
     RABBITMQ_PORT = os.environ.get('RABBITMQ_PORT') or '5672'
     RABBITMQ_USERNAME = os.environ.get('RABBITMQ_USERNAME') or 'guest'
-    RABBITMQ_PASSWORD = os.environ.get('RABBITMQ_USERNAME') or 'guest'
+    RABBITMQ_PASSWORD = os.environ.get('RABBITMQ_PASSWORD') or 'guest'
     RABBITMQ_URL = "amqp://{username}:{password}@{host}:{port}".format(
                     username=RABBITMQ_USERNAME,
                     password=RABBITMQ_PASSWORD,
