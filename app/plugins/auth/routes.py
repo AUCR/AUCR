@@ -269,8 +269,8 @@ def login():
     if current_user.is_authenticated:
         # if user is logged in we get out of here
         return redirect(url_for('main.index'))
-    form = LoginForm()
     if request.method == "POST":
+        form = LoginForm()
         if form.validate_on_submit():
             user_name = User.query.filter_by(username=form.username.data).first()
             if user_name is not None and user_name.otp_secret is not None:
@@ -291,6 +291,7 @@ def login():
             page = request.args.get('page', 1, type=int)
             return redirect(url_for('main.index', page=page))
     page = request.args.get('page', 1, type=int)
+    form = LoginForm()
     return render_template('login.html', title=_('Sign In'), form=form, page=page)
 
 

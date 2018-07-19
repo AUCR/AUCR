@@ -2,22 +2,46 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <div class="page-content">
-        <h3>{{ _('Sign In') }}</h3>
-        <div class="row">
-            <div class="col-md-4">
-                {{ wtf.quick_form(form) }}
-            </div>
-        </div>
-        <br>
-        <p>{{ _('New User?') }} <a href="{{ url_for('auth.register') }}">
-            {{ _('Click to Register!') }}</a>
-        </p>
-        <p>
-            {{ _('Forgot Your Password?') }}
-            <a href="{{ url_for('auth.reset_password_request') }}">
-                {{ _('Click to Reset It') }}
-            </a>
-        </p>
-    </div>
+    <style>
+        .demo-list-action {
+          width: 400px;
+        }
+        .mdl-textfield{
+          width:500px;
+        }
+    </style>
+    <main class="mdl-layout__content">
+        <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+            <div class="mdl-card mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
+                <div class="mdl-card__title">
+                    <i class="material-icons">
+                        verified_user
+                    </i>
+                    <div class="mdl-layout-spacer"></div>
+                    <h3 class="mdl-card__title-text">{{ _('Login') }}</h3>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    {{ _('Please login to access the site!') }}
+                </div>
+                <div class="mdl-card__actions mdl-card--border ">
+                        <form class="form" method="post" role="form">
+                            {{ form.hidden_tag() }}
+                            {% with form_object=username, form_object_name="username", form_object_label="Username", form_object_value=form.data.username  if form.data.username != None else "", form_text_type="text" %}
+                                {% include "subtemplates/_form_object_textfield_singleline.html" %}
+                            {% endwith %}
+                            {% with form_object=password, form_object_name="password", form_object_label="Password", form_object_value=form.data.password  if form.data.password != None else "" %}
+                                {% include "subtemplates/_form_object_password_textfield.html" %}
+                            {% endwith %}
+                            {% with form_object=token, form_object_name="token", form_object_rows=1, form_object_label="Token", form_object_value=form.data.token  if form.data.token != None else "", form_text_type="text" %}
+                                {% include "subtemplates/_form_object_textfield_singleline.html" %}
+                            {% endwith %}
+                            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                                    value=data-val.value>
+                                Login
+                            </button>
+                        </form>
+                </div>
+                </div>
+        </section>
+    </main>
 {% endblock %}
