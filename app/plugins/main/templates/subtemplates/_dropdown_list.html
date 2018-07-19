@@ -1,7 +1,16 @@
 <div class="mdl-cell mdl-cell">
     <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
     <select id="data-val" name="{{ dropdown_topic }}" class="required mdl-selectfield__select">
-        <option value="">{{ dropdown_value }}</option>
+        {% if dropdown_topic == 'detection_method' or dropdown_topic == 'case_status' or dropdown_topic == 'assigned_to'%}
+            {% for items in iterable_thing %}
+                {% if items.0 == form_object_value %}
+                    <option value={{ items.0 }}>{{ items.1 }}</option>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <option value="">{{ form_object_value }}</option>
+        {% endif %}
+
         {% for items in iterable_thing %}
             <option name={{ dropdown_topic }} value={{ items.0 }}>{{ items.1 }}</option>
         {% endfor %}

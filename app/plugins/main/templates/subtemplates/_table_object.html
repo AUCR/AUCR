@@ -30,9 +30,9 @@
 {#                        {% endif %}#}
 {#                        </td>#}
                     {% for k2,v2 in v.items() %}
-                        {% if k2 == 'subject' %}
+                        {% if k2 == 'id' %}
                             <td> <a href={{ url_for(url_for_value, id= v['id'])}}>{{ v2 }}</a></td>
-                        {% elif "id" != k2  and k2 != 'subject' %}
+                        {% elif "id" != k2 %}
                             <td>{{ v2 }}</td>
                         {% endif %}
                     {% endfor %}
