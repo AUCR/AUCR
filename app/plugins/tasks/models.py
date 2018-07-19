@@ -140,7 +140,7 @@ class Comments(db.Model):
 
     __tablename__ = 'task_comments'
     id = db.Column(db.Integer, primary_key=True)
-    comment = db.Column(db.String(1024), index=True)
+    comment = db.Column(db.String(512), index=True)
     time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
