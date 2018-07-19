@@ -13,9 +13,9 @@
                         and scan the following QR Code with it:') }}
                     </p>
                     <p>
-                        <img id="qrcode" src="{{ url_for('auth.qrcode') }}">
+                        <img id="qrcode" src={{ url_for('auth.qrcode') }}>
                     </p>
-                    <p>I'm done, take me to the <a href="{{ url_for('auth.login') }}">Login</a> page!</p>
+                    <p>I'm done, take me to the <a href="{{ url_for('main.index') }}">Main</a> page!</p>
                 </div>
             </div>
         </div>

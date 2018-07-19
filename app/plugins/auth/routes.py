@@ -60,13 +60,10 @@ def edit_profile():
         url = pyqrcode.create(user_name.get_totp_uri())
         stream = BytesIO()
         url.svg(stream, scale=3)
-        flash(user_name.otp_secret)
-        return stream.getvalue(), 200, {
-            'Content-Type': 'image/svg+xml',
+        return render_template('two-factor-setup.html'), 200, {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
             'Pragma': 'no-cache',
             'Expires': '0'}
-        # return redirect(url_for('auth.edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
@@ -233,14 +230,13 @@ def two_factor_setup():
     """Two factory auth user setup page."""
     if 'username' not in session:
         return redirect(url_for('main.index'))
-    user_name = User.query.filter_by(username=session['username']).first()
-    if user_name is None:
-        return redirect(url_for('main.index'))
+    user_name = User.query.filter_by(username=current_user.username).first()
     # since this page contains the sensitive qrcode
     # make sure the browser does not cache it
-    # flash(_('Congratulations, you are now a registered user! Please check your email to confirm the address'))
-    # flash("Please use this token to setup your two-factor login \n" + user.otp_secret)
-    return render_template('two-factor-setup.html'), 200, {
+    url = pyqrcode.create(user_name.get_totp_uri())
+    stream = BytesIO()
+    url.svg(stream, scale=3)
+    return render_template('two-factor-setup.html'),  stream.getvalue(), 200, {
         'Cache-Control': 'no-cache, no-store, must-revalidate',
         'Pragma': 'no-cache',
         'Expires': '0'}
@@ -250,8 +246,6 @@ def two_factor_setup():
 @login_required
 def qrcode():
     """Two factor auth qrcode handling."""
-    if 'username' not in session:
-        render_error_page_template(404)
     user_name = User.query.filter_by(username=current_user.username).first()
     if user_name is None:
         render_error_page_template(404)
