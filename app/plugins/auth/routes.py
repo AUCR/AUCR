@@ -51,9 +51,22 @@ def edit_profile():
         else:
             current_user.otp_secret = pyotp.random_base32()
         db.session.commit()
-        flash(current_user.otp_secret)
-        flash(_('Your user profile changes have been saved!'))
-        return redirect(url_for('auth.edit_profile'))
+        user_name = User.query.filter_by(username=current_user.username).first()
+        if user_name is None:
+            render_error_page_template(404)
+
+        # for added security, remove username from session
+        # render qrcode for FreeTOTP
+        url = pyqrcode.create(user_name.get_totp_uri())
+        stream = BytesIO()
+        url.svg(stream, scale=3)
+        flash(user_name.otp_secret)
+        return stream.getvalue(), 200, {
+            'Content-Type': 'image/svg+xml',
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'}
+        # return redirect(url_for('auth.edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
@@ -215,6 +228,7 @@ def remove_user_from_group():
 
 
 @auth_page.route('/twofactor')
+@login_required
 def two_factor_setup():
     """Two factory auth user setup page."""
     if 'username' not in session:
@@ -233,11 +247,12 @@ def two_factor_setup():
 
 
 @auth_page.route('/qrcode')
+@login_required
 def qrcode():
     """Two factor auth qrcode handling."""
     if 'username' not in session:
         render_error_page_template(404)
-    user_name = User.query.filter_by(username=session['username']).first()
+    user_name = User.query.filter_by(username=current_user.username).first()
     if user_name is None:
         render_error_page_template(404)
 
@@ -247,7 +262,6 @@ def qrcode():
     stream = BytesIO()
     url.svg(stream, scale=3)
     flash(user_name.otp_secret)
-    del session['username']
     return stream.getvalue(), 200, {
         'Content-Type': 'image/svg+xml',
         'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -281,7 +295,7 @@ def login():
             session["groups"] = get_groups()
             flash('You are now logged in!')
             page = request.args.get('page', 1, type=int)
-            return redirect(url_for('main.index'))
+            return redirect(url_for('main.index', page=page))
     page = request.args.get('page', 1, type=int)
     return render_template('login.html', title=_('Sign In'), form=form, page=page)
 
