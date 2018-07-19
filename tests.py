@@ -13,7 +13,7 @@ from app.plugins.main import main_page
 from app.plugins.auth.models import User, Group, Groups
 from app.plugins.auth.utils import check_group, get_group_permission_navbar
 from app.plugins.auth.email import send_password_reset_email, send_async_email, send_email
-from app.plugins.analysis.file.zip import encrypt_zip_file, decrypt_zip_file_map, compress_zip_file_map
+from app.plugins.analysis.file.zip import encrypt_zip_file, decrypt_zip_file_map, write_file_map
 from app.plugins.analysis.file.upload import create_upload_file
 
 

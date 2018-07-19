@@ -14,7 +14,7 @@ def decrypt_zip_file_map(encrypted_zip, encrypted_file_password):
             return file_map
 
 
-def compress_zip_file_map(file_object, file_path):
+def write_file_map(file_object, file_path):
     """Return md5 hash of a compressed file."""
     file_md5_hash = hashlib.md5()
     if type(file_object) is not bytes:
@@ -23,11 +23,9 @@ def compress_zip_file_map(file_object, file_path):
         file_map = file_object
     file_md5_hash.update(file_map)
     file_hash: object = file_md5_hash.hexdigest()
-    full_file_path_and_name = str(file_path + "/" + file_hash + ".zip")
-    with ZipFile(full_file_path_and_name, 'w') as compressed_zip_file:
-        compressed_zip_file.writestr(file_hash, file_map)
-        compressed_zip_file.close()
-
+    full_file_path_and_name = str(file_path + "/" + file_hash)
+    with open(full_file_path_and_name, 'wb') as open_file_object:
+        open_file_object.write(file_map)
     return file_hash
 
 

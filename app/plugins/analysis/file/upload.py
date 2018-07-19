@@ -5,7 +5,7 @@ from flask import current_app
 from flask_login import current_user
 from app import db
 from app.plugins.analysis.models import FileUpload
-from app.plugins.analysis.file.zip import compress_zip_file_map
+from app.plugins.analysis.file.zip import write_file_map
 from app.plugins.reports.storage.googlecloudstorage import upload_blob
 from app.plugins.tasks.mq import index_mq_aucr_report
 
@@ -20,7 +20,7 @@ def call_back(ch, method, properties, file_hash):
 
 def create_upload_file(file, upload_folder) -> str:
     """Create compressed new file from uploaded file."""
-    file_hash = compress_zip_file_map(file, os.path.join(upload_folder))
+    file_hash = write_file_map(file, os.path.join(upload_folder))
     if current_user:
         uploaded_by_id = current_user.id
     else:
