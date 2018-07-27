@@ -28,7 +28,7 @@ def create_upload_file(file, upload_folder) -> str:
     else:
         uploaded_by_id = 1
     uploaded_file = FileUpload.__call__(file_hash=file_hash, uploaded_by=uploaded_by_id,
-                                        file_type=str(file_type.type))
+                                        file_type=str(file_type))
     db.session.add(uploaded_file)
     db.session.commit()
     return file_hash
