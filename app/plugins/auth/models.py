@@ -64,6 +64,10 @@ class SearchableMixin(object):
             add_to_index(cls.__tablename__, obj)
 
 
+db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
+db.event.listen(db.session, 'after_commit', SearchableMixin.after_commit)
+
+
 class PaginatedAPIMixin(object):
     """API Uses and Paginated calls."""
 
@@ -238,6 +242,12 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
         return result_totp
 
 
+@login.user_loader
+def load_user(user_id):
+    """User load callback for Flask-Login."""
+    return User.query.get(int(user_id))
+
+
 class Group(db.Model):
     """AUCR Group Table Database Module."""
 
@@ -307,12 +317,6 @@ def insert_initial_user_values(*args, **kwargs):
 db.event.listen(Group.__table__, 'after_create', insert_initial_user_values)
 
 
-@login.user_loader
-def load_user(user_id):
-    """User load callback for Flask-Login."""
-    return User.query.get(int(user_id))
-
-
 class Post(SearchableMixin, db.Model):
     __searchable__ = ['body']
     id = db.Column(db.Integer, primary_key=True)
@@ -333,11 +337,11 @@ class Message(SearchableMixin, db.Model):
     """Database table for User messages."""
 
     __searchable__ = ['body']
-    __tablename__ = 'message'
     id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(140))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):

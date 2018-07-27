@@ -1,10 +1,10 @@
 """Analysis AUCR import __init__ that creates analysis plugin module framework."""
 # coding=utf-8
 import os
+from multiprocessing import Process
 from app.plugins.analysis.routes import analysis_page
 # If you want the model to create the a table for the database at run time, import it here in the init
 from app.plugins.analysis import models
-from multiprocessing import Process
 from app.plugins.analysis.api.upload import api_page
 from app.plugins.tasks.mq import get_a_task_mq
 from app.plugins.analysis.file.upload import call_back

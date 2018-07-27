@@ -46,6 +46,7 @@ class FileUpload(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     file_hash = db.Column(db.String(32), index=True)
     uploaded_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    file_type = db.Column(db.String(32), index=True)
     time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
@@ -57,6 +58,7 @@ class FileUpload(db.Model):
         data = {
             'id': self.id,
             'file_hash': self.file_hash,
+            'file_type': self.file_type,
             'last_seen': self.time_stamp.isoformat() + 'Z',
             }
         return data

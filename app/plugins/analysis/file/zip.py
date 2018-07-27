@@ -2,6 +2,7 @@
 # coding=utf-8
 import hashlib
 import subprocess
+import fleep
 from zipfile import ZipFile
 
 
@@ -18,15 +19,18 @@ def write_file_map(file_object, file_path):
     """Return md5 hash of a compressed file."""
     file_md5_hash = hashlib.md5()
     if type(file_object) is not bytes:
+        info = fleep.get(file_object.read(128))
         file_map = file_object.read()
     else:
+        info = fleep.get(file_object.read(128))
         file_map = file_object
     file_md5_hash.update(file_map)
     file_hash: object = file_md5_hash.hexdigest()
     full_file_path_and_name = str(file_path + "/" + file_hash)
     with open(full_file_path_and_name, 'wb') as open_file_object:
         open_file_object.write(file_map)
-    return file_hash
+    file_dict = {"file_hash": file_hash, "file_info": info}
+    return file_dict
 
 
 def get_file_hash(file_name):
