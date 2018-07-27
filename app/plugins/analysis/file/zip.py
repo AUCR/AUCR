@@ -22,7 +22,7 @@ def write_file_map(file_object, file_path):
         info = fleep.get(file_object.read(128))
         file_map = file_object.read()
     else:
-        info = fleep.get(file_object.read(128))
+        info = None
         file_map = file_object
     file_md5_hash.update(file_map)
     file_hash: object = file_md5_hash.hexdigest()
