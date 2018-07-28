@@ -21,11 +21,13 @@ def call_back(ch, method, properties, file_hash):
 def create_upload_file(file, upload_folder) -> str:
     """Create compressed new file from uploaded file."""
     file_info = write_file_map(file, os.path.join(upload_folder))
-    file_type = file_info["file_info"]
+    file_info_dict = file_info["file_info"]
     file_hash = file_info["file_hash"]
     if current_user:
         uploaded_by_id = current_user.id
+        file_type = file_info_dict.type
     else:
+        file_type = file_info_dict
         uploaded_by_id = 1
     uploaded_file = FileUpload.__call__(file_hash=file_hash, uploaded_by=uploaded_by_id,
                                         file_type=str(file_type))

@@ -124,17 +124,20 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistrationForm()
-    if form.validate_on_submit():
-        user_name = User.__call__(username=form.username.data, email=form.email.data)
-        user_name.set_password(form.password.data)
-        db.session.add(user_name)
-        db.session.commit()
-        user_group = Group.__call__(groups_id=2, username_id=user_name.id)
-        db.session.add(user_group)
-        db.session.commit()
-        session['username'] = user_name.username
-        flash(_('Congratulations, you are now a registered user!'))
-        return redirect(url_for('auth.login'))
+    if request.method == "POST":
+        if form.validate_on_submit():
+            user_name = User.__call__(username=form.username.data, email=form.email.data)
+            user_name.set_password(form.password.data)
+            db.session.add(user_name)
+            db.session.commit()
+            user_group = Group.__call__(groups_id=2, username_id=user_name.id)
+            db.session.add(user_group)
+            db.session.commit()
+            session['username'] = user_name.username
+            flash(_('Congratulations, you are now a registered user!'))
+            return redirect(url_for('auth.login'))
+        else:
+            flash("Missing form information")
     return render_template('register.html', title=_('Register'), form=form)
 
 

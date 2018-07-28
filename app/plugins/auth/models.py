@@ -105,6 +105,9 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
     last_seen = db.Column(db.DateTime, default=udatetime.utcnow)
     token = db.Column(db.String(120), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
+    website = db.Column(db.String(140))
+    affiliation = db.Column(db.String(32))
+    country = db.Column(db.String(32))
     groups = db.relationship('Group', foreign_keys='Group.username_id', backref='author', lazy='dynamic')
     messages_sent = db.relationship('Message', foreign_keys='Message.sender_id', backref='author', lazy='dynamic')
     messages_received = db.relationship('Message', foreign_keys='Message.recipient_id',
