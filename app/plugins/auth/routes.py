@@ -126,7 +126,8 @@ def register():
     form = RegistrationForm()
     if request.method == "POST":
         if form.validate_on_submit():
-            user_name = User.__call__(username=form.username.data, email=form.email.data)
+            user_name = User.__call__(username=form.username.data, email=form.email.data,  website=form.website.data,
+                                      affiliation=form.affiliation.data, country=form.country.data)
             user_name.set_password(form.password.data)
             db.session.add(user_name)
             db.session.commit()
