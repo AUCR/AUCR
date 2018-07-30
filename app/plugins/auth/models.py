@@ -108,6 +108,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
     website = db.Column(db.String(140))
     affiliation = db.Column(db.String(32))
     country = db.Column(db.String(32))
+    last_used_ip = db.Column(db.String(16))
     groups = db.relationship('Group', foreign_keys='Group.username_id', backref='author', lazy='dynamic')
     messages_sent = db.relationship('Message', foreign_keys='Message.sender_id', backref='author', lazy='dynamic')
     messages_received = db.relationship('Message', foreign_keys='Message.recipient_id',
@@ -243,6 +244,10 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
         totp = pyotp.TOTP(self.otp_secret)
         result_totp = totp.verify(token)
         return result_totp
+
+    def set_last_used_ip(self, ip_address):
+        """Set the user password."""
+        self.last_used_ip = str(ip_address)
 
 
 @login.user_loader
