@@ -5,7 +5,7 @@ from flask import current_app
 from flask_login import current_user
 from app import db
 from app.plugins.analysis.models import FileUpload
-from app.plugins.analysis.file.zip import write_file_map
+from app.plugins.analysis.file.zip import write_file_map, encrypt_zip_file
 from app.plugins.reports.storage.googlecloudstorage import upload_blob
 from app.plugins.tasks.mq import index_mq_aucr_report
 
@@ -13,9 +13,13 @@ from app.plugins.tasks.mq import index_mq_aucr_report
 def call_back(ch, method, properties, file_hash):
     """File upload call back."""
     file_hash = file_hash.decode('utf8')
+    zip_password = os.environ.get('ZIP_PASSWORD')
     index_mq_aucr_report(("Processing file_hash " + file_hash), "localhost")
-    file_name = str("upload/" + file_hash)
-    upload_blob("aucr", file_name, file_hash)
+    file_name = [str(file_hash)]
+    zip_file_name = str(file_hash + ".zip")
+    encrypt_zip_file(zip_password, zip_file_name, file_name)
+    upload_blob("aucr", str("upload/" + zip_file_name), file_hash)
+    os.remove(str("upload/" + zip_file_name))
 
 
 def create_upload_file(file, upload_folder) -> str:
