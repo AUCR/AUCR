@@ -12,7 +12,7 @@ from app.plugins.auth.forms import LoginForm, RegistrationForm, ResetPasswordReq
      CreateGroupForm, RemoveUserFromGroup, MessageForm, EditProfileForm
 from app.plugins.auth.email import send_password_reset_email
 from app.plugins.auth.utils import get_group_permission_navbar, get_groups
-from app.plugins.auth.models import Group, Message, User, Notification, Post, Groups
+from app.plugins.auth.models import Group, Message, User, Notification, Groups
 from app.plugins.errors.handlers import render_error_page_template
 
 auth_page = Blueprint('auth', __name__, template_folder='templates')
@@ -98,8 +98,9 @@ def send_message(recipient):
     recipient_user = User.query.filter_by(username=recipient).first_or_404()
     form = MessageForm()
     if form.validate_on_submit():
-        msg = Message.__call__(author=current_user, recipient=recipient_user, body=form.message.data)
+        msg = Message(author=current_user, recipient=recipient_user, body=form.message.data)
         db.session.add(msg)
+        db.session.commit()
         recipient_user.add_notification('unread_message_count', recipient_user.new_messages())
         db.session.commit()
         flash(_('Your message has been sent.'))
@@ -316,7 +317,7 @@ def search():
     if not g.search_form.validate():
         return redirect(url_for('search'))
     page = request.args.get('page', 1, type=int)
-    posts, total = Post.search(g.search_form.q.data, page, current_app.config['POSTS_PER_PAGE'])
+    posts, total = Message.search(g.search_form.q.data, page, current_app.config['POSTS_PER_PAGE'])
     search_messages, total = Message.search(g.search_form.q.data, page, current_app.config['POSTS_PER_PAGE'])
     next_url = url_for('search', q=g.search_form.q.data, page=page + 1) \
         if total > page * current_app.config['POSTS_PER_PAGE'] else None

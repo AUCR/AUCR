@@ -13,6 +13,9 @@
                         {% if item.last_seen %}
                             <p>{{ _('Last seen on') }}: {{ moment(item.last_seen).format('LLL') }}</p>
                         {% endif %}
+                        {% if item.last_used_ip %}
+                            <p>{{ _('Last used IP') }}: {{  item.last_used_ip }}</p>
+                        {% endif %}
                         {% if item.user == current_user %}
                             <p><h3>Profile</h3>
                             <a href="{{ url_for('auth.edit_profile') }}">

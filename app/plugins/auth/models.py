@@ -18,7 +18,7 @@ from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash
 from flask_bcrypt import check_password_hash
 from yaml_info.yamlinfo import YamlInfo
-from app.plugins.reports.storage.elastic_search import add_to_index, remove_from_index, query_index
+from app.plugins.reports.storage.elastic_search import remove_from_index, query_index, add_model_to_index
 
 
 class SearchableMixin(object):
@@ -40,9 +40,8 @@ class SearchableMixin(object):
     def before_commit(cls, session):
         """Check ES before index commit."""
         session._changes = {
-            'add': [obj for obj in session.new if isinstance(obj, cls)],
-            'update': [obj for obj in session.dirty if isinstance(obj, cls)],
-            'delete': [obj for obj in session.deleted if isinstance(obj, cls)]
+            'add': list(session.new),
+            'update': list(session.dirty)
         }
 
     @classmethod
@@ -50,18 +49,16 @@ class SearchableMixin(object):
         """Return changed database searchable tagged fields in ES."""
         if session._changes:
             for obj in session._changes['add']:
-                add_to_index(cls.__tablename__, obj)
+                add_model_to_index(obj.__tablename__, obj)
             for obj in session._changes['update']:
-                add_to_index(cls.__tablename__, obj)
-            for obj in session._changes['delete']:
-                remove_from_index(cls.__tablename__, obj)
+                add_model_to_index(obj.__tablename__, obj)
         session._changes = None
 
     @classmethod
     def reindex(cls):
         """Process changed messages by after_commit and reindex values in ES."""
         for obj in cls.query:
-            add_to_index(cls.__tablename__, obj)
+            add_model_to_index(cls.__tablename__, obj)
 
 
 db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
@@ -95,6 +92,7 @@ class PaginatedAPIMixin(object):
 class User(UserMixin, PaginatedAPIMixin, db.Model):
     """AUCR User models class defines information in the user table."""
 
+    __searchable__ = ['username', 'last_used_ip']
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     score = db.Column(db.Integer)
@@ -325,40 +323,12 @@ def insert_initial_user_values(*args, **kwargs):
 db.event.listen(Group.__table__, 'after_create', insert_initial_user_values)
 
 
-class Post(SearchableMixin, db.Model):
-    __searchable__ = ['body']
-    id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    language = db.Column(db.String(5))
-
-    def __repr__(self):
-        return '<Post {}>'.format(self.body)
 
 
-db.event.listen(db.session, 'before_commit', Post.before_commit)
-db.event.listen(db.session, 'after_commit', Post.after_commit)
 
+#db.event.listen(db.session, 'before_commit', Message.before_commit)
+#db.event.listen(db.session, 'after_commit', Message.after_commit)
 
-class Message(SearchableMixin, db.Model):
-    """Database table for User messages."""
-
-    __searchable__ = ['body']
-    id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(140))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
-
-    def __repr__(self):
-        """Return string representation of the Message Database Object Table."""
-        return '<Message {}>'.format(self.body)
-
-
-db.event.listen(db.session, 'before_commit', Message.after_commit)
-db.event.listen(db.session, 'after_commit', Message.after_commit)
 
 
 class Notification(db.Model):
@@ -414,3 +384,19 @@ class Award(db.Model):
     def __repr__(self):
         """Return string representation of the Award Object."""
         return '<Award {}>'.format(self.award_name)
+
+
+class Message(SearchableMixin, db.Model):
+    """Database table for User messages."""
+
+    __searchable__ = ['id', 'body', 'sender_id', 'recipient_id', 'timestamp']
+    __tablename__ = 'message'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(140), index=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
+
+    def __repr__(self):
+        """Return string representation of the Message Database Object Table."""
+        return '<Message {}>'.format(self.id)

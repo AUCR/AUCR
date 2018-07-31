@@ -21,6 +21,7 @@ class TasksPlugins(db.Model):
 class TaskCategory(db.Model):
     """Task Category models class default database format for tasks_plugin."""
 
+    __searchable__ = ['task_category', 'description', 'task_category_name']
     __tablename__ = 'task_category'
     id = db.Column(db.Integer, primary_key=True)
     task_category_name = db.Column(db.String(128), index=True)
@@ -97,6 +98,7 @@ class TaskTable(db.Model):
 class TaskStates(db.Model):
     """Tasks States models class defines default database format for tasks_plugin."""
 
+    __searchable__ = ['task_category', 'description', 'task_state_name']
     __tablename__ = 'task_states'
     id = db.Column(db.Integer, primary_key=True)
     task_state_name = db.Column(db.String(128), index=True)
@@ -151,6 +153,7 @@ class Comments(db.Model):
 class TrafficLightProtocol(db.Model):
     """TLP default database table format for tasks_plugin."""
 
+    __searchable__ = ['color_name', 'when_description', 'how_description', 'quick_description']
     __tablename__ = 'task_tlp'
     id = db.Column(db.Integer, primary_key=True)
     color_name = db.Column(db.String(5), index=True)
@@ -183,6 +186,7 @@ db.event.listen(TrafficLightProtocol.__table__, 'after_create', insert_initial_t
 class Severity(db.Model):
     """Severity default database table format for tasks_plugin."""
 
+    __searchable__ = ['severity']
     __tablename__ = 'task_severity'
     id = db.Column(db.Integer, primary_key=True)
     severity = db.Column(db.Integer, index=True)

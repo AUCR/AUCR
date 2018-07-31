@@ -42,6 +42,7 @@ class AnalysisTable(db.Model):
 class FileUpload(db.Model):
     """File upload model default database format for analysis_plugin."""
 
+    __searchable__ = ['id', 'file_hash', 'uploaded_by', 'file_type', 'time_stamp']
     __tablename__ = 'uploaded_file_table'
     id = db.Column(db.Integer, primary_key=True)
     file_hash = db.Column(db.String(32), index=True)
