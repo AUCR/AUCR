@@ -92,7 +92,7 @@ class PaginatedAPIMixin(object):
 class User(UserMixin, PaginatedAPIMixin, db.Model):
     """AUCR User models class defines information in the user table."""
 
-    __searchable__ = ['username', 'last_used_ip']
+    __searchable__ = ['id', 'username', 'last_used_ip', 'last_seen', 'email', 'about_me']
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     score = db.Column(db.Integer)
@@ -321,14 +321,6 @@ def insert_initial_user_values(*args, **kwargs):
 
 
 db.event.listen(Group.__table__, 'after_create', insert_initial_user_values)
-
-
-
-
-
-#db.event.listen(db.session, 'before_commit', Message.before_commit)
-#db.event.listen(db.session, 'after_commit', Message.after_commit)
-
 
 
 class Notification(db.Model):

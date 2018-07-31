@@ -1,11 +1,9 @@
 # coding=utf-8
+from multiprocessing import Process
 from flask import current_app
 
 
-def add_model_to_index(index, model):
-    """Ad to Elasticsearch index."""
-    if not current_app.elasticsearch:
-        return
+def index_model_data_to_es(index, model):
     payload = {}
     try:
         if model.__searchable__:
@@ -14,6 +12,14 @@ def add_model_to_index(index, model):
             current_app.elasticsearch.index(index=index, doc_type=index, id=model.id, body=payload)
     except AttributeError:
         pass
+
+
+def add_model_to_index(index, model):
+    """Ad to Elasticsearch index."""
+    if not current_app.elasticsearch:
+        return
+    p = Process(target=index_model_data_to_es, args=(index, model))
+    p.start()
 
 
 def add_to_index(index, payload):
