@@ -1,6 +1,7 @@
 """AUCR main analysis plugin api features."""
 # coding=utf-8
 import os
+import time
 from flask import current_app
 from flask_login import current_user
 from app import db
@@ -14,12 +15,13 @@ def call_back(ch, method, properties, file_hash):
     """File upload call back."""
     file_hash = file_hash.decode('utf8')
     zip_password = os.environ.get('ZIP_PASSWORD')
+    upload_folder = os.environ.get('FILE_FOLDER')
     index_mq_aucr_report(("Processing file_hash " + file_hash), "localhost")
-    file_name = [str(file_hash)]
+    file_name = [str(upload_folder + file_hash)]
     zip_file_name = str(file_hash + ".zip")
     encrypt_zip_file(zip_password, zip_file_name, file_name)
-    upload_blob("aucr", str("upload/" + zip_file_name), file_hash)
-    os.remove(str("upload/" + zip_file_name))
+    upload_blob("aucr", str(upload_folder + zip_file_name), file_hash)
+    os.remove(str(upload_folder + zip_file_name))
 
 
 def create_upload_file(file, upload_folder) -> str:
