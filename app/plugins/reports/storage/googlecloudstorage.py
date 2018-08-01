@@ -23,8 +23,8 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
     blob = bucket.blob(destination_blob_name)
     blob.upload_from_filename(source_file_name)
     logging.info('File {} uploaded to {}.'.format(
-        source_file_name,
-        destination_blob_name))
+                 source_file_name,
+                 destination_blob_name))
 
 
 def download_blob(bucket_name, source_blob_name, destination_file_name):
@@ -34,5 +34,22 @@ def download_blob(bucket_name, source_blob_name, destination_file_name):
     blob = bucket.blob(source_blob_name)
     blob.download_to_filename(destination_file_name)
     logging.info(('Blob {} downloaded to {}.'.format(
-        source_blob_name,
-        destination_file_name)))
+                  source_blob_name,
+                  destination_file_name)))
+
+
+def get_blob(bucket_name, source_blob_name):
+    """Get blob from GCS bucket."""
+    storage_client = storage.Client()
+    bucket = storage_client.get_bucket(bucket_name)
+    blob = bucket.get_blob(source_blob_name)
+
+    return blob
+
+
+def list_blobs(bucket_name):
+    """Lists all the blobs in the bucket."""
+    storage_client = storage.Client()
+    bucket = storage_client.get_bucket(bucket_name)
+    blobs = bucket.list_blobs()
+    return blobs

@@ -13,12 +13,12 @@ def load(app):
     """"Load function registers report plugin blueprint to flask."""
     app.register_blueprint(reports_page, url_prefix='/reports')
     app.register_blueprint(search_page, url_prefix='/search')
-    test = os.environ.get('OBJECT_STORAGE')
+    object_storage_type = os.environ.get('OBJECT_STORAGE')
     rabbitmq_server = os.environ.get('RABBITMQ_SERVER')
     rabbitmq_username = os.environ.get('RABBITMQ_USERNAME')
     rabbitmq_password = os.environ.get('RABBITMQ_PASSWORD')
     tasks = "reports"
-    if test == "gcp":
+    if object_storage_type == "gcp":
         p = Process(target=get_a_task_mq, args=(tasks, log_call_back, rabbitmq_server, rabbitmq_username,
                                                 rabbitmq_password))
         p.start()
