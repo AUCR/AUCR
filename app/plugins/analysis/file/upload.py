@@ -1,7 +1,6 @@
 """AUCR main analysis plugin api features."""
 # coding=utf-8
 import os
-import time
 from flask import current_app
 from flask_login import current_user
 from app import db
@@ -16,7 +15,8 @@ def call_back(ch, method, properties, file_hash):
     file_hash = file_hash.decode('utf8')
     zip_password = os.environ.get('ZIP_PASSWORD')
     upload_folder = os.environ.get('FILE_FOLDER')
-    index_mq_aucr_report(("Processing file_hash " + file_hash), "localhost")
+    rabbit_mq_server_ip = os.environ.get('RABBITMQ_SERVER')
+    index_mq_aucr_report(("Processing file_hash " + file_hash), str(rabbit_mq_server_ip))
     file_name = [str(upload_folder + file_hash)]
     zip_file_name = str(file_hash + ".zip")
     encrypt_zip_file(zip_password, zip_file_name, file_name)
