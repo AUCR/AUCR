@@ -95,7 +95,6 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
     __searchable__ = ['id', 'username', 'last_used_ip', 'last_seen', 'email', 'about_me']
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
-    score = db.Column(db.Integer)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
@@ -360,22 +359,6 @@ class Task(db.Model):
         """Return message progress from redis mq."""
         job = self.get_rq_job()
         return job.meta.get('progress', 0) if job is not None else 100
-
-
-class Award(db.Model):
-    """AUCR point system award table."""
-
-    __tablename__ = 'award'
-    id = db.Column(db.Integer, primary_key=True)
-    award_name = db.Column(db.String(128), index=True)
-    username = db.Column(db.Integer, db.ForeignKey('user.id'))
-    timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
-    indicator_id = db.Column(db.Integer)
-    case_id = db.Column(db.Integer)
-
-    def __repr__(self):
-        """Return string representation of the Award Object."""
-        return '<Award {}>'.format(self.award_name)
 
 
 class Message(SearchableMixin, db.Model):

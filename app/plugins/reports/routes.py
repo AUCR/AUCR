@@ -24,4 +24,4 @@ def reports():
 @login_required
 def get_leaderboard():
     """Return the leaderboard AUCR page."""
-    return render_template('leaderboard.html', title=_('Leaderboard'))
+    return render_template('../spartan/templates/leaderboard.html', title=_('Leaderboard'))

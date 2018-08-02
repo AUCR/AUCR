@@ -60,3 +60,4 @@ google-cloud-storage
 pika
 pyotp
 fleep
+python-swiftclient

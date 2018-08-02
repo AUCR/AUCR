@@ -14,15 +14,12 @@ from multiprocessing import Process, Queue
 analysis_page = Blueprint('analysis', __name__, template_folder='templates')
 
 
-@analysis_page.route('', methods=['GET'])
-@login_required
-def analysis():
-    """Return AUCR analysis plugin flask app analysis blueprint."""
-    analysis_info = AnalysisPlugins.query.all()
-    return render_template('analysis.html', title='Analysis', analysis_info=analysis_info)
-
-
 def upload_to_gcp_and_remove(file_hash):
+    """MQ Process file."""
+    index_mq_aucr_task(rabbit_mq_server=current_app.config['RABBITMQ_SERVER'], task_name=file_hash, routing_key="file")
+
+
+def upload_to_swift_and_remove(file_hash):
     """MQ Process file."""
     index_mq_aucr_task(rabbit_mq_server=current_app.config['RABBITMQ_SERVER'], task_name=file_hash, routing_key="file")
 
@@ -31,8 +28,12 @@ def get_upload_file_hash(file):
     """Return uploaded file hash."""
     if current_app.config['OBJECT_STORAGE']:
         file_hash = str(create_upload_file(file, os.path.join("upload/")))
-        p = Process(target=upload_to_gcp_and_remove, args=(file_hash,))
-        p.start()
+        if current_app.config['OBJECT_STORAGE_TYPE'] == "GCP":
+            p = Process(target=upload_to_gcp_and_remove, args=(file_hash,))
+            p.start()
+        elif current_app.config['OBJECT_STORAGE_TYPE'] == "swift":
+            p = Process(target=upload_to_swift_and_remove, args=(file_hash,))
+            p.start()
     else:
         file_hash = create_upload_file(file, os.path.join(current_app.config['FILE_FOLDER']))
     return file_hash

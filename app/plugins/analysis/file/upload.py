@@ -7,6 +7,7 @@ from app import db
 from app.plugins.analysis.models import FileUpload
 from app.plugins.analysis.file.zip import write_file_map, encrypt_zip_file
 from app.plugins.reports.storage.googlecloudstorage import upload_blob, get_blob
+from app.plugins.reports.storage.swift import SwiftConnection
 from app.plugins.tasks.mq import index_mq_aucr_report
 
 
@@ -16,14 +17,22 @@ def call_back(ch, method, properties, file_hash):
     zip_password = os.environ.get('ZIP_PASSWORD')
     upload_folder = os.environ.get('FILE_FOLDER')
     rabbit_mq_server_ip = os.environ.get('RABBITMQ_SERVER')
-    file_blob = get_blob("aucr", str(file_hash))
-    if file_blob is None:
+    object_storage_type = os.environ.get('OBJECT_STORAGE_TYPE')
+    if object_storage_type == "GCP":
+        file_blob = get_blob("aucr", str(file_hash))
+        if file_blob is None:
+            index_mq_aucr_report(("Processing file_hash " + file_hash), str(rabbit_mq_server_ip))
+            file_name = [str(upload_folder + file_hash)]
+            zip_file_name = str(file_hash + ".zip")
+            encrypt_zip_file(zip_password, zip_file_name, file_name)
+            upload_blob("aucr", str(upload_folder + zip_file_name), file_hash)
+            os.remove(str(upload_folder + zip_file_name))
+    elif object_storage_type == "swift":
         index_mq_aucr_report(("Processing file_hash " + file_hash), str(rabbit_mq_server_ip))
-        file_name = [str(upload_folder + file_hash)]
-        zip_file_name = str(file_hash + ".zip")
-        encrypt_zip_file(zip_password, zip_file_name, file_name)
-        upload_blob("aucr", str(upload_folder + zip_file_name), file_hash)
-        os.remove(str(upload_folder + zip_file_name))
+        swift = SwiftConnection()
+        with open(file_hash, 'rb') as swift_file:
+            swift_file_object = swift_file.read()
+        swift.put(file_name=file_hash, file_content=swift_file_object)
 
 
 def create_upload_file(file, upload_folder) -> str:
