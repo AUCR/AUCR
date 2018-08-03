@@ -6,7 +6,7 @@
     font-weight: bold;
 }
 
-.mdl-menu__item--top-bleed-divider {
+nav#side-navbar > a:first-child {
     border-top: 1px solid rgba(0,0,0,.12);
 }
 

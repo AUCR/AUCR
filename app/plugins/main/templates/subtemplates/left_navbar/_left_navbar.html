@@ -1,4 +1,4 @@
-<nav id="side-navbar" class="mdl-navigation" onload="">
+<nav id="side-navbar" class="mdl-navigation">
     {% if current_user.is_anonymous %}
         <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider mdl-menu__item--top-bleed-divider"
            href="{{ url_for('auth.login') }}">
@@ -11,14 +11,9 @@
         {% if session.navbar %}
             {% for link in session.navbar.main %}
                 {% for item in link %}
-                    {% if loop.first %}
-                        <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider mdl-menu__item--top-bleed-divider"
-                           href="{{ url_for(link[item][0]['page']) }}">
-                    {% else %}
                         <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider"
                            href="{{ url_for(link[item][0]['page']) }}">
-                    {% endif %}
-                    <i class="material-icons navbar-adjust-right">{{ link[item][1]['icon'] }}</i>
+                            <i class="material-icons navbar-adjust-right">{{ link[item][1]['icon'] }}</i>
                             <span class="navbar-adjust-font">{{ link[item][2]['title'] }}</span>
                         </a>
                 {% endfor %}
