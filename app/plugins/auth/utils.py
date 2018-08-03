@@ -74,8 +74,13 @@ def get_group_permission_navbar():
             main_result_list = generate_navbar_list_item("main", run, group_object.name, main_list)
             if main_result_list:
                 main_list = main_result_list
-    user_groups_links["tasks"] = tasks_list
-    user_groups_links["reports"] = reports_list
-    user_groups_links["analysis"] = analysis_list
-    user_groups_links["main"] = main_list
+    # Used to make sure empty lists are not populating the navbar dictionary
+    if tasks_list:
+        user_groups_links["tasks"] = tasks_list
+    if reports_list:
+        user_groups_links["reports"] = reports_list
+    if analysis_list:
+        user_groups_links["analysis"] = analysis_list
+    if main_list:
+        user_groups_links["main"] = main_list
     return user_groups_links

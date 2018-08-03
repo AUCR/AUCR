@@ -5,10 +5,10 @@
         {# subtemplate navbar containing pages available to all authenticated users #}
         {# Main Navbar settings #}
         {% if session.navbar %}
-            {% for item in session.navbar.main %}
-                {% for item2 in item %}
-                    <a class="mdl-navigation__link" href="{{ url_for(item[item2]) }}">
-                        <i class="material-icons navbar-adjust-right">{{ item2 }}</i>{{ item2 | title }}
+            {% for link in session.navbar.main %}
+                {% for item in link %}
+                    <a class="mdl-navigation__link" href="{{ url_for(link[item][0]['page']) }}">
+                        <i class="material-icons navbar-adjust-right">{{ link[item][1]['icon'] }}</i>{{ link[item][2]['title'] }}
                     </a>
                 {% endfor %}
             {% endfor %}

@@ -1,3 +1,15 @@
 main:
-  user: [people: 'auth.users']
-  admin: [groups: 'auth.groups']
+  user: [
+    link : [
+      page: 'auth.users',
+      icon: 'groups',
+      title: 'People'
+    ]
+  ]
+  admin: [
+    link: [
+      page: 'auth.groups',
+      icon: 'groups',
+      title: 'Groups'
+    ]
+  ]
