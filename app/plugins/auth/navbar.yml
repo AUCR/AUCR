@@ -2,14 +2,14 @@ main:
   user: [
     link : [
       page: 'auth.users',
-      icon: 'groups',
+      icon: 'face',
       title: 'People'
     ]
   ]
   admin: [
     link: [
       page: 'auth.groups',
-      icon: 'groups',
+      icon: 'group',
       title: 'Groups'
     ]
   ]

@@ -1,5 +1,13 @@
 .navbar-adjust-right {
-    margin-right: .4em;
+    margin-right: 2.4em;
+}
+
+.navbar-adjust-font {
+    font-weight: bold;
+}
+
+.mdl-menu__item--top-bleed-divider {
+    border-top: 1px solid rgba(0,0,0,.12);
 }
 
 .move-arrow-right {

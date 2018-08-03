@@ -1,15 +1,26 @@
-<nav class="mdl-navigation">
+<nav id="side-navbar" class="mdl-navigation" onload="">
     {% if current_user.is_anonymous %}
-        <a class="mdl-navigation__link" href="{{ url_for('auth.login') }}">{{ _('Login') }}</a>
+        <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider mdl-menu__item--top-bleed-divider"
+           href="{{ url_for('auth.login') }}">
+            <i class="material-icons navbar-adjust-right">vpn_key</i>
+            <span class="navbar-adjust-font">{{ _('Login') }}</span>
+        </a>
     {% else %}
         {# subtemplate navbar containing pages available to all authenticated users #}
         {# Main Navbar settings #}
         {% if session.navbar %}
             {% for link in session.navbar.main %}
                 {% for item in link %}
-                    <a class="mdl-navigation__link" href="{{ url_for(link[item][0]['page']) }}">
-                        <i class="material-icons navbar-adjust-right">{{ link[item][1]['icon'] }}</i>{{ link[item][2]['title'] }}
-                    </a>
+                    {% if loop.first %}
+                        <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider mdl-menu__item--top-bleed-divider"
+                           href="{{ url_for(link[item][0]['page']) }}">
+                    {% else %}
+                        <a class="mdl-navigation__link mdl-menu__item--full-bleed-divider"
+                           href="{{ url_for(link[item][0]['page']) }}">
+                    {% endif %}
+                    <i class="material-icons navbar-adjust-right">{{ link[item][1]['icon'] }}</i>
+                            <span class="navbar-adjust-font">{{ link[item][2]['title'] }}</span>
+                        </a>
                 {% endfor %}
             {% endfor %}
         {% endif %}
