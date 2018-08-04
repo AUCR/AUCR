@@ -29,10 +29,10 @@ def get_a_task_mq(tasks, call_back, rabbitmq_server, rabbitmq_username, rabbitmq
     get_mq_aucr_tasks(call_back, rabbitmq_server, tasks, rabbitmq_username, rabbitmq_password)
 
 
-def index_mq_aucr_report(task_name, rabbit_mq_dict):
+def index_mq_aucr_report(task_name, rabbit_mq_dict, task_mq):
     """Create MQ aucr report task."""
     rabbit_mq_server = rabbit_mq_dict
-    index_mq_aucr_task(rabbit_mq_server, str(task_name), "logging")
+    index_mq_aucr_task(rabbit_mq_server, str(task_name), task_mq)
 
 
 def get_mq_yaml_configs():

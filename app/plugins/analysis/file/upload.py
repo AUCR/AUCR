@@ -21,16 +21,16 @@ def call_back(ch, method, properties, file_hash):
     if object_storage_type == "GCP":
         file_blob = get_blob("aucr", str(file_hash))
         if file_blob is None:
-            index_mq_aucr_report(("Processing file_hash " + file_hash), str(rabbit_mq_server_ip))
+            index_mq_aucr_report(("Processing file_hash " + file_hash), str(rabbit_mq_server_ip), "logging")
             file_name = [str(upload_folder + file_hash)]
             zip_file_name = str(file_hash + ".zip")
             encrypt_zip_file(zip_password, zip_file_name, file_name)
             upload_blob("aucr", str(upload_folder + zip_file_name), file_hash)
             os.remove(str(upload_folder + zip_file_name))
     elif object_storage_type == "swift":
-        index_mq_aucr_report(("Processing file_hash " + file_hash), str(rabbit_mq_server_ip))
+        index_mq_aucr_report(("Processing file_hash " + file_hash), str(rabbit_mq_server_ip), "logging")
         swift = SwiftConnection()
-        with open(file_hash, 'rb') as swift_file:
+        with open(str(upload_folder + file_hash), 'rb') as swift_file:
             swift_file_object = swift_file.read()
         swift.put(file_name=file_hash, file_content=swift_file_object)
 

@@ -19,9 +19,3 @@ def reports():
     reports_info = ReportPlugins.query.all()
     return render_template('reports.html', title='Reports', report_info=reports_info)
 
-
-@reports_page.route('/leaderboard', methods=['GET'])
-@login_required
-def get_leaderboard():
-    """Return the leaderboard AUCR page."""
-    return render_template('../spartan/templates/leaderboard.html', title=_('Leaderboard'))
