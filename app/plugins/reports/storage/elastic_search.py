@@ -1,11 +1,18 @@
 # coding=utf-8
+import os
 from multiprocessing import Process
 from flask import current_app
+from elasticsearch import Elasticsearch
 
 
 def index_data_to_es(index, payload):
     try:
-        current_app.elasticsearch.index(index=index, doc_type=index, id=None, body=payload)
+        if current_app:
+            current_app.elasticsearch.index(index=index, doc_type=index, id=None, body=payload)
+        else:
+            es = Elasticsearch(os.environ.get("ELASTICSEARCH_URL"))
+            es.index(index=index, doc_type=index, id=None, body=payload)
+
     except AttributeError:
         pass
 
