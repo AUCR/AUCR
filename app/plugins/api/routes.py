@@ -1,6 +1,6 @@
 """Auth routes manages all basic authentication."""
 # coding=utf-8
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from app import db
 from flask import g
 from app.plugins.api.auth import token_auth, basic_auth
@@ -12,9 +12,15 @@ api_page = Blueprint('api', __name__, template_folder='templates')
 @basic_auth.login_required
 def get_token():
     """Get user token."""
-    token = g.current_user.get_token()
-    db.session.commit()
-    return jsonify({'token': token})
+    if request.method == "POST":
+        if g.current_user.api_enabled:
+            token = g.current_user.get_token()
+            db.session.commit()
+            return jsonify({'token': token})
+        else:
+            return jsonify({'error': "No API access for your account."})
+    else:
+        return jsonify({'error': "Not a proper request."})
 
 
 @api_page.route('/tokens', methods=['DELETE'])

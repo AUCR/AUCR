@@ -92,7 +92,7 @@ class PaginatedAPIMixin(object):
 class User(UserMixin, PaginatedAPIMixin, db.Model):
     """AUCR User models class defines information in the user table."""
 
-    __searchable__ = ['id', 'username', 'last_used_ip', 'last_seen', 'email', 'about_me']
+    __searchable__ = ['id', 'username', 'last_used_ip', 'email', 'about_me']
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -106,6 +106,8 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
     affiliation = db.Column(db.String(32))
     country = db.Column(db.String(32))
     last_used_ip = db.Column(db.String(16))
+    api_enabled = db.Column(db.String(5))
+    account_enabled = db.Column(db.String(5))
     groups = db.relationship('Group', foreign_keys='Group.username_id', backref='author', lazy='dynamic')
     messages_sent = db.relationship('Message', foreign_keys='Message.sender_id', backref='author', lazy='dynamic')
     messages_received = db.relationship('Message', foreign_keys='Message.recipient_id',
