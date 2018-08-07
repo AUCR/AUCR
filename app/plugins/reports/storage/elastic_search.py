@@ -55,8 +55,16 @@ def query_index(index, query, page, per_page):
     """Elasticsearch query field from index."""
     if not current_app.elasticsearch:
         return [], 0
-    search = current_app.elasticsearch.search(
-        index=index, doc_type=index,
-        body={'query': query, 'fields': ['*']})
-    ids = [int(hit['id']) for hit in search['hits']['hits']]
-    return ids, search['hits']['total']
+    if current_app:
+        search = current_app.elasticsearch.search(
+            index="message", doc_type="message",
+            body={"query": {"match": {'body': query}}})
+        ids = [int(hit['_id']) for hit in search['hits']['hits']]
+        return ids, search['hits']['total']
+    else:
+        es = Elasticsearch(os.environ.get("ELASTICSEARCH_URL"))
+        search = es.search(
+            index=index, doc_type=index,
+            body={"query": {"match_all": {}}})
+        ids = [(hit['id']) for hit in search['hits']['hits']]
+        return ids, search['hits']['total']
