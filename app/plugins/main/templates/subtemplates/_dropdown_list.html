@@ -8,7 +8,11 @@
                 {% endif %}
             {% endfor %}
         {% else %}
-            <option value="">{{ form_object_value }}</option>
+            {% if form_object_value|length <= 0 %}
+                <option value=""></option>
+            {% else %}
+                <option value="">{{ form_object_value }}</option>
+            {% endif %}
         {% endif %}
 
         {% for items in iterable_thing %}
