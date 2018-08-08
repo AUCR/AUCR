@@ -12,7 +12,7 @@ Then we use our own custom cuckoo queue to duplicate messages going into the fil
           files: ["cuckoo"]
     
 
-### The __init__.py load function for the plugin
+### The \_\_init\_\_.py load function for the plugin
 Now that we have a basic message queue being created for us lets make a consumer to process file hashes from that message queue.
         
         import os
