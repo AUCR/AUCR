@@ -1,7 +1,7 @@
-#How to write a processing plugin for AUCR    
+# How to write a processing plugin for AUCR    
 This is a simple guide on how to write a processing plugin for AUCR
 
-##Example plugin #1 A cuckoo file processing submission plugin
+## Example plugin #1 A cuckoo file processing submission plugin
 
 ### How to process files by using mqtasks.yml and message queuing 
 First step to making a processing plugin is to create a mqtasks.yml in the main dir of the plugin. 
