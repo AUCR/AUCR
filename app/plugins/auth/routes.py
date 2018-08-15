@@ -323,5 +323,4 @@ def search():
         if total > page * current_app.config['POSTS_PER_PAGE'] else None
     prev_url = url_for('search', q=g.search_form.q.data, page=page - 1) if page > 1 else None
     return render_template('search.html', title=_('Search'), messages=search_messages, next_url=next_url,
-                           prev_url=prev_url, posts=posts)
-
+                           prev_url=prev_url, posts=posts, page=page)

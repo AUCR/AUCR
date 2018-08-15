@@ -273,7 +273,7 @@ class Group(db.Model):
         group_object = Groups.query.filter_by(id=self.id).first()
         data = {
             'id': self.id,
-            'groups_id': group_object.groups.id,
+            'groups_id': group_object.id,
             'username_id': self.username_id,
             'time_stamp': self.timestamp.isoformat() + 'Z',
         }
