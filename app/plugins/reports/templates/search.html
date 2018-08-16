@@ -3,7 +3,7 @@
 {% block app_content %}
     <h3>{{ _('Search Results') }}</h3>
     {% for post in posts %}
-        {% include '_post.html' %}
+        {% include 'subtemplates/_post.html' %}
     {% endfor %}
     <nav aria-label="...">
         <ul class="pager">

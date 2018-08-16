@@ -166,7 +166,9 @@
                 {% endif %}
             {% endwith %}
             {# application content needs to be provided in the app_content block #}
-            {% block app_content %}{% endblock %}
+            {% block app_content %}
+                {# Block Section for app_content to be used by other templates #}
+            {% endblock %}
         </div>
         <div class="mdl-layout-spacer"></div>
         {# Footer #}

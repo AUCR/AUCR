@@ -35,3 +35,24 @@ nav#side-navbar > a:first-child {
 .odd-ball {
     padding-bottom: 39px;
 }
+
+.nav-button-container {
+    position: fixed;
+    bottom: 8em;
+}
+
+.nav-button-prev {
+    position: fixed;
+    bottom: 8em;
+    float: left;
+    display: inline-block;
+    width: 9em;
+}
+
+.nav-button-next {
+    position: fixed;
+    bottom: 8em;
+    float: right;
+    display: inline-block;
+    width: 80em;
+}
