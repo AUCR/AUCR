@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <h3>{{ _('Search Results') }}</h3>
+    <h3>{{ _('Message Search Results') }}</h3>
     {% for post in posts %}
         {% if current_user.id == post.sender_id %}
             {% include 'subtemplates/_post.html' %}

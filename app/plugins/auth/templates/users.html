@@ -13,9 +13,13 @@
                         {% if item.last_seen %}
                             <p>{{ _('Last seen on') }}: {{ moment(item.last_seen).format('LLL') }}</p>
                         {% endif %}
-                        {% if item.last_used_ip %}
-                            <p>{{ _('Last used IP') }}: {{  item.last_used_ip }}</p>
-                        {% endif %}
+                        {% for groups in current_user.groups %}
+                            {% if 1 == groups.groups_id %}
+                                {% if item.last_used_ip %}
+                                    <p>{{ _('Last used IP') }}: {{  item.last_used_ip }}</p>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
                         {% if item.user == current_user %}
                             <p><h3>Profile</h3>
                             <a href="{{ url_for('auth.edit_profile') }}">

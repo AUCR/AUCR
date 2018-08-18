@@ -26,6 +26,9 @@
                             '{{ g.locale }}');">{{ _('Translate') }}</a>
             </span>
             {% endif %}
+            <p><a href="{{ url_for('auth.send_message', recipient=post.author.username) }}">
+                {{ _('Reply') }}
+            </a></p>
         </td>
     </tr>
 </table>
