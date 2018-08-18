@@ -10,7 +10,10 @@ def error_response(status_code, message=None):
     if message:
         payload['message'] = message
     response = jsonify(payload)
-    response.status_code = status_code.code
+    try:
+        response.status_code = status_code.code
+    except AttributeError:
+        response.status_code = status_code
     return response
 
 
