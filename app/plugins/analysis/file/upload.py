@@ -1,7 +1,7 @@
 """AUCR main analysis plugin api features."""
 # coding=utf-8
 import os
-from flask import current_app
+from flask import current_app, g
 from flask_login import current_user
 from app import db
 from app.plugins.analysis.models import FileUpload
@@ -41,7 +41,10 @@ def create_upload_file(file, upload_folder) -> str:
     file_info_dict = file_info["file_info"]
     file_hash = file_info["file_hash"]
     if current_user:
-        uploaded_by_id = current_user.id
+        try:
+            uploaded_by_id = current_user.id
+        except AttributeError:
+            uploaded_by_id = g.current_user.id
         file_type = file_info_dict.type
     else:
         file_type = file_info_dict
