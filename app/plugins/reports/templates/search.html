@@ -3,7 +3,12 @@
 {% block app_content %}
     <h3>{{ _('Search Results') }}</h3>
     {% for post in posts %}
-        {% include 'subtemplates/_post.html' %}
+        {% if current_user.id == post.sender_id %}
+            {% include 'subtemplates/_post.html' %}
+        {% endif %}
+        {% if current_user.id == post.recipient_id %}
+            {% include 'subtemplates/_post.html' %}
+        {% endif %}
     {% endfor %}
     <nav aria-label="...">
         <ul class="pager">
