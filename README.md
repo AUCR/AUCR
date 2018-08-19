@@ -8,43 +8,19 @@
 
 
 ## Overview
-Analyst Unknown Cyber Range is a micro services flask framework. 
+Analyst Unknown Cyber Range is a micro services flask framework. The goal of this project to make highly scalable web services in a master framework so users have a single web interface to do all the things from. Think of what GCP/AWS is for admin users but for users(currently with a DFIR focus). 
 
 
 ## Developer setup
-Example Setup with Temporary an example and just running with flask. If you use pycharm you can setup flask app to debug through the code.
+Example Setup with Temporary an example and just running with flask. If you use pycharm you can setup flask app to debug through the code. Python >= 3.6  
 
+    pip install PyYAML
+    pip install -r requiremnets.txt
     export FLASK_APP=aucr.py
     export FLASK_DEBUG=1
     flask run
 
 
-## Example API Usage
-Example API calls to generate an auth token and using it to query data using http 0.9.2
-
-    http --auth admin:admin POST https://aucr.io/auth/tokens
-    
-    HTTP/1.0 200 OK
-    Content-Length: 106
-    Content-Type: application/json
-    Date: Fri, 16 Mar 2018 08:35:12 GMT
-    Server: Werkzeug/0.14.1 Python/3.6.4
-    
-    {
-        "token": "tTa0fv4+7oUdEZQcw0HiBwzMbPoYJPXZK63WvKvboNhDB1GJ3f0OIl+3Lio3UAAf31+B1qtz+NZSc+4FI6vO/w=="
-    }
-    
-    http GET https://aucr.io/api/groups/1 "Authorization:Bearer tTa0fv4+7oUdEZQcw0HiBwzMbPoYJPXZK63WvKvboNhDB1GJ3f0OIl+3Lio3UAAf31+B1qtz+NZSc+4FI6vO/w=="
-    HTTP/1.0 200 OK
-    Content-Length: 112
-    Content-Type: application/json
-    Date: Fri, 16 Mar 2018 08:35:36 GMT
-    Server: Werkzeug/0.14.1 Python/3.6.4
-    
-    {
-        "group_name": "admin", 
-        "id": 1, 
-        "time_stamp": "2018-03-16T08:17:48.115041Z", 
-        "username": "admin"
-    }
-
+## Easy Docker use
+    sudo docker pull quay.io/wroersma/aucr
+    sudo docker run aucr -p 5000:5000
