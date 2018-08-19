@@ -5,6 +5,11 @@
             {% for items in iterable_thing %}
                 <option value={{ items.id }}>{{ items.name }}</option>
             {% endfor %}
+            {% if form_object_value|length <= 0 %}
+                <option value=""></option>
+            {% else %}
+                <option name={{ dropdown_topic }} value={{ items.0 }}>{{ items.1 }}</option>
+            {% endif %}
         </select>
         <label for={{ dropdown_topic }} class="mdl-selectfield__label">{{ dropdown_label  }}</label>
         <span class="mdl-selectfield__error">Input is not a empty!</span>
