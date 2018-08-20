@@ -24,3 +24,5 @@ Example Setup with Temporary an example and just running with flask. If you use 
 ## Easy Docker use
     sudo docker pull quay.io/wroersma/aucr
     sudo docker run aucr -p 5000:5000
+
+
