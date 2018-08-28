@@ -96,7 +96,7 @@ def aucr_app():
     YamlInfo("projectinfo.yml", "projectinfo", "LICENSE")
     app = create_app()
     app = init_app(app)
-    app.secret_key = os.urandom(64)
+    app.secret_key = app.config['SECRET_KEY']
     app.app_context().push()
     db.create_all()
     return app

@@ -11,6 +11,7 @@ from app.plugins.reports.forms import SearchForm
 
 
 main_template_page = Blueprint('main', __name__, static_folder='static', template_folder='templates')
+no_template_page = Blueprint('/', __name__, static_folder='static', template_folder='templates')
 
 
 @main_template_page.before_app_request
@@ -23,7 +24,7 @@ def before_request() -> None:
     g.locale = str(get_locale())
 
 
-@main_template_page.route('/index', methods=['GET', 'POST'])
+@no_template_page.route('/', methods=['GET', 'POST'])
 @main_template_page.route('/', methods=['GET', 'POST'])
 @login_required
 def index():

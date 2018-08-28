@@ -298,6 +298,8 @@ def login():
             db.session.commit()
             page = request.args.get('page', 1, type=int)
             return redirect(url_for('main.index', page=page))
+        flash('Invalid username, password or token.')
+        return redirect(url_for('auth.login'))
     page = request.args.get('page', 1, type=int)
     form = LoginForm()
     return render_template('login.html', title=_('Sign In'), form=form, page=page)
