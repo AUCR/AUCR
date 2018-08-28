@@ -2,12 +2,16 @@
 """Default RabbitMQ function file."""
 import pika
 import glob
+import os
 from yaml_info.yamlinfo import YamlInfo
 
 
 def index_mq_aucr_task(rabbit_mq_server, task_name, routing_key):
     """Create MQ aucr task."""
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbit_mq_server))
+    rabbitmq_username = os.environ.get('RABBITMQ_USERNAME') or 'guest'
+    rabbitmq_password = os.environ.get('RABBITMQ_PASSWORD') or 'guest'
+    credentials = pika.PlainCredentials(rabbitmq_username, rabbitmq_password)
+    connection = pika.BlockingConnection(pika.ConnectionParameters(credentials=credentials, host=rabbit_mq_server))
     channel = connection.channel()
     channel.basic_publish(exchange='',  routing_key=routing_key,  body=task_name)
     connection.close()
