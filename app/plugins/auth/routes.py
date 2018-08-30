@@ -293,7 +293,7 @@ def login():
             session["navbar"] = get_group_permission_navbar()
             session["groups"] = get_groups()
             flash('You are now logged in!')
-            user_name.set_last_used_ip(request.remote_addr)
+            user_name.set_last_used_ip(request.access_route[0])
             db.session.add(user_name)
             db.session.commit()
             page = request.args.get('page', 1, type=int)
