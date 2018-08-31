@@ -126,6 +126,7 @@ def register():
         return redirect(url_for('index'))
     form = RegistrationForm()
     if request.method == "POST":
+        form = RegistrationForm(request.form)
         if form.validate_on_submit():
             user_name = User.__call__(username=form.username.data, email=form.email.data,  website=form.website.data,
                                       affiliation=form.affiliation.data, country=form.country.data)
@@ -139,7 +140,10 @@ def register():
             flash(_('Congratulations, you are now a registered user!'))
             return redirect(url_for('auth.login'))
         else:
-            flash("Missing form information")
+            for error in form.errors:
+                flash(str(form.errors[error][0]), 'error')
+            render_template('register.html', title=_('Register'), form=form)
+        render_template('register.html', title=_('Register'), form=form)
     return render_template('register.html', title=_('Register'), form=form)
 
 

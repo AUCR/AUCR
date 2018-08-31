@@ -3,7 +3,7 @@
 from flask import flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, IntegerField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length, URL
 from flask_babel import _, lazy_gettext as _l
 from app.plugins.auth.models import User, Group, Groups
 
@@ -25,9 +25,9 @@ class RegistrationForm(FlaskForm):
     email = StringField(_l('Email'), validators=[DataRequired(), Email()])
     password = PasswordField(_l('Password'), validators=[DataRequired()])
     password2 = PasswordField(_l('Repeat Password'), validators=[DataRequired(), EqualTo('password')])
-    website = StringField(_l('Website'), validators=[DataRequired()])
-    affiliation = StringField(_l('Affiliation'), validators=[DataRequired()])
-    country = StringField(_l('Country'), validators=[DataRequired()])
+    website = StringField(_l('Website'))
+    affiliation = StringField(_l('Affiliation'))
+    country = StringField(_l('Country'))
     submit = SubmitField(_l('Register'))
 
     def validate_username(self, username):
@@ -37,7 +37,7 @@ class RegistrationForm(FlaskForm):
             raise ValidationError(_('Please use a different username.'))
 
     def validate_email(self, email):
-        """Check to ensure no duplicate emails."""
+        """Ensure no duplicate emails."""
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError(_('Please use a different email address.'))
