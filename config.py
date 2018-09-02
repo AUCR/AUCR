@@ -19,7 +19,7 @@ class Config(object):
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    ADMINS = ['admin@aucr.io']
+    ADMINS = os.environ.get("ADMIN_EMAILS") or ['admin@aucr.io']
     LANGUAGES = ['en']
     MS_TRANSLATOR_KEY = os.environ.get('MS_TRANSLATOR_KEY')
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
@@ -29,7 +29,7 @@ class Config(object):
     ALLOWED_EXTENSIONS = os.environ.get('ALLOWED_EXTENSIONS') or ['txt', 'pdf', 'png', 'jpg',
                                                                   'jpeg', 'gif', 'doc', 'docx', 'exe', 'yar', 'zip']
     REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
-    POSTS_PER_PAGE = 25
+    POSTS_PER_PAGE = os.environ.get('POSTS_PER_PAGE') or 25
     RABBITMQ_SERVER = os.environ.get('RABBITMQ_SERVER') or 'localhost'
     RABBITMQ_PORT = os.environ.get('RABBITMQ_PORT') or '5672'
     RABBITMQ_USERNAME = os.environ.get('RABBITMQ_USERNAME') or 'guest'

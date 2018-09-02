@@ -45,25 +45,23 @@ def edit_profile():
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
         user_name = User.query.filter_by(username=current_user.username).first()
-
-        if user_name.otp_secret:
-            current_user.otp_secret = user_name.otp_secret
-        else:
-            current_user.otp_secret = pyotp.random_base32()
-        db.session.commit()
-        user_name = User.query.filter_by(username=current_user.username).first()
         if user_name is None:
             render_error_page_template(404)
-
-        # for added security, remove username from session
-        # render qrcode for FreeTOTP
-        url = pyqrcode.create(user_name.get_totp_uri())
-        stream = BytesIO()
-        url.svg(stream, scale=3)
-        return render_template('two-factor-setup.html'), 200, {
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache',
-            'Expires': '0'}
+        if form.otp_token_checkbox.data:
+            if user_name.otp_secret:
+                current_user.otp_secret = user_name.otp_secret
+            else:
+                current_user.otp_secret = pyotp.random_base32()
+            db.session.commit()
+            # for added security, remove username from session
+            # render qrcode for FreeTOTP
+            url = pyqrcode.create(user_name.get_totp_uri())
+            stream = BytesIO()
+            url.svg(stream, scale=3)
+            return render_template('two-factor-setup.html'), 200, {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'}
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
@@ -89,7 +87,7 @@ def messages():
     db.session.commit()
     page = request.args.get('page', 1, type=int)
     messages_list = current_user.messages_received.order_by(Message.timestamp.desc()).paginate(
-               page, current_app.config['POSTS_PER_PAGE'], False)
+               page, int(current_app.config['POSTS_PER_PAGE']), False)
     next_url = url_for('auth.messages', page=messages_list.next_num) if messages_list.has_next else None
     prev_url = url_for('auth.messages', page=messages_list.prev_num) if messages_list.has_prev else None
     return render_template('messages.html', messages=messages_list.items, next_url=next_url, prev_url=prev_url)
@@ -354,7 +352,7 @@ def search():
     posts, total = Message.search(g.search_form.q.data, page, current_app.config['POSTS_PER_PAGE'])
     search_messages, total = Message.search(g.search_form.q.data, page, current_app.config['POSTS_PER_PAGE'])
     next_url = url_for('search', q=g.search_form.q.data, page=page + 1) \
-        if total > page * current_app.config['POSTS_PER_PAGE'] else None
+        if total > page * int(current_app.config['POSTS_PER_PAGE']) else None
     prev_url = url_for('search', q=g.search_form.q.data, page=page - 1) if page > 1 else None
     return render_template('search.html', title=_('Search'), messages=search_messages, next_url=next_url,
                            prev_url=prev_url, posts=posts, page=page)

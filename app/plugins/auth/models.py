@@ -92,7 +92,7 @@ class PaginatedAPIMixin(object):
 class User(UserMixin, PaginatedAPIMixin, db.Model):
     """AUCR User models class defines information in the user table."""
 
-    __searchable__ = ['id', 'username', 'last_used_ip', 'email', 'about_me']
+    #__searchable__ = ['id', 'username', 'email']
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
