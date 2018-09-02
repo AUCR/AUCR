@@ -42,7 +42,6 @@ aucr.log*
 .idea/
 aucr.db
 logs/
-migrations/
 /app/plugins/cases/
 /deployment/apache2/certs/README
 /deployment/apache2/certs/privkey.pem
