@@ -138,13 +138,11 @@ class UserModelCase(unittest.TestCase):
 
     def test_send_mail(self):
         """This let's test our send email functions to ensure things work as expected."""
-        app = self.app
-        test_recipients = ["test1@test.com", "test2@test.com"]
-        test_result = send_email("Test Subject", "test3@test.com", test_recipients, "Test Message", "Nothing")
-        self.assertTrue(test_result)
+        test_recipients = ["admin@aucr.io"]
+        test_result = send_email("Test Subject", "admin@aucr.io", test_recipients, "Test Message", "Nothing")
+        self.assertFalse(test_result)
 
     def test_zip_encrypt(self):
-        app = self.app
         encrypt_zip_file("infected", "test.zip", ["app/plugins/main/static/img/loading.gif"])
         test_file = decrypt_zip_file_map("upload/test.zip", "infected")
         test_result = create_upload_file(test_file, "upload")
