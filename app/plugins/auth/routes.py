@@ -72,6 +72,10 @@ def edit_profile():
                 form.otp_token.data = current_user.otp_token
         else:
             form.otp_token_checkbox = current_user.otp_token_checkbox
+    else:
+        for error in form.errors:
+            flash(str(form.errors[error][0]), 'error')
+        render_template('register.html', title=_('Register'), form=form)
     return render_template('edit_profile.html', title=_('Edit Profile'), form=form)
 
 
@@ -105,6 +109,10 @@ def send_message(recipient):
         db.session.commit()
         flash(_('Your message has been sent.'))
         return redirect(url_for('auth.user', username=recipient))
+    else:
+        for error in form.errors:
+            flash(str(form.errors[error][0]), 'error')
+        render_template('register.html', title=_('Register'), form=form)
     return render_template('send_message.html', title=_('Send Message'), form=form, recipient=recipient)
 
 
@@ -159,6 +167,10 @@ def reset_password_request():
             send_password_reset_email(user_name)
         flash(_('If that is a valid email the instructions have been sent to reset your password'))
         return redirect(url_for('auth.login'))
+    else:
+        for error in form.errors:
+            flash(str(form.errors[error][0]), 'error')
+        render_template('register.html', title=_('Register'), form=form)
     return render_template('reset_password_request.html', title=_('Reset Password'), form=form)
 
 
@@ -176,6 +188,10 @@ def reset_password(token):
         db.session.commit()
         flash(_('Your password has been reset.'))
         return redirect(url_for('auth.login'))
+    else:
+        for error in form.errors:
+            flash(str(form.errors[error][0]), 'error')
+        render_template('register.html', title=_('Register'), form=form)
     return render_template('reset_password.html', form=form)
 
 
@@ -210,6 +226,10 @@ def create_group():
             group_create_message = str('The group ' + str(create_group_name.name) + ' has been created!')
             flash(_(group_create_message))
             return redirect(url_for('auth.groups'))
+        else:
+            for error in form.errors:
+                flash(str(form.errors[error][0]), 'error')
+            render_template('register.html', title=_('Register'), form=form)
         return render_template('create_group.html', form=form, groups=user_info)
     else:
         return render_error_page_template(403)
@@ -228,6 +248,10 @@ def remove_user_from_group():
                                        'has been removed from ' + str(form.group_name.data) + "!")
             flash(_(group_create_message))
             return redirect(url_for('auth.groups'))
+        else:
+            for error in form.errors:
+                flash(str(form.errors[error][0]), 'error')
+            render_template('register.html', title=_('Register'), form=form)
         return render_template('remove_user_from_group.html', form=form)
     else:
         return render_error_page_template(403)
@@ -302,6 +326,10 @@ def login():
             db.session.commit()
             page = request.args.get('page', 1, type=int)
             return redirect(url_for('main.index', page=page))
+        else:
+            for error in form.errors:
+                flash(str(form.errors[error][0]), 'error')
+            render_template('register.html', title=_('Register'), form=form)
         flash('Invalid username, password or token.')
         return redirect(url_for('auth.login'))
     page = request.args.get('page', 1, type=int)
