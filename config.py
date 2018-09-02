@@ -30,6 +30,7 @@ class Config(object):
                                                                   'jpeg', 'gif', 'doc', 'docx', 'exe', 'yar', 'zip']
     REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
     POSTS_PER_PAGE = os.environ.get('POSTS_PER_PAGE') or 25
+    MONGO_URI = os.environ.get('MONGO_URI') or None
     RABBITMQ_SERVER = os.environ.get('RABBITMQ_SERVER') or 'localhost'
     RABBITMQ_PORT = os.environ.get('RABBITMQ_PORT') or '5672'
     RABBITMQ_USERNAME = os.environ.get('RABBITMQ_USERNAME') or 'guest'

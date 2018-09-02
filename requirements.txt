@@ -61,3 +61,4 @@ pika
 pyotp
 fleep
 python-swiftclient
+Flask-PyMongo

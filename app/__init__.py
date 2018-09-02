@@ -11,6 +11,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_pymongo import PyMongo
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_babel import Babel, lazy_gettext as _l
@@ -31,7 +32,6 @@ mail = Mail()
 bootstrap = Bootstrap()
 moment = Moment()
 babel = Babel()
-
 socketio = SocketIO()
 
 
@@ -72,6 +72,8 @@ def create_app(config_class=Config):
         app.logger.addHandler(file_handler)
     app.logger.setLevel(logging.INFO)
     app.logger.info('AUCR startup')
+    if app.config["MONGO_URI"]:
+        app.mongo = PyMongo(app)
 
     return app
 

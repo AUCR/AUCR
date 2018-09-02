@@ -127,9 +127,12 @@ class EditProfileForm(FlaskForm):
             if user is not None:
                 raise ValidationError(_('Please use a different username.'))
 
-    def check_otp_checkbox(self):
-        """Flash otp checkbox."""
-        flash(self.otp_secret)
+    def validate_otp_checkbox(self):
+        """Return a validation error if OTP set."""
+        user = User.query.filter_by(username=self.username.data).first()
+        if user.otp_secret is not None:
+            flash(self.otp_secret)
+            raise ValidationError(_('The OTP token has already been set.'))
 
 
 class MessageForm(FlaskForm):
