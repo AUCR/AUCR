@@ -5,10 +5,11 @@
     <main class="mdl-layout__content">
         <div class="page-content">
             <h3>{{ _('Privacy & Terms') }}</h3>
-            <h4>Privacy</h4>
-            <p>Place holder for Privacy statement</p>
-            <h4>Terms</h4>
-            <p>Place holder for Terms statement</p>
+            <!-- Termly Tracking Code -->
+
         </div>
     </main>
+    <iframe width="100%" style="height: 95vh" src="{{ privacy_policy_url }}"frameborder="0" allowfullscreen>
+      <p>Your browser does not support iframes.</p>
+    </iframe>
 {% endblock %}

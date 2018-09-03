@@ -21,7 +21,7 @@
                     <h3 class="mdl-card__title-text">{{ _('Register') }}</h3>
                 </div>
                 <div class="mdl-card__supporting-text">
-                    {{ _('Please register here to access the site!') }}
+                    {{ _("Please register here to access the site! By creating account you're agreeing to our privacy policy!!") }}
                 </div>
                 <div class="mdl-card__actions mdl-card--border ">
                         <form class="form" method="post" role="form">
@@ -60,6 +60,10 @@
                                 Register
                             </button>
                         </form>
+                <div class="mdl-layout-spacer"></div>
+                    <p style="margin-left:.5em">{{ _('Read the privacy policy ') }}
+                        <a href="{{  url_for('main.privacy') }}">here</a>!
+                    </p>
                 </div>
                 </div>
         </section>

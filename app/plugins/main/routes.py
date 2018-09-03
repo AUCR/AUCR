@@ -2,7 +2,7 @@
 # coding=utf-8
 import logging
 import udatetime
-from flask import render_template, request, g
+from flask import render_template, request, g, current_app
 from flask_babel import _, get_locale
 from flask_login import current_user, login_required
 from app import db
@@ -43,12 +43,6 @@ def about_us():
     return render_template('about_us.html', title=_('About Us'))
 
 
-@main_template_page.route('/the_team', methods=['GET'])
-def the_team():
-    """Return the About the AUCR Team page."""
-    return render_template('the_team.html', title=_('About The Team'))
-
-
 @main_template_page.route('/help', methods=['GET'])
 def help_page():
     """Return the Help AUCR page."""
@@ -58,4 +52,8 @@ def help_page():
 @main_template_page.route('/privacy', methods=['GET'])
 def privacy():
     """Return the Privacy AUCR page."""
-    return render_template('privacy.html', title=_('Privacy & Terms'))
+    if current_app.config["PRIVACY_POLICY_URL"]:
+        privacy_policy_url = current_app.config["PRIVACY_POLICY_URL"]
+    else:
+        privacy_policy_url = "None"
+    return render_template('privacy.html', title=_('Privacy & Terms'), privacy_policy_url=privacy_policy_url)
