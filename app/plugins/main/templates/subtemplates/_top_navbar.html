@@ -5,7 +5,11 @@
         {% endif %}
     {% else %}
         {% if g.search_form %}
-            <form class="navbar-form navbar-left" method="get" action="{{ url_for('auth.search') }}">
+            {% if search_url %}
+                <form class="navbar-form" method="get" action="{{ url_for(search_url) }}">
+            {% else %}
+                <form class="navbar-form" method="get" action="{{ url_for('auth.search') }}">
+            {% endif %}
                 <div class="form-group">
                     {{ g.search_form.q(size=20, class='form-control', placeholder=g.search_form.q.label.text) }}
                 </div>

@@ -1,5 +1,6 @@
 """AUCR auth plugin email handler."""
 # coding=utf-8
+from threading import Thread
 from app import mail
 from flask import current_app, render_template
 from flask_babel import _
