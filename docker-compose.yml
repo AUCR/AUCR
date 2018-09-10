@@ -1,7 +1,6 @@
 version: "3.4"
 
 services:
-
   mysql:
     container_name: mysql
     image: mysql
@@ -20,6 +19,11 @@ services:
     container_name: kibana
     ports:
       - 5601:5601
+    environment:
+      - xpack.security.enabled=false
+      - xpack.monitoring.enabled=false
+      - xpack.ml.enabled=false
+      - xpack.watcher.enabled=false
     networks:
       - aucr
     env_file:
@@ -31,7 +35,7 @@ services:
     environment:
       - cluster.name=aucr
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - xpack.security.enabled=false
       - xpack.monitoring.enabled=false
       - xpack.ml.enabled=false
@@ -52,6 +56,18 @@ services:
     image: rabbitmq
     ports:
       - 5672:5672
+    networks:
+      - aucr
+    env_file:
+    - ./config-file.env
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+    - 27017:27017
+    volumes:
+    - ./mongo-data:/data/db
     networks:
       - aucr
 

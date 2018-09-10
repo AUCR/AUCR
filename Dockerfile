@@ -1,16 +1,14 @@
 FROM python:3-alpine AS AUCR
+
 MAINTAINER Wyatt Roersma <wyattroersma@gmail.com>
 
 RUN mkdir /opt
 RUN mkdir /opt/aucr/
-COPY aucr.py /opt/aucr
-COPY app /opt/aucr/app
-COPY babel.cfg /opt/aucr
-COPY LICENSE /opt/aucr
-COPY projectinfo.yml /opt/aucr
-COPY requirements.txt /opt/aucr
-COPY config.py /opt/aucr
+RUN mkdir /opt/aucr/upload
+
 ENV FLASK_APP=aucr.py
+
+COPY requirements.txt /opt/aucr
 
 
 WORKDIR /opt/aucr
@@ -28,7 +26,7 @@ RUN apk add --no-cache \
     py-pillow \
     openssl-dev \
   && pip install PyYAML \
-  && pip install -r requirements.txt --upgrade \
+  && pip install -r /opt/aucr/requirements.txt --upgrade \
   && apk del --purge gcc \
     libc-dev \
     musl-dev \
@@ -38,5 +36,15 @@ RUN apk add --no-cache \
     py-pillow \
     openssl-dev
 
+
+COPY aucr.py /opt/aucr
+COPY app /opt/aucr/app
+COPY babel.cfg /opt/aucr
+COPY LICENSE /opt/aucr
+COPY projectinfo.yml /opt/aucr
+COPY config.py /opt/aucr
+COPY migrations /opt/aucr/migrations/
+
 EXPOSE 5000
+
 CMD ["flask", "run", "--host=0.0.0.0"]
