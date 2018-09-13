@@ -1,7 +1,7 @@
 """Report AUCR import __init__ that creates the report module framework."""
 # coding=utf-8
 import os
-from app.plugins.reports.routes import reports_page, search_page
+from app.plugins.reports.routes import search_page
 # If you want the model to create the a table for the database at run time, import it here in the init
 from app.plugins.reports.models import ReportPlugins, ReportTable, Log, SearchForm
 from app.plugins.tasks.mq import get_a_task_mq
@@ -11,7 +11,6 @@ from multiprocessing import Process
 
 def load(app):
     """"Load function registers report plugin blueprint to flask."""
-    app.register_blueprint(reports_page, url_prefix='/reports')
     app.register_blueprint(search_page, url_prefix='/search')
     object_storage_type = os.environ.get('OBJECT_STORAGE')
     rabbitmq_server = os.environ.get('RABBITMQ_SERVER')

@@ -53,8 +53,6 @@ def remove_from_index(index, model):
 
 def query_index(index, query, page, per_page):
     """Elasticsearch query field from index."""
-    if not current_app.elasticsearch:
-        return [], 0
     if current_app:
         search = current_app.elasticsearch.search(
             index="message", doc_type="message",
@@ -62,9 +60,13 @@ def query_index(index, query, page, per_page):
         ids = [int(hit['_id']) for hit in search['hits']['hits']]
         return ids, search['hits']['total']
     else:
-        es = Elasticsearch(os.environ.get("ELASTICSEARCH_URL"))
-        search = es.search(
-            index=index, doc_type=index,
-            body={"query": {"match_all": {}}}, request_timeout=120)
-        ids = [(hit['id']) for hit in search['hits']['hits']]
-        return ids, search['hits']['total']
+        try:
+            es = Elasticsearch(os.environ.get("ELASTICSEARCH_URL"))
+            search = es.search(
+                index=index, doc_type=index,
+                body={"query": {"match_all": {}}}, request_timeout=120)
+            ids = [(hit['id']) for hit in search['hits']['hits']]
+            return ids, search['hits']['total']
+        except:
+            if not current_app.elasticsearch:
+                return [], 0
