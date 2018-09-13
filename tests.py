@@ -50,7 +50,7 @@ def test_password_hashing(client):
 def test_login(client):
     test = client.get('/auth/login')
     token = b'IjY0YmZiZTM5ZTQwOThhMmYwYWVhYmI1NGE4ZTg4ZTgzMTJiZmNlNTYi.DeWf1A.3MhxY9anNaUwgn2BTWmKCEDGDtk'
-    test2 = client.post('/auth/login', data=dict(username="admin", password="admin", token=token, submit=True), follow_redirects=True)
+    test2 = client.post('/auth/login', data=dict(username="admin", password="admin", submit=True), follow_redirects=True)
     test3 = client.get('/main/')
     test4 = client.get('/auth/register')
     test5 = client.get('/auth/groups')
@@ -71,6 +71,7 @@ class UserModelCase(unittest.TestCase):
     def setUp(self):
         """Set up needed base environment data for unittests."""
         self.app = aucr_app()
+        self.app.config['TESTING'] = True
         self.app_context = self.app.app_context()
         self.app_context.push()
         # Create a default sqlite database for testing
@@ -82,6 +83,8 @@ class UserModelCase(unittest.TestCase):
         csrf.init_app(self.app)
         self.csrf = CSRFProtect(self.app)
         self.test_user = test_user
+        self.client = self.app.test_client()
+
 
     def tearDown(self):
         """Destroy base environment data for unittests."""
@@ -89,6 +92,17 @@ class UserModelCase(unittest.TestCase):
         # Drop the database
         db.drop_all()
         self.app_context.pop()
+
+    def test_login(self):
+        with self.app.app_context():
+            test = self.client.get('/auth/login')
+            token = b'IjY0YmZiZTM5ZTQwOThhMmYwYWVhYmI1NGE4ZTg4ZTgzMTJiZmNlNTYi.DeWf1A.3MhxY9anNaUwgn2BTWmKCEDGDtk'
+            test2 = self.client.post('/auth/login', data=dict(username="admin", password="admin", submit=True),
+                                follow_redirects=True)
+            test3 = self.client.get('/main/')
+            test4 = self.client.get('/auth/register')
+            test5 = self.client.get('/auth/groups')
+
 
     def test_password_hashing(self):
         """Test auth plugin password hashing."""
