@@ -84,7 +84,7 @@ class UserModelCase(unittest.TestCase):
             self.assertEqual(test12.status_code, 200)
             self.assertEqual(test13.status_code, 200)
             self.assertEqual(test14.status_code, 200)
-            self.assertEqual(test15.status_code, 200)
+            self.assertEqual(test15.status_code, 302)
 
     def test_password_hashing(self):
         """Test auth plugin password hashing."""
