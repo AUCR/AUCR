@@ -18,53 +18,6 @@ from app.plugins.analysis.file.zip import encrypt_zip_file, decrypt_zip_file_map
 from app.plugins.analysis.file.upload import create_upload_file
 
 
-@pytest.fixture
-def client():
-    aucr = create_app()
-    db_fd, aucr.config['DATABASE'] = tempfile.mkstemp()
-    aucr.config['TESTING'] = True
-    client = aucr.test_client()
-
-    with aucr.app_context():
-        init_app(aucr)
-
-    yield client
-    os.close(db_fd)
-
-
-def test_main_route(client):
-    """Start with a blank database."""
-
-    rv = client.get('/main/')
-    assert 302 == rv.status_code
-
-
-def test_password_hashing(client):
-    """Test auth plugin password hashing."""
-    test_password_user = User.__call__(username="test1")
-    # These are randomly generated passwords for a longer complexity check to ensure this works as expected
-    test_password_user.set_password("0Qk9Bata3EO69U5T2qH57lAV1r67Wu")
-    assert not test_password_user.check_password("wrong")
-    assert test_password_user.check_password("0Qk9Bata3EO69U5T2qH57lAV1r67Wu")
-
-
-def test_login(client):
-    test = client.get('/auth/login')
-    token = b'IjY0YmZiZTM5ZTQwOThhMmYwYWVhYmI1NGE4ZTg4ZTgzMTJiZmNlNTYi.DeWf1A.3MhxY9anNaUwgn2BTWmKCEDGDtk'
-    test2 = client.post('/auth/login', data=dict(username="admin", password="admin", submit=True), follow_redirects=True)
-    test3 = client.get('/main/')
-    test4 = client.get('/auth/register')
-    test5 = client.get('/auth/groups')
-    return test
-
-
-def test_logout(client):
-    return client.get('/auth/logout', follow_redirects=True)
-
-
-csrf = CSRFProtect()
-
-
 class UserModelCase(unittest.TestCase):
     """Unittests automated AUCR test case framework."""
 
@@ -74,16 +27,12 @@ class UserModelCase(unittest.TestCase):
         self.app.config['TESTING'] = True
         self.app.config['SECRET_KEY'] = "testing"
         self.app.config['WTF_CSRF_ENABLED'] = False
-        self.app_context = self.app.app_context()
-        self.app_context.push()
         # Create a default sqlite database for testing
         self.test_user_password = "0Qk9Bata3EO69U5T2qH57lAV1r67Wu"
         test_user = User.__call__(username="test2", email="test2@example.com")
         test_user.set_password(self.test_user_password)
         db.session.add(test_user)
         db.session.commit()
-        csrf.init_app(self.app)
-        self.csrf = CSRFProtect(self.app)
         self.test_user = test_user
         self.client = self.app.test_client()
 
@@ -92,18 +41,50 @@ class UserModelCase(unittest.TestCase):
         db.session.remove()
         # Drop the database
         db.drop_all()
-        self.app_context.pop()
 
-    def test_login(self):
+    def test_auth(self):
         with self.app.app_context():
-            test = self.client.get('/auth/login')
-            test4 = self.client.get('/auth/register')
+            test0 = self.client.get('/auth/login')
+            test1 = self.client.get('/auth/register')
+            test13 = self.client.post('/auth/reset_password_request', data=dict(email="admin@aucr.io", submit=True),
+                                      follow_redirects=True)
+            test12 = self.client.post('/auth/register', data=dict(username="testuser1", email="admin+test@aucr.io",
+                                                                  password="test", password2="test",
+                                                                  website="aucr.io", affiliation="testing group",
+                                                                  country="None", submit=True),
+                                      follow_redirects=True)
             test2 = self.client.post('/auth/login', data=dict(username="admin", password="admin", submit=True),
                                      follow_redirects=True)
             test3 = self.client.get('/main/')
-            test5 = self.client.get('/auth/groups')
-            test6 = self.client.get('/auth/user/admin')
-            test7 = self.client.get('/auth/edit_profile')
+            test4 = self.client.get('/auth/groups')
+            test5 = self.client.get('/auth/user/admin')
+            test6 = self.client.get('/auth/edit_profile')
+            test7 = self.client.get('/auth/users')
+            test8 = self.client.get('/auth/messages')
+            test9 = self.client.get('/auth/groups')
+            test10 = self.client.get('/auth/create_group')
+            test11 = self.client.post('/auth/create_group',
+                                      data=dict(group_name="testgroup", admin_user="admin", submit=True),
+                                      follow_redirects=True)
+            test14 = self.client.post('/auth/edit_profile', data=dict(otp_token_checkbox=True, submit=True),
+                                      follow_redirects=True)
+            test15 = self.client.get('/auth/logout')
+            self.assertEqual(test0.status_code, 200)
+            self.assertEqual(test1.status_code, 200)
+            self.assertEqual(test2.status_code, 200)
+            self.assertEqual(test3.status_code, 200)
+            self.assertEqual(test4.status_code, 200)
+            self.assertEqual(test5.status_code, 200)
+            self.assertEqual(test6.status_code, 200)
+            self.assertEqual(test7.status_code, 200)
+            self.assertEqual(test8.status_code, 200)
+            self.assertEqual(test9.status_code, 200)
+            self.assertEqual(test10.status_code, 200)
+            self.assertEqual(test11.status_code, 200)
+            self.assertEqual(test12.status_code, 200)
+            self.assertEqual(test13.status_code, 200)
+            self.assertEqual(test14.status_code, 200)
+            self.assertEqual(test15.status_code, 200)
 
     def test_password_hashing(self):
         """Test auth plugin password hashing."""
