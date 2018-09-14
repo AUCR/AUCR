@@ -1,20 +1,10 @@
 # coding=utf-8
 """Default unittests to automate functional testing of AUCR code."""
 # !/usr/bin/env python
-import os
-import tempfile
-import pytest
 import unittest
-import re
-import time
-from config import Config
-from flask_wtf import CSRFProtect
-from app import create_app, db, aucr_app, init_app
-from app.plugins.main import main_page
-from app.plugins.auth.models import User, Group, Groups
-from app.plugins.auth.utils import check_group, get_group_permission_navbar
-from app.plugins.auth.email import send_password_reset_email, send_async_email, send_email
-from app.plugins.analysis.file.zip import encrypt_zip_file, decrypt_zip_file_map, write_file_map
+from app import db, aucr_app
+from app.plugins.auth.models import User
+from app.plugins.analysis.file.zip import encrypt_zip_file, decrypt_zip_file_map
 from app.plugins.analysis.file.upload import create_upload_file
 
 
@@ -75,6 +65,12 @@ class UserModelCase(unittest.TestCase):
                                       follow_redirects=True)
             test19 = self.client.get('/auth/send_message')
             test15 = self.client.get('/auth/logout', follow_redirects=True)
+            test20 = self.client.get('/main/help')
+            test21 = self.client.get('/main/privacy')
+            test22 = self.client.get('/main/about_us')
+            test23 = self.client.get('/analysis/upload_file', follow_redirects=True)
+            test24 = self.client.get('/auth/remove_user_from_group', follow_redirects=True)
+
             self.assertEqual(test0.status_code, 200)
             self.assertEqual(test1.status_code, 200)
             self.assertEqual(test2.status_code, 200)
@@ -95,6 +91,11 @@ class UserModelCase(unittest.TestCase):
             self.assertTrue(test17)
             self.assertTrue(test18)
             self.assertTrue(test19)
+            self.assertEqual(test20.status_code, 200)
+            self.assertEqual(test21.status_code, 200)
+            self.assertEqual(test22.status_code, 200)
+            self.assertEqual(test23.status_code, 200)
+            self.assertEqual(test24.status_code, 200)
 
     def test_zip_encrypt(self):
         encrypt_zip_file("infected", "test.zip", ["app/plugins/main/static/img/loading.gif"])
