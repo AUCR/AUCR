@@ -5,6 +5,7 @@ import os
 import tempfile
 import pytest
 import unittest
+import re
 import time
 from config import Config
 from flask_wtf import CSRFProtect
@@ -61,7 +62,6 @@ def test_logout(client):
     return client.get('/auth/logout', follow_redirects=True)
 
 
-
 csrf = CSRFProtect()
 
 
@@ -72,6 +72,8 @@ class UserModelCase(unittest.TestCase):
         """Set up needed base environment data for unittests."""
         self.app = aucr_app()
         self.app.config['TESTING'] = True
+        self.app.config['SECRET_KEY'] = "testing"
+        self.app.config['WTF_CSRF_ENABLED'] = False
         self.app_context = self.app.app_context()
         self.app_context.push()
         # Create a default sqlite database for testing
@@ -85,7 +87,6 @@ class UserModelCase(unittest.TestCase):
         self.test_user = test_user
         self.client = self.app.test_client()
 
-
     def tearDown(self):
         """Destroy base environment data for unittests."""
         db.session.remove()
@@ -96,13 +97,13 @@ class UserModelCase(unittest.TestCase):
     def test_login(self):
         with self.app.app_context():
             test = self.client.get('/auth/login')
-            token = b'IjY0YmZiZTM5ZTQwOThhMmYwYWVhYmI1NGE4ZTg4ZTgzMTJiZmNlNTYi.DeWf1A.3MhxY9anNaUwgn2BTWmKCEDGDtk'
-            test2 = self.client.post('/auth/login', data=dict(username="admin", password="admin", submit=True),
-                                follow_redirects=True)
-            test3 = self.client.get('/main/')
             test4 = self.client.get('/auth/register')
+            test2 = self.client.post('/auth/login', data=dict(username="admin", password="admin", submit=True),
+                                     follow_redirects=True)
+            test3 = self.client.get('/main/')
             test5 = self.client.get('/auth/groups')
-
+            test6 = self.client.get('/auth/user/admin')
+            test7 = self.client.get('/auth/edit_profile')
 
     def test_password_hashing(self):
         """Test auth plugin password hashing."""

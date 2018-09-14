@@ -129,7 +129,7 @@ def notifications():
 def register():
     """AUCR auth plugin user register flask blueprint."""
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
     form = RegistrationForm()
     if request.method == "POST":
         form = RegistrationForm(request.form)
