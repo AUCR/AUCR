@@ -157,7 +157,7 @@ def register():
 def reset_password_request():
     """AUCR auth plugin reset password request flask blueprint."""
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
     form = ResetPasswordRequestForm()
     if form.validate_on_submit():
         user_name = User.query.filter_by(email=form.email.data).first()
