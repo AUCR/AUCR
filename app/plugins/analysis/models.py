@@ -47,7 +47,7 @@ class FileUpload(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     file_hash = db.Column(db.String(32), index=True)
     uploaded_by = db.Column(db.Integer, db.ForeignKey('user.id'))
-    file_type = db.Column(db.String(32), index=True)
+    file_type = db.Column(db.String(512), index=True)
     time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
