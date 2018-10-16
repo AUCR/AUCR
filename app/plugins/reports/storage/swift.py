@@ -40,3 +40,7 @@ class SwiftConnection(object):
     def put(self, file_name, file_content):
         container_name = self.container_name
         self.conn.put_object(container_name, file_name, contents=file_content, )
+
+    def get_file(self, file_name):
+        container_name = self.container_name
+        self.conn.get_object(container_name, file_name)
