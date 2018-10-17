@@ -63,3 +63,4 @@ pyotp
 fleep
 python-swiftclient
 Flask-PyMongo
+DataParserLib
