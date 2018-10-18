@@ -1,48 +1,52 @@
-<div class="mdl-layout-spacer"></div>
-<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-    <div class="mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col
-        mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
-        <table class="mdl-data-table mdl-js-data-table">
-            <thead>
-                <tr>
-                  <th>
+<table class="mdl-data-table mdl-js-data-table">
+    <thead>
+        <tr>
+            {% if checkbox_enabled %}
+              <th>
+                  {% if table_list %}
                         <button id="demo-menu-lower-left"
-                            class="mdl-button mdl-js-button mdl-button--icon">
+                             class="mdl-button mdl-js-button mdl-button--icon">
                             <i class="material-icons">more_vert</i>
                         </button>
                         <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
                             for="demo-menu-lower-left">
-                            <li class="mdl-menu__item">Merge</li>
-                            <li class="mdl-menu__item">Delete</li>
-                        </ul>
-                    </th>
-                    {% for header in table_header %}
-                        <th>{{ header }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for k,v in table_dict.items() %}
-                    <tr>
-                        <td>
-                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-                                <input type="checkbox" class="mdl-checkbox__input" />
-                            </label>
-                        {% if "checked" in input %}
-                            {% set checkbox_items = session.checkbox %}
-                        {% endif %}
-                        </td>
-                        {% for k2,v2 in v.items() %}
-                            {% if k2 == 'id' %}
-                                <td> <a href={{ url_for(url_for_value, id= v['id'])}}>{{ v2 }}</a></td>
-                            {% elif "id" != k2 %}
-                                <td>{{ v2 }}</td>
-                            {% endif %}
+                        {% for items in table_list %}
+                            <li class="mdl-menu__item">{{ items }}</li>
                         {% endfor %}
-                    </tr>
+                        </ul>
+                  {% else %}
+                    <ul>
+                    </ul>
+                  {% endif %}
+                </th>
+            {% endif %}
+            {% for header in table_header %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for k,v in table_dict.items() %}
+            <tr>
+                {% if checkbox_enabled %}
+                <td>
+                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+                        <input type="checkbox" class="mdl-checkbox__input" />
+                    </label>
+                {% if "checked" in input %}
+                    {% set checkbox_items = session.checkbox %}
+                {% endif %}
+                </td>
+                {% endif %}
+                {% for k2,v2 in v.items() %}
+                    {% if k2 == 'id' %}
+                        <td> <a href={{ url_for(url_for_value, id= v['id'])}}>{{ v2 }}</a></td>
+                    {% elif "id" != k2 %}
+                        <td>{{ v2 }}</td>
+                    {% endif %}
                 {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</section>
-<div class="mdl-layout-spacer"></div>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+

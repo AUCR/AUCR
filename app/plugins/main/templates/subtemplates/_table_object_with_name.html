@@ -1,0 +1,35 @@
+<table class="mdl-data-table mdl-js-data-table">
+    <thead>
+        <tr>
+              {% if table_list %}
+                <th>
+                    <button id="demo-menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon">
+                        <i class="material-icons">more_vert</i>
+                    </button>
+                    <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="demo-menu-lower-left">
+                    {% for items in table_list %}
+                        <li class="mdl-menu__item">{{ items }}</li>
+                    {% endfor %}
+                    </ul>
+                </th>
+              {% endif %}
+            {% for header in table_header %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for k,v in table_dict.items() %}
+            <tr>
+                {% for k2,v2 in v.items() %}
+                    {% if k2 == 'name' %}
+                        <td> <a href={{ url_for(url_for_value, room= v['name'])}}>{{ v2 }}</a></td>
+                    {% elif "name" != k2 %}
+                        <td>{{ v2 }}</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
