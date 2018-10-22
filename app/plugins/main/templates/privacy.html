@@ -6,10 +6,13 @@
         <div class="page-content">
             <h3>{{ _('Privacy & Terms') }}</h3>
             <!-- Termly Tracking Code -->
-
         </div>
     </main>
-    <iframe width="100%" style="height: 95vh" src="{{ privacy_policy_url }}" frameborder="0" allowfullscreen>
-      <p>Your browser does not support iframes.</p>
-    </iframe>
+    {% if privacy_policy_url != 'None' %}
+        <iframe width="100%" style="height: 95vh" src="{{ privacy_policy_url }}" frameborder="0" allowfullscreen>
+          <p>Your browser does not support iframes.</p>
+        </iframe>
+    {% else %}
+        <p>No Privacy and Terms of Usage set</p>
+    {% endif %}
 {% endblock %}
