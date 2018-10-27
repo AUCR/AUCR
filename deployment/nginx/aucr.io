@@ -27,7 +27,7 @@ proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 }
 location /static {
 # handle static files directly, without forwarding to the application
-alias /opt/aucr/app/plugins/main/static;
+alias /opt/aucr/aucr_app/plugins/main/static;
 expires 30d;
 }
 location /socket.io {

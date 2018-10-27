@@ -42,7 +42,7 @@ aucr.log*
 .idea/
 aucr.db
 logs/
-/app/plugins/cases/
+/aucr_app/plugins/cases/
 /deployment/apache2/certs/README
 /deployment/apache2/certs/privkey.pem
 /deployment/apache2/certs/fullchain.pem
@@ -53,13 +53,13 @@ mysql/
 config-file.env
 es-data/
 travis.log
-/app/plugins/Horatio/*
-/app/plugins/Sermo/*
-/app/plugins/openstack/*
-/app/plugins/spartan/*
+/aucr_app/plugins/Horatio/*
+/aucr_app/plugins/Sermo/*
+/aucr_app/plugins/openstack/*
+/aucr_app/plugins/spartan/*
 .pytest_cache/
-Would skip repository app/plugins/Horatio/
-Would skip repository app/plugins/Sermo/
+Would skip repository aucr_app/plugins/Horatio/
+Would skip repository aucr_app/plugins/Sermo/
 notepad.py
 serve.py
-/app/plugins/yara/
+/aucr_app/plugins/yara/

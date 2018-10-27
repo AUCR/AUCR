@@ -5,6 +5,7 @@ MAINTAINER Wyatt Roersma <wyattroersma@gmail.com>
 RUN mkdir /opt
 RUN mkdir /opt/aucr/
 RUN mkdir /opt/aucr/upload
+RUN mkdir /opt/aucr/migrations/
 
 ENV FLASK_APP=aucr.py
 
@@ -42,7 +43,6 @@ COPY babel.cfg /opt/aucr
 COPY LICENSE /opt/aucr
 COPY projectinfo.yml /opt/aucr
 COPY config.py /opt/aucr
-COPY migrations /opt/aucr/migrations/
 
 EXPOSE 5000
 
