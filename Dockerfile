@@ -25,7 +25,6 @@ RUN apk add --no-cache \
     libffi-dev \
     py-pillow \
     openssl-dev \
-  && pip install PyYAML \
   && pip install -r /opt/aucr/requirements.txt --upgrade \
   && apk del --purge gcc \
     libc-dev \
@@ -38,7 +37,7 @@ RUN apk add --no-cache \
 
 
 COPY aucr.py /opt/aucr
-COPY app /opt/aucr/app
+COPY aucr_app /opt/aucr/aucr_app
 COPY babel.cfg /opt/aucr
 COPY LICENSE /opt/aucr
 COPY projectinfo.yml /opt/aucr

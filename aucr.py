@@ -1,7 +1,7 @@
 """The AUCR FLASK APP."""
 # coding=utf-8
-from app import aucr_app, db
-from app.plugins.auth.models import User, Message, Notification, Task
+from aucr_app import aucr_app, db
+from aucr_app.plugins.auth.models import User, Message, Notification, Task
 
 app = aucr_app()
 

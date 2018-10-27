@@ -64,3 +64,9 @@ fleep
 python-swiftclient
 Flask-PyMongo
 DataParserLib
+python-cinderclient
+python-glanceclient
+python-keystoneclient
+python-novaclient
+python-openstackclient
+python-swiftclient

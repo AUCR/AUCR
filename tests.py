@@ -2,10 +2,10 @@
 """Default unittests to automate functional testing of AUCR code."""
 # !/usr/bin/env python
 import unittest
-from app import db, aucr_app
-from app.plugins.auth.models import User
-from app.plugins.analysis.file.zip import encrypt_zip_file, decrypt_zip_file_map
-from app.plugins.analysis.file.upload import create_upload_file
+from aucr_app import db, aucr_app
+from aucr_app.plugins.auth.models import User
+from aucr_app.plugins.analysis.file.zip import encrypt_zip_file, decrypt_zip_file_map
+from aucr_app.plugins.analysis.file.upload import create_upload_file
 
 
 class UserModelCase(unittest.TestCase):
@@ -98,7 +98,7 @@ class UserModelCase(unittest.TestCase):
             self.assertEqual(test24.status_code, 200)
 
     def test_zip_encrypt(self):
-        encrypt_zip_file("infected", "test.zip", ["app/plugins/main/static/img/loading.gif"])
+        encrypt_zip_file("infected", "test.zip", ["aucr_app/plugins/main/static/img/loading.gif"])
         test_file = decrypt_zip_file_map("upload/test.zip", "infected")
         test_result = create_upload_file(test_file, "upload")
         self.assertEqual("73e57937304d89f251e7e540a24b095a", test_result)
