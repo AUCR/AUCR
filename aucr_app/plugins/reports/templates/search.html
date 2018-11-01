@@ -12,16 +12,9 @@
     {% endfor %}
     <nav aria-label="...">
         <ul class="pager">
-            <li class="previous{% if not prev_url %} disabled{% endif %}">
-                <a href="{{ prev_url or '#' }}">
-                    <span aria-hidden="true">&larr;</span>{{ _('Newer posts') }}
-                </a>
-            </li>
-            <li class="next{% if not next_url %} disabled{% endif %}">
-                <a href="{{ next_url or '#' }}">
-                   {{ _('Older posts') }}<span aria-hidden="true">&rarr;</span>
-                </a>
-            </li>
+            {% with form_object="prevnextnav", prev_url=prev_url, prev_text="Newer posts", next_url=next_url, next_text="Older posts" %}
+                {% include "subtemplates/_prev_next_nav.html" %}
+            {% endwith %}
         </ul>
     </nav>
 {% endblock %}
