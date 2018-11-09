@@ -1,9 +1,9 @@
 """AUCR auth plugin default page forms."""
 # coding=utf-8
-from flask import flash
+from flask import flash, current_app
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, IntegerField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length, URL
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from flask_babel import _, lazy_gettext as _l
 from aucr_app.plugins.auth.models import User, Group, Groups
 
@@ -41,6 +41,16 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError(_('Please use a different email address.'))
+        white_listed_email = None
+        if current_app.config["ALLOWED_EMAIL_LIST"]:
+            test_list = current_app.config["ALLOWED_EMAIL_LIST"]
+            for item in test_list:
+                item_length = len(item) + 2
+                test_email = self.email.data[item_length:]
+                if item == test_email:
+                    white_listed_email = True
+            if not white_listed_email:
+                raise ValidationError(_('Please use a whitelisted email address.'))
 
 
 class ResetPasswordRequestForm(FlaskForm):
