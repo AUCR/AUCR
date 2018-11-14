@@ -209,7 +209,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
         if new_user and 'password' in data:
             self.set_password(data['password'])
 
-    def get_token(self, expires_in=3600):
+    def get_token(self, expires_in=360000):
         """Generate and return a token for user auth."""
         now = udatetime.utcnow().replace(tzinfo=None)
         if self.token and self.token_expiration > now - timedelta(seconds=60):

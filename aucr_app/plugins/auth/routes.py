@@ -148,8 +148,7 @@ def register():
         else:
             for error in form.errors:
                 flash(str(form.errors[error][0]), 'error')
-            render_template('register.html', title=_('Register'), form=form)
-        render_template('register.html', title=_('Register'), form=form)
+            return redirect(url_for('auth.register'))
     return render_template('register.html', title=_('Register'), form=form)
 
 
@@ -168,8 +167,7 @@ def reset_password_request():
     else:
         for error in form.errors:
             flash(str(form.errors[error][0]), 'error')
-        render_template('register.html', title=_('Register'), form=form)
-    return render_template('reset_password_request.html', title=_('Reset Password'), form=form)
+        return render_template('reset_password_request.html', title=_('Register'), form=form)
 
 
 @auth_page.route('/reset_password/<token>', methods=['GET', 'POST'])
@@ -189,8 +187,7 @@ def reset_password(token):
     else:
         for error in form.errors:
             flash(str(form.errors[error][0]), 'error')
-        render_template('register.html', title=_('Register'), form=form)
-    return render_template('reset_password.html', form=form)
+        return render_template('reset_password.html', form=form)
 
 
 @auth_page.route('/groups', methods=['GET', 'POST'])
@@ -227,8 +224,7 @@ def create_group():
         else:
             for error in form.errors:
                 flash(str(form.errors[error][0]), 'error')
-            render_template('register.html', title=_('Register'), form=form)
-        return render_template('create_group.html', form=form, groups=user_info)
+            return render_template('create_group.html', form=form, groups=user_info)
     else:
         return render_error_page_template(403)
 
@@ -249,8 +245,7 @@ def remove_user_from_group():
         else:
             for error in form.errors:
                 flash(str(form.errors[error][0]), 'error')
-            render_template('register.html', title=_('Register'), form=form)
-        return render_template('remove_user_from_group.html', form=form)
+            return render_template('remove_user_from_group.html', form=form)
     else:
         return render_error_page_template(403)
 

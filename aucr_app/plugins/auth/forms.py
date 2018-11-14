@@ -43,12 +43,11 @@ class RegistrationForm(FlaskForm):
             raise ValidationError(_('Please use a different email address.'))
         white_listed_email = None
         if current_app.config["ALLOWED_EMAIL_LIST"]:
-            test_list = current_app.config["ALLOWED_EMAIL_LIST"]
-            for item in test_list:
-                item_length = len(item) + 2
-                test_email = self.email.data[item_length:]
-                if item == test_email:
-                    white_listed_email = True
+            white_listed_email_list = current_app.config["ALLOWED_EMAIL_LIST"]
+            item_length = len(white_listed_email_list)
+            test_email = self.email.data[-item_length:]
+            if white_listed_email_list == test_email:
+                white_listed_email = True
             if not white_listed_email:
                 raise ValidationError(_('Please use a whitelisted email address.'))
 
