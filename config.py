@@ -31,7 +31,9 @@ class Config(object):
                                                                   'jpeg', 'gif', 'doc', 'docx', 'exe', 'yar', 'zip']
     REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
     POSTS_PER_PAGE = os.environ.get('POSTS_PER_PAGE') or 25
-    ALLOWED_EMAIL_LIST = os.environ.get("ALLOWED_EMAIL_LIST").split(', ') or None
+    ALLOWED_EMAIL_LIST = os.environ.get("ALLOWED_EMAIL_LIST")
+    if ALLOWED_EMAIL_LIST:
+        ALLOWED_EMAIL_LIST = ALLOWED_EMAIL_LIST.split(', ')
     APP_TITLE = os.environ.get('APP_TITLE') or "Analyst Unknown Cyber Range"
     MONGO_URI = os.environ.get('MONGO_URI') or None
     PRIVACY_POLICY_URL = os.environ.get('PRIVACY_POLICY_URL') or None
