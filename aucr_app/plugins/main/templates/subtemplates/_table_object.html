@@ -38,6 +38,7 @@
                 {% endif %}
                 </td>
                 {% endif %}
+                {% if v is mapping %}
                 {% for k2,v2 in v.items() %}
                     {% if k2 == 'id' %}
                         <td> <a href={{ url_for(url_for_value, id= v['id'])}}>{{ v2 }}</a></td>
@@ -45,6 +46,9 @@
                         <td>{{ v2 }}</td>
                     {% endif %}
                 {% endfor %}
+                {% else %}
+                    <td>{{ v }}</td>
+                {% endif %}
             </tr>
         {% endfor %}
     </tbody>

@@ -21,13 +21,17 @@
     <tbody>
         {% for k,v in table_dict.items() %}
             <tr>
+                {% if v is mapping %}
                 {% for k2,v2 in v.items() %}
                     {% if k2 == 'name' %}
                         <td> <a href={{ url_for(url_for_value, room= v['name'])}}>{{ v2 }}</a></td>
+                    {% elif k2 == 'md5' %}
+                        <td> <a href={{ url_for(url_for_value, md5_hash= v['md5']) }}>{{ v2 }}</a></td>
                     {% elif "name" != k2 %}
                         <td>{{ v2 }}</td>
                     {% endif %}
                 {% endfor %}
+                {% endif %}
             </tr>
         {% endfor %}
     </tbody>
