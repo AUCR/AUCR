@@ -1,7 +1,6 @@
 """Get config information or set defaults."""
 # coding=utf-8
 import os
-import json
 from dotenv import load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))

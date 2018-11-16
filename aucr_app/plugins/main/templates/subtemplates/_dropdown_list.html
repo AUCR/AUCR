@@ -3,7 +3,7 @@
     <select id="data-val" name="{{ dropdown_topic }}" class="required mdl-selectfield__select">
         {% if dropdown_topic_set %}
             {% for items in iterable_thing %}
-                {% if items.0 == form_object_value %}
+                {% if items.0|string() == form_object_value|string() %}
                     <option value={{ items.0 }}>{{ items.1 }}</option>
                 {% endif %}
             {% endfor %}
