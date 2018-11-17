@@ -19,7 +19,7 @@ class UserModelCase(unittest.TestCase):
         self.app.config['WTF_CSRF_ENABLED'] = False
         # Create a default sqlite database for testing
         self.test_user_password = "0Qk9Bata3EO69U5T2qH57lAV1r67Wu"
-        test_user = User.__call__(username="test2", email="test2@example.com")
+        test_user = User.__call__(username="test2", email="admin@aucr.io")
         test_user.set_password(self.test_user_password)
         test_user.enable_api()
         db.session.add(test_user)
@@ -38,12 +38,10 @@ class UserModelCase(unittest.TestCase):
         with self.app.app_context():
             test0 = self.client.get('/auth/login')
             test1 = self.client.get('/auth/register')
-            test13 = self.client.post('/auth/reset_password_request', data=dict(email="admin@aucr.io", submit=True),
+            test13 = self.client.post('/auth/reset_password_request', data=dict(email="admin3@aucr.io", submit=True),
                                       follow_redirects=True)
             test12 = self.client.post('/auth/register', data=dict(username="testuser1", email="admin+test@aucr.io",
-                                                                  password="test", password2="test",
-                                                                  website="aucr.io", affiliation="testing group",
-                                                                  country="None", submit=True),
+                                                                  password="test", password2="test", submit=True),
                                       follow_redirects=True)
             test2 = self.client.post('/auth/login', data=dict(username="admin", password="admin", submit=True),
                                      follow_redirects=True)
@@ -73,8 +71,17 @@ class UserModelCase(unittest.TestCase):
                                       headers=auth)
             headers = {'Authorization': 'Bearer ' + test28.json["token"]}
             test36 = self.client.post('/analysis/upload_file', data={"files": "test"}, headers=headers)
-            test37 = self.client.post('/analysis/upload_file', data={'file': (('aucr_app/plugins/main/static/img/loading.gif'), 'test.txt')}, headers=headers)
+            test37 = self.client.post('/analysis/upload_file',
+                                      data={'file': (('aucr_app/plugins/main/static/img/loading.gif'), 'test.txt')},
+                                      headers=headers)
+            test39 = self.client.post('/auth/register', data=dict(email="admin+test@aucr.io", password="test",
+                                                                  password2="test2", submit=True),
+                                      follow_redirects=True)
             test15 = self.client.get('/auth/logout', follow_redirects=True)
+            test38 = self.client.post('/auth/reset_password_request', data=dict(email="admin@aucr.io",
+                                                                                submit=True),
+                                      follow_redirects=True)
+            test40 = self.client.get('/auth/reset_password/')
             test20 = self.client.get('/main/help')
             test21 = self.client.get('/main/privacy')
             test22 = self.client.get('/main/about_us')
@@ -132,6 +139,9 @@ class UserModelCase(unittest.TestCase):
             self.assertEqual(test35.status_code, 400)
             self.assertEqual(test36.status_code, 302)
             self.assertEqual(test37.status_code, 200)
+            self.assertEqual(test38.status_code, 200)
+            self.assertEqual(test39.status_code, 200)
+            self.assertEqual(test40.status_code, 404)
 
     def test_zip_encrypt(self):
         encrypt_zip_file("infected", "test.zip", ["aucr_app/plugins/main/static/img/loading.gif"])
