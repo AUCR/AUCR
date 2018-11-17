@@ -21,6 +21,8 @@ class UserModelCase(unittest.TestCase):
         self.test_user_password = "0Qk9Bata3EO69U5T2qH57lAV1r67Wu"
         test_user = User.__call__(username="test2", email="test2@example.com")
         test_user.set_password(self.test_user_password)
+        test_user.enable_api()
+        test_user.get_token()
         db.session.add(test_user)
         db.session.commit()
         self.test_user = test_user
@@ -31,6 +33,7 @@ class UserModelCase(unittest.TestCase):
         db.session.remove()
         # Drop the database
         db.drop_all()
+        db.session.commit()
 
     def test_auth(self):
         with self.app.app_context():
@@ -61,9 +64,15 @@ class UserModelCase(unittest.TestCase):
             test14 = self.client.post('/auth/edit_profile', data=dict(otp_token_checkbox=True, submit=True),
                                       follow_redirects=True)
             test17 = self.client.get('/auth/reset_password_request')
-            test18 = self.client.post('/auth/send_message', data=dict(recipient_user="admin", message="test", submit=True),
+            test18 = self.client.post('/auth/send_message',
+                                      data=dict(recipient_user="admin", message="test", submit=True),
                                       follow_redirects=True)
             test19 = self.client.get('/auth/send_message')
+            headers = {'Authorization': 'Bearer ' + self.test_user.token}
+            test25 = self.client.get('/api/users/1', headers=headers)
+            test26 = self.client.get('/api/groups/1', headers=headers)
+            test27 = self.client.get('/api/users', headers=headers)
+            test28 = self.client.post('/api/users', headers=headers)
             test15 = self.client.get('/auth/logout', follow_redirects=True)
             test20 = self.client.get('/main/help')
             test21 = self.client.get('/main/privacy')
@@ -96,6 +105,9 @@ class UserModelCase(unittest.TestCase):
             self.assertEqual(test22.status_code, 200)
             self.assertEqual(test23.status_code, 200)
             self.assertEqual(test24.status_code, 200)
+            self.assertEqual(test25.status_code, 200)
+            self.assertEqual(test26.status_code, 200)
+            self.assertEqual(test27.status_code, 200)
 
     def test_zip_encrypt(self):
         encrypt_zip_file("infected", "test.zip", ["aucr_app/plugins/main/static/img/loading.gif"])

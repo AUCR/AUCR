@@ -135,6 +135,11 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
         """Set the user password."""
         self.password_hash = generate_password_hash(password)
 
+    def enable_api(self):
+        """Enable API"""
+        if self.api_enabled is None:
+            self.api_enabled = True
+
     def check_password(self, password):
         """Verify bcrypt stored hash against password parameter."""
         return check_password_hash(self.password_hash, password)
