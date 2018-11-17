@@ -72,9 +72,8 @@ class UserModelCase(unittest.TestCase):
             test28 = self.client.post('/auth/tokens', json={'auth': 'test2:0Qk9Bata3EO69U5T2qH57lAV1r67Wu'},
                                       headers=auth)
             headers = {'Authorization': 'Bearer ' + test28.json["token"]}
-
-            test36 = self.client.post('/analysis/upload_file', data={}, headers=headers)
-
+            test36 = self.client.post('/analysis/upload_file', data={"files": "test"}, headers=headers)
+            test37 = self.client.post('/analysis/upload_file', data={'file': (('aucr_app/plugins/main/static/img/loading.gif'), 'test.txt')}, headers=headers)
             test15 = self.client.get('/auth/logout', follow_redirects=True)
             test20 = self.client.get('/main/help')
             test21 = self.client.get('/main/privacy')
@@ -131,6 +130,8 @@ class UserModelCase(unittest.TestCase):
             self.assertEqual(test33.status_code, 400)
             self.assertEqual(test34.status_code, 400)
             self.assertEqual(test35.status_code, 400)
+            self.assertEqual(test36.status_code, 302)
+            self.assertEqual(test37.status_code, 200)
 
     def test_zip_encrypt(self):
         encrypt_zip_file("infected", "test.zip", ["aucr_app/plugins/main/static/img/loading.gif"])
