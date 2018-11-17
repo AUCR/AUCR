@@ -24,15 +24,9 @@ class UserModelCase(unittest.TestCase):
         test_user.enable_api()
         db.session.add(test_user)
         db.session.commit()
+        self.token = test_user.get_reset_password_token()
         self.test_user = test_user
         self.client = self.app.test_client()
-
-    def tearDown(self):
-        """Destroy base environment data for unittests."""
-        db.session.remove()
-        # Drop the database
-        db.drop_all()
-        db.session.commit()
 
     def test_auth(self):
         with self.app.app_context():
@@ -79,9 +73,12 @@ class UserModelCase(unittest.TestCase):
                                       follow_redirects=True)
             test15 = self.client.get('/auth/logout', follow_redirects=True)
             test38 = self.client.post('/auth/reset_password_request', data=dict(email="admin@aucr.io",
-                                                                                submit=True),
+                                                                                submit=True), follow_redirects=True)
+            test40 = self.client.get('/auth/reset_password/' + self.token)
+            test41 = self.client.post('/auth/reset_password/' + self.token,
+                                      data=dict(password="apitest", password2="apitest", submit=True),
                                       follow_redirects=True)
-            test40 = self.client.get('/auth/reset_password/')
+
             test20 = self.client.get('/main/help')
             test21 = self.client.get('/main/privacy')
             test22 = self.client.get('/main/about_us')
@@ -141,13 +138,21 @@ class UserModelCase(unittest.TestCase):
             self.assertEqual(test37.status_code, 200)
             self.assertEqual(test38.status_code, 200)
             self.assertEqual(test39.status_code, 200)
-            self.assertEqual(test40.status_code, 404)
+            self.assertEqual(test40.status_code, 200)
+            self.assertEqual(test41.status_code, 200)
 
     def test_zip_encrypt(self):
         encrypt_zip_file("infected", "test.zip", ["aucr_app/plugins/main/static/img/loading.gif"])
         test_file = decrypt_zip_file_map("upload/test.zip", "infected")
         test_result = create_upload_file(test_file, "upload")
         self.assertEqual("73e57937304d89f251e7e540a24b095a", test_result)
+
+    def tearDown(self):
+        """Destroy base environment data for unittests."""
+        # Drop the database
+        db.drop_all()
+        db.session.commit()
+        db.session.remove()
 
 
 if __name__ == '__main__':
