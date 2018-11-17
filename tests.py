@@ -68,6 +68,12 @@ class UserModelCase(unittest.TestCase):
                                       follow_redirects=True)
             test19 = self.client.get('/auth/send_message')
             test30 = self.client.get('/auth/send_message/admin')
+            auth = {'Authorization': 'Basic dGVzdDI6MFFrOUJhdGEzRU82OVU1VDJxSDU3bEFWMXI2N1d1'}
+            test28 = self.client.post('/auth/tokens', json={'auth': 'test2:0Qk9Bata3EO69U5T2qH57lAV1r67Wu'},
+                                      headers=auth)
+            headers = {'Authorization': 'Bearer ' + test28.json["token"]}
+
+            test36 = self.client.post('/analysis/upload_file', data={}, headers=headers)
 
             test15 = self.client.get('/auth/logout', follow_redirects=True)
             test20 = self.client.get('/main/help')
@@ -75,10 +81,7 @@ class UserModelCase(unittest.TestCase):
             test22 = self.client.get('/main/about_us')
             test23 = self.client.get('/analysis/upload_file', follow_redirects=True)
             test24 = self.client.get('/auth/remove_user_from_group', follow_redirects=True)
-            auth = {'Authorization': 'Basic dGVzdDI6MFFrOUJhdGEzRU82OVU1VDJxSDU3bEFWMXI2N1d1'}
-            test28 = self.client.post('/auth/tokens', json={'auth': 'test2:0Qk9Bata3EO69U5T2qH57lAV1r67Wu'},
-                                      headers=auth)
-            headers = {'Authorization': 'Bearer ' + test28.json["token"]}
+
             test25 = self.client.get('/api/users/1', headers=headers)
             test26 = self.client.get('/api/groups/1', headers=headers)
             test31 = self.client.get('/api/groups', headers=headers)
@@ -87,6 +90,11 @@ class UserModelCase(unittest.TestCase):
             test29 = self.client.post('/api/users', json={'username': 'testapi', 'password': 'testing',
                                                             'email': 'test@localhost.local'}, headers=headers)
             test32 = self.client.post('/api/groups', json={'group_name': 'testapi'}, headers=headers)
+            test33 = self.client.post('/api/groups', json={'group_name': 'testapi'}, headers=headers)
+            test34 = self.client.post('/api/users', json={'username': 'testapi', 'password': 'testing',
+                                                            'email': 'test@localhost.local'}, headers=headers)
+            test35 = self.client.post('/api/users', json={'username': 'testapi', 'password': 'testing',
+                                                            'email': 'test@localhost.local'}, headers=headers)
             self.assertEqual(test0.status_code, 200)
             self.assertEqual(test1.status_code, 200)
             self.assertEqual(test2.status_code, 200)
@@ -120,6 +128,9 @@ class UserModelCase(unittest.TestCase):
             self.assertEqual(test30.status_code, 200)
             self.assertEqual(test31.status_code, 200)
             self.assertEqual(test32.status_code, 201)
+            self.assertEqual(test33.status_code, 400)
+            self.assertEqual(test34.status_code, 400)
+            self.assertEqual(test35.status_code, 400)
 
     def test_zip_encrypt(self):
         encrypt_zip_file("infected", "test.zip", ["aucr_app/plugins/main/static/img/loading.gif"])

@@ -35,7 +35,6 @@ Example API calls to generate an auth token and using it to query data using htt
 
 
 ## How to get an Authorization token using python3
-Example API calls to generate an auth token and using it to query data using http 0.9.9
 
     import ujson
     import requests
@@ -45,7 +44,9 @@ Example API calls to generate an auth token and using it to query data using htt
     
     print(ujson.dumps(test, indent=4, sort_keys=True))
 
-## How to get group information using the id with python3.
+# Python 3 Examples
+
+## Get Group Information
     
     import ujson
     import requests
@@ -53,5 +54,29 @@ Example API calls to generate an auth token and using it to query data using htt
     API_KEY = 'QeboqPEom18c9SjwvWjin7c77pZbyIsYCXvbIaRClMnji+QYZyU/nOYmFDYRInN03YnJP9Up3lEEBCG2n8Eazg=='
     headers = {'Authorization': 'Bearer ' + API_KEY}
     response = requests.get('{}/api/groups/1'.format(API_URL), headers=headers)
+    test = ujson.loads(response.text)
+    print(ujson.dumps(test, indent=4, sort_keys=True))
+
+
+## Create new group
+
+    import ujson
+    import requests
+    API_URL = 'http://0.0.0.0:5000'
+    API_KEY = 'QeboqPEom18c9SjwvWjin7c77pZbyIsYCXvbIaRClMnji+QYZyU/nOYmFDYRInN03YnJP9Up3lEEBCG2n8Eazg=='
+    headers = {'Authorization': 'Bearer ' + API_KEY}
+    response = requests.post('{}/api/groups'.format(API_URL), headers=headers, json={'group_name': 'testapi'})
+    test = ujson.loads(response.text)
+    print(ujson.dumps(test, indent=4, sort_keys=True))
+    
+## Create new user
+
+    import ujson
+    import requests
+    API_URL = 'http://0.0.0.0:5000'
+    API_KEY = 'QeboqPEom18c9SjwvWjin7c77pZbyIsYCXvbIaRClMnji+QYZyU/nOYmFDYRInN03YnJP9Up3lEEBCG2n8Eazg=='
+    headers = {'Authorization': 'Bearer ' + API_KEY}
+    response = requests.post('{}/api/users'.format(API_URL), headers=headers, json={'username': 'testapi', 'password': 'testing',
+                                                                'email': 'test@localhost.local'})
     test = ujson.loads(response.text)
     print(ujson.dumps(test, indent=4, sort_keys=True))

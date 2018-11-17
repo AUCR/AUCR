@@ -1,14 +1,18 @@
 {% if prev_url %}
     <i class="previous{% if not prev_url %} disabled{% endif %}">
         <a href="{{ prev_url or '#' }}">
-            {{ _(prev_text) }}
+            <i class="material-icons">
+                navigate_before
+            </i>
         </a>
     </i>
 {%  endif %}
 {% if next_url %}
     <i class="next{% if not next_url %} disabled{% endif %}">
         <a href="{{ next_url or '#' }}">
-            {{ _(next_text) }}
+            <i class="material-icons">
+                navigate_next
+            </i>
         </a>
     </i>
 {% endif %}

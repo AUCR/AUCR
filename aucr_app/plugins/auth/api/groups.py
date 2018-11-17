@@ -34,7 +34,7 @@ def create_group() -> object:
         return bad_request('must include group_name field')
     if Groups.query.filter_by(name=data['group_name']).first():
         return bad_request('please use a different group_name')
-    group = Groups()
+    group = Groups(name=data['group_name'])
     group.from_dict(data, new_group=True)
     db.session.add(group)
     db.session.commit()

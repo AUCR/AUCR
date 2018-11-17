@@ -293,7 +293,7 @@ class Groups(PaginatedAPIMixin, db.Model):
 
     __tablename__ = 'groups'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128), index=True)
+    name = db.Column(db.String(128), index=True, unique=True)
     timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 
     def __repr__(self):
