@@ -63,17 +63,18 @@ class UserModelCase(unittest.TestCase):
             test14 = self.client.post('/auth/edit_profile', data=dict(otp_token_checkbox=True, submit=True),
                                       follow_redirects=True)
             test17 = self.client.get('/auth/reset_password_request')
-            test18 = self.client.post('/auth/send_message',
+            test18 = self.client.post('/auth/send_message/admin',
                                       data=dict(recipient_user="admin", message="test", submit=True),
                                       follow_redirects=True)
             test19 = self.client.get('/auth/send_message')
+            test30 = self.client.get('/auth/send_message/admin')
+
             test15 = self.client.get('/auth/logout', follow_redirects=True)
             test20 = self.client.get('/main/help')
             test21 = self.client.get('/main/privacy')
             test22 = self.client.get('/main/about_us')
             test23 = self.client.get('/analysis/upload_file', follow_redirects=True)
             test24 = self.client.get('/auth/remove_user_from_group', follow_redirects=True)
-
             auth = {'Authorization': 'Basic dGVzdDI6MFFrOUJhdGEzRU82OVU1VDJxSDU3bEFWMXI2N1d1'}
             test28 = self.client.post('/auth/tokens', json={'auth': 'test2:0Qk9Bata3EO69U5T2qH57lAV1r67Wu'},
                                       headers=auth)
@@ -113,6 +114,7 @@ class UserModelCase(unittest.TestCase):
             self.assertEqual(test27.status_code, 200)
             self.assertEqual(test28.status_code, 200)
             self.assertEqual(test29.status_code, 201)
+            self.assertEqual(test30.status_code, 200)
 
     def test_zip_encrypt(self):
         encrypt_zip_file("infected", "test.zip", ["aucr_app/plugins/main/static/img/loading.gif"])

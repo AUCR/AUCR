@@ -73,7 +73,6 @@ def edit_profile():
     else:
         for error in form.errors:
             flash(str(form.errors[error][0]), 'error')
-        render_template('register.html', title=_('Register'), form=form)
     return render_template('edit_profile.html', title=_('Edit Profile'), form=form)
 
 
@@ -110,7 +109,6 @@ def send_message(recipient):
     else:
         for error in form.errors:
             flash(str(form.errors[error][0]), 'error')
-        render_template('register.html', title=_('Register'), form=form)
     return render_template('send_message.html', title=_('Send Message'), form=form, recipient=recipient)
 
 
@@ -322,7 +320,6 @@ def login():
         else:
             for error in form.errors:
                 flash(str(form.errors[error][0]), 'error')
-            render_template('register.html', title=_('Register'), form=form)
         flash('Invalid username, password or token.')
         return redirect(url_for('auth.login'))
     page = request.args.get('page', 1, type=int)
