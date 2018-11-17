@@ -263,7 +263,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-class Group(db.Model):
+class Group(PaginatedAPIMixin, db.Model):
     """AUCR Group Table Database Module."""
 
     __tablename__ = 'group'
@@ -288,7 +288,7 @@ class Group(db.Model):
         return data
 
 
-class Groups(db.Model):
+class Groups(PaginatedAPIMixin, db.Model):
     """Group Database Table Module."""
 
     __tablename__ = 'groups'
@@ -307,6 +307,12 @@ class Groups(db.Model):
             'name': self.name,
             'last_seen': self.timestamp.isoformat() + 'Z'}
         return data
+
+    def from_dict(self, data, new_group=False):
+        """Process from dictionary object type for API Posts."""
+        for field in ['group_name']:
+            if field in data:
+                setattr(self, field, data[field])
 
 
 def insert_initial_user_values(*args, **kwargs):

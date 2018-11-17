@@ -81,9 +81,12 @@ class UserModelCase(unittest.TestCase):
             headers = {'Authorization': 'Bearer ' + test28.json["token"]}
             test25 = self.client.get('/api/users/1', headers=headers)
             test26 = self.client.get('/api/groups/1', headers=headers)
+            test31 = self.client.get('/api/groups', headers=headers)
+
             test27 = self.client.get('/api/users', headers=headers)
             test29 = self.client.post('/api/users', json={'username': 'testapi', 'password': 'testing',
                                                             'email': 'test@localhost.local'}, headers=headers)
+            test32 = self.client.post('/api/groups', json={'group_name': 'testapi'}, headers=headers)
             self.assertEqual(test0.status_code, 200)
             self.assertEqual(test1.status_code, 200)
             self.assertEqual(test2.status_code, 200)
@@ -115,6 +118,8 @@ class UserModelCase(unittest.TestCase):
             self.assertEqual(test28.status_code, 200)
             self.assertEqual(test29.status_code, 201)
             self.assertEqual(test30.status_code, 200)
+            self.assertEqual(test31.status_code, 200)
+            self.assertEqual(test32.status_code, 201)
 
     def test_zip_encrypt(self):
         encrypt_zip_file("infected", "test.zip", ["aucr_app/plugins/main/static/img/loading.gif"])
