@@ -22,7 +22,6 @@ class UserModelCase(unittest.TestCase):
         test_user = User.__call__(username="test2", email="test2@example.com")
         test_user.set_password(self.test_user_password)
         test_user.enable_api()
-        test_user.get_token()
         db.session.add(test_user)
         db.session.commit()
         self.test_user = test_user
@@ -68,11 +67,6 @@ class UserModelCase(unittest.TestCase):
                                       data=dict(recipient_user="admin", message="test", submit=True),
                                       follow_redirects=True)
             test19 = self.client.get('/auth/send_message')
-            headers = {'Authorization': 'Bearer ' + self.test_user.token}
-            test25 = self.client.get('/api/users/1', headers=headers)
-            test26 = self.client.get('/api/groups/1', headers=headers)
-            test27 = self.client.get('/api/users', headers=headers)
-            test28 = self.client.post('/api/users', headers=headers)
             test15 = self.client.get('/auth/logout', follow_redirects=True)
             test20 = self.client.get('/main/help')
             test21 = self.client.get('/main/privacy')
@@ -80,6 +74,15 @@ class UserModelCase(unittest.TestCase):
             test23 = self.client.get('/analysis/upload_file', follow_redirects=True)
             test24 = self.client.get('/auth/remove_user_from_group', follow_redirects=True)
 
+            auth = {'Authorization': 'Basic dGVzdDI6MFFrOUJhdGEzRU82OVU1VDJxSDU3bEFWMXI2N1d1'}
+            test28 = self.client.post('/auth/tokens', json={'auth': 'test2:0Qk9Bata3EO69U5T2qH57lAV1r67Wu'},
+                                      headers=auth)
+            headers = {'Authorization': 'Bearer ' + test28.json["token"]}
+            test25 = self.client.get('/api/users/1', headers=headers)
+            test26 = self.client.get('/api/groups/1', headers=headers)
+            test27 = self.client.get('/api/users', headers=headers)
+            test29 = self.client.post('/api/users', json={'username': 'testapi', 'password': 'testing',
+                                                            'email': 'test@localhost.local'}, headers=headers)
             self.assertEqual(test0.status_code, 200)
             self.assertEqual(test1.status_code, 200)
             self.assertEqual(test2.status_code, 200)
@@ -108,6 +111,8 @@ class UserModelCase(unittest.TestCase):
             self.assertEqual(test25.status_code, 200)
             self.assertEqual(test26.status_code, 200)
             self.assertEqual(test27.status_code, 200)
+            self.assertEqual(test28.status_code, 200)
+            self.assertEqual(test29.status_code, 201)
 
     def test_zip_encrypt(self):
         encrypt_zip_file("infected", "test.zip", ["aucr_app/plugins/main/static/img/loading.gif"])

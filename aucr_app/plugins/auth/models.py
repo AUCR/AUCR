@@ -192,13 +192,16 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     def to_dict(self, include_email=False):
         """Return dictionary object type for API calls."""
+        if self.last_seen:
+            last_seen = self.last_seen.isoformat() + 'Z'
+        else:
+            last_seen = None
         data = {
             'id': self.id,
             'username': self.username,
-            'last_seen': self.last_seen.isoformat() + 'Z',
+            'last_seen': last_seen,
             'about_me': self.about_me,
             '_links': {
-                'self': url_for('api.get_user', id=self.id),
                 'avatar': self.avatar(128)
             }
         }
