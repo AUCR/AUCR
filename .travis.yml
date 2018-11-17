@@ -18,9 +18,13 @@ before_install:
 
 services:
  - rabbitmq
+ - elasticsearch
 
 install:
 - pip install -r requirements.txt
+
+before_script:
+  - sleep 10
 
 script:
 - coverage run tests.py
