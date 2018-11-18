@@ -27,7 +27,7 @@ class Config(object):
     OBJECT_STORAGE = os.environ.get('OBJECT_STORAGE') or None
     OBJECT_STORAGE_TYPE = os.environ.get('OBJECT_STORAGE_TYPE') or None
     ALLOWED_EXTENSIONS = os.environ.get('ALLOWED_EXTENSIONS') or ['txt', 'pdf', 'png', 'jpg',
-                                                                  'jpeg', 'gif', 'doc', 'docx', 'exe', 'yar', 'zip']
+                                                                  'jpeg', 'gif', 'doc', 'docx', 'exe', 'yar', 'zip', '']
     REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
     POSTS_PER_PAGE = os.environ.get('POSTS_PER_PAGE') or 25
     ALLOWED_EMAIL_LIST = os.environ.get("ALLOWED_EMAIL_LIST")

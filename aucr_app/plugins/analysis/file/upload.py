@@ -60,5 +60,8 @@ def create_upload_file(file, upload_folder) -> str:
 
 
 def allowed_file(filename):
-    """Return filename if allowed"""
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
+    """Return filename if allowed."""
+    result = '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
+    if '.' not in filename:
+        result = True
+    return result
