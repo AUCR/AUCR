@@ -8,7 +8,6 @@ import jwt
 import redis
 import rq
 import pyotp
-import ldap
 from aucr_app import login, db
 from datetime import timedelta
 from hashlib import md5
@@ -18,7 +17,8 @@ from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash
 from flask_bcrypt import check_password_hash
 from yaml_info.yamlinfo import YamlInfo
-from aucr_app.plugins.reports.storage.elastic_search import remove_from_index, query_index, add_model_to_index
+from aucr_app.plugins.reports.storage.elastic_search import query_index, add_model_to_index
+from aucr_app.plugins.auth.ldap_utils import get_ldap_user_email_address
 
 
 class SearchableMixin(object):
@@ -92,11 +92,11 @@ class PaginatedAPIMixin(object):
 class User(UserMixin, PaginatedAPIMixin, db.Model):
     """AUCR User models class defines information in the user table."""
 
-    #__searchable__ = ['id', 'username', 'email']
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
+    alt_email = db.Column(db.String(240), unique=True)
     password_hash = db.Column(db.String(128))
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=udatetime.utcnow)
@@ -143,8 +143,10 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
     def check_password(self, password):
         """Verify bcrypt stored hash against password parameter."""
         if current_app.config['LDAP_PROVIDER_URL']:
-            conn = ldap.initialize(current_app.config['LDAP_PROVIDER_URL'])
-            result = conn.simple_bind_s(current_app.config['LDAP_CONNECTION_STRING'] % self.username, password)
+            if get_ldap_user_email_address(self.username, password):
+                result = True
+            else:
+                result = False
         else:
             result = check_password_hash(self.password_hash, password)
         return result

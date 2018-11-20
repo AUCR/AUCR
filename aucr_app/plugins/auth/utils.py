@@ -1,7 +1,6 @@
 """AUCR auth plugin call utility library."""
 # coding=utf-8
 import glob
-import logging
 from flask import session
 from flask_login import current_user
 from aucr_app.plugins.auth.models import Group, Groups
