@@ -269,7 +269,7 @@ def two_factor_setup():
 @auth_page.route('/qrcode')
 @login_required
 def qrcode():
-    """Two factor auth qrcode handling."""
+    """Two factor auth qrcode page route."""
     user_name = User.query.filter_by(username=current_user.username).first()
     if user_name is None:
         render_error_page_template(404)
@@ -305,10 +305,11 @@ def login():
             if user_name is None or not user_name.check_password(form.password.data):
                     flash('Invalid username, password or token.')
                     return redirect(url_for('auth.login'))
-            login_user(user_name, remember=form.remember_me.data)
-            login_user(user_name)
             # log user in
-            login_user(user_name)
+            if form.remember_me.data:
+                login_user(user_name, remember=form.remember_me.data)
+            else:
+                login_user(user_name)
             session["navbar"] = get_group_permission_navbar()
             session["groups"] = get_groups()
             flash('You are now logged in!')

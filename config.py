@@ -33,6 +33,9 @@ class Config(object):
     ALLOWED_EMAIL_LIST = os.environ.get("ALLOWED_EMAIL_LIST")
     if ALLOWED_EMAIL_LIST:
         ALLOWED_EMAIL_LIST = ALLOWED_EMAIL_LIST.split(', ')
+    LDAP_PROVIDER_URL = os.environ.get("LDAP_PROVIDER_URL") or None
+    LDAP_PROTOCOL_VERSION = os.environ.get("LDAP_PROTOCOL_VERSION") or None
+    LDAP_CONNECTION_STRING = os.environ.get("LDAP_CONNECTION_STRING") or None
     APP_TITLE = os.environ.get('APP_TITLE') or "Analyst Unknown Cyber Range"
     MONGO_URI = os.environ.get('MONGO_URI') or None
     PRIVACY_POLICY_URL = os.environ.get('PRIVACY_POLICY_URL') or None

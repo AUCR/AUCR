@@ -8,8 +8,8 @@ import jwt
 import redis
 import rq
 import pyotp
-from aucr_app import login
-from aucr_app import db
+import ldap
+from aucr_app import login, db
 from datetime import timedelta
 from hashlib import md5
 from time import time
@@ -142,7 +142,12 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     def check_password(self, password):
         """Verify bcrypt stored hash against password parameter."""
-        return check_password_hash(self.password_hash, password)
+        if current_app.config['LDAP_PROVIDER_URL']:
+            conn = ldap.initialize(current_app.config['LDAP_PROVIDER_URL'])
+            result = conn.simple_bind_s(current_app.config['LDAP_CONNECTION_STRING'] % self.username, password)
+        else:
+            result = check_password_hash(self.password_hash, password)
+        return result
 
     def avatar(self, size):
         """Return user avatar from gravatar.com."""
