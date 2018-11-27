@@ -8,14 +8,14 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ./mysql/:/var/lib/mysql
+      - ./mysql/:/var/lib/mysql/
     env_file:
-      - ./config-file.env
+      - ./mysql-config.env
     networks:
       - aucr
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:6.4.2
+    image: docker.elastic.co/kibana/kibana:6.5.0
     container_name: kibana
     ports:
       - 5601:5601
@@ -30,7 +30,7 @@ services:
       - ./config-file.env
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.0
     container_name: elasticsearch
     environment:
       - cluster.name=aucr

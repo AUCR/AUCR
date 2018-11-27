@@ -40,6 +40,9 @@ class Config(object):
         LDAP_PROTOCOL_VERSION = None
     LDAP_CONNECTION_STRING = os.environ.get("LDAP_CONNECTION_STRING") or None
     LDAP_BASE = os.environ.get("LDAP_BASE") or 3
+    LDAP_CERTIFICATE = os.environ.get("LDAP_CERTIFICATE") or None
+    LDAP_ADMIN = os.environ.get("LDAP_ADMIN") or None
+    LDAP_ADMIN_PASSWORD = os.environ.get("LDAP_ADMIN_PASSWORD") or None
     APP_TITLE = os.environ.get('APP_TITLE') or "Analyst Unknown Cyber Range"
     MONGO_URI = os.environ.get('MONGO_URI') or None
     PRIVACY_POLICY_URL = os.environ.get('PRIVACY_POLICY_URL') or None

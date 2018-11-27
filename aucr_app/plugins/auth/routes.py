@@ -54,8 +54,6 @@ def edit_profile():
             else:
                 current_user.otp_secret = pyotp.random_base32()
             db.session.commit()
-            # for added security, remove username from session
-            # render qrcode for FreeTOTP
             url = pyqrcode.create(user_name.get_totp_uri())
             stream = BytesIO()
             url.svg(stream, scale=3)

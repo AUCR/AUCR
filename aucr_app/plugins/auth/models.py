@@ -236,8 +236,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     def revoke_token(self):
         """Check and expire user token if expiration time is True."""
-        self.token_expiration = \
-            udatetime.utcnow().replace(tzinfo=None) - timedelta(seconds=1)
+        self.token_expiration = udatetime.utcnow().replace(tzinfo=None) - timedelta(seconds=1)
 
     @staticmethod
     def check_token(token):

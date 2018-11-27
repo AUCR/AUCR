@@ -9,4 +9,4 @@ spec:
     - name: aucr
       image: aucr
       imagePullPolicy: Always
-  restartPolicy: Never
+  restartPolicy: Always
