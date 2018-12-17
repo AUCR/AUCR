@@ -1,3 +1,11 @@
+<style>
+    .demo-list-action {
+      width: 100%;
+    }
+    .mdl-textfield{
+        width:100%;
+    }
+</style>
 <table class="table table-hover">
     <tr>
         <td width="70px">
@@ -15,17 +23,20 @@
             {% endset %}
             {{ _('%(username)s said %(when)s', username=user_link, when=moment(post.timestamp).fromNow()) }}
             <br>
-            <span id="post{{ post.id }}">{{ post.body }}</span>
+            {% with form_object=post.id, form_object_name="Message", form_object_rows=post.body.count("\n"), form_object_label="Message", form_object_value=post.body %}
+                {% include "subtemplates/_form_object_code_textfield_readonly.html" %}
+            {% endwith %}
             {% if post.language and post.language != g.locale %}
-            <br><br>
-            <span id="translation{{ post.id }}">
-                <a href="javascript:translate(
-                            '#post{{ post.id }}',
-                            '#translation{{ post.id }}',
-                            '{{ post.language }}',
-                            '{{ g.locale }}');">{{ _('Translate') }}</a>
-            </span>
+                <br><br>
+                <span id="translation{{ post.id }}">
+                    <a href="javascript:translate(
+                                '#post{{ post.id }}',
+                                '#translation{{ post.id }}',
+                                '{{ post.language }}',
+                                '{{ g.locale }}');">{{ _('Translate') }}</a>
+                </span>
             {% endif %}
+            <br>
             <p><a href="{{ url_for('auth.send_message', recipient=post.author.username) }}">
                 {{ _('Reply') }}
             </a></p>

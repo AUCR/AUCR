@@ -56,13 +56,14 @@ def query_index(index, query, page, per_page):
     if current_app:
         if index == "message":
             search = current_app.elasticsearch.search(
-                index="message", doc_type="message",
+                index=index, doc_type=index,
                 body={"query": {"match": {'body': query}}}, request_timeout=120)
             ids = [int(hit['_id']) for hit in search['hits']['hits']]
         else:
             search = current_app.elasticsearch.search(
                 index=index, doc_type=index,
-                body={"query": {"match_all": {}}}, request_timeout=120)
+                body={"query": {"multi_match": {"query": query, "type":  "best_fields"}}},
+                request_timeout=120)
             ids = [int(hit['_id']) for hit in search['hits']['hits']]
 
         return ids, search['hits']['total']

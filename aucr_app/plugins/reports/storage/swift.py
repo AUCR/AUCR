@@ -12,7 +12,8 @@ class SwiftConnection(object):
         password = os.environ["OPENSTACK_PASSWORD"]
         project_domain_name = os.environ["OPENSTACK_PROJECT_DOMAIN_NAME"]
         project_name = os.environ["OPENSTACK_PROJECT_NAME"]
-        container_name =  os.environ["OPENSTACK_CONTAINER_NAME"]
+        container_name = os.environ["OPENSTACK_CONTAINER_NAME"]
+        ca_certificate = os.environ["OPENSTACK_CA_CERTIFICATE"]
         self.container_name = container_name
         options = {
             'user_domain_name': user_domain_name,
@@ -25,6 +26,7 @@ class SwiftConnection(object):
             key=password,
             authurl=auth_url,
             auth_version=3,
+            cacert=ca_certificate,
             os_options=options
         )
         found = False

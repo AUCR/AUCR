@@ -8,14 +8,6 @@
                 {% if user.last_seen %}
                 <p>{{ _('Last seen on') }}: {{ moment(user.last_seen).format('lll') }}</p>
                 {% endif %}
-                <p>{{ _('%(count)d followers', count=user.followers.count()) }}, {{ _('%(count)d following', count=user.followed.count()) }}</p>
-                {% if user != current_user %}
-                    {% if not current_user.is_following(user) %}
-                    <a href="{{ url_for('auth.follow', username=user.username) }}">{{ _('Follow') }}</a>
-                    {% else %}
-                    <a href="{{ url_for('auth.unfollow', username=user.username) }}">{{ _('Unfollow') }}</a>
-                    {% endif %}
-                {% endif %}
             </small>
         </td>
     </tr>

@@ -88,7 +88,8 @@ def messages():
                page, int(current_app.config['POSTS_PER_PAGE']), False)
     next_url = url_for('auth.messages', page=messages_list.next_num) if messages_list.has_next else None
     prev_url = url_for('auth.messages', page=messages_list.prev_num) if messages_list.has_prev else None
-    return render_template('messages.html', messages=messages_list.items, next_url=next_url, prev_url=prev_url)
+    return render_template('messages.html', messages=messages_list.items, next_url=next_url,
+                           page=page, prev_url=prev_url)
 
 
 @auth_page.route('/send_message/<recipient>', methods=['GET', 'POST'])
@@ -353,12 +354,12 @@ def logout():
 def search():
     """AUCR search plugin flask blueprint."""
     if not g.search_form.validate():
-        return redirect(url_for('search'))
-    page = request.args.get('page', 1, type=int)
+        return redirect(url_for('auth.search'))
+    page = request.args.get('page', 1, type=int) or 1
     posts, total = Message.search(g.search_form.q.data, page, int(current_app.config['POSTS_PER_PAGE']))
     search_messages, total = Message.search(g.search_form.q.data, page, int(current_app.config['POSTS_PER_PAGE']))
-    next_url = url_for('search', q=g.search_form.q.data, page=page + 1) \
+    next_url = url_for('auth.search', q=g.search_form.q.data, page=page + 1) \
         if total > page * int(current_app.config['POSTS_PER_PAGE']) else None
-    prev_url = url_for('search', q=g.search_form.q.data, page=page - 1) if page > 1 else None
-    return render_template('search.html', title=_('Search'), messages=search_messages, next_url=next_url,
+    prev_url = url_for('auth.search', q=g.search_form.q.data, page=page - 1) if page > 1 else None
+    return render_template('search.html', title=_('auth.search'), messages=search_messages, next_url=next_url,
                            prev_url=prev_url, posts=posts, page=page)

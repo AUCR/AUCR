@@ -25,7 +25,6 @@ def get_mq_aucr_tasks(call_back, rabbit_mq_server, rabbit_mq_que, rabbitmq_usern
     channel.queue_declare(queue=rabbit_mq_que)
     channel.basic_consume(call_back, queue=rabbit_mq_que, no_ack=True)
     channel.start_consuming()
-    channel.flush()
     connection.close()
 
 

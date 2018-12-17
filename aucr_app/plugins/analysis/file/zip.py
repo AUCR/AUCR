@@ -7,7 +7,7 @@ from zipfile import ZipFile
 
 
 def decrypt_zip_file_map(encrypted_zip, encrypted_file_password):
-    """Return a decrypted zip file map bytes object."""
+    """Return decrypted zip file map bytes object."""
     encrypted_zip_file = ZipFile(encrypted_zip)
     for file in encrypted_zip_file.namelist():
         if encrypted_zip_file.getinfo(file).file_size < 1024 * 1024:
@@ -44,4 +44,4 @@ def get_file_hash(file_name):
 
 def encrypt_zip_file(password, zip_file, items_to_encrypt):
     """Subprocess call to encrypt zip file."""
-    subprocess.call(['7z', 'a', str("-p" + password), '-y', str("upload/" + zip_file)] + items_to_encrypt)
+    subprocess.call(['7z', 'a', str("-p" + password), '-y', str("/tmp/" + zip_file)] + items_to_encrypt)

@@ -33,7 +33,6 @@ class SearchableMixin(object):
         when = []
         for i in range(len(ids)):
             when.append((ids[i], i))
-        print(db.case)
         return cls.query.filter(cls.id.in_(ids)).order_by(db.case(when, value=cls.id)), total
 
     @classmethod
@@ -391,7 +390,7 @@ class Message(SearchableMixin, db.Model):
     __searchable__ = ['id', 'body', 'sender_id', 'recipient_id', 'timestamp']
     __tablename__ = 'message'
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(140), index=True)
+    body = db.Column(db.String(3072))
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
