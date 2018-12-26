@@ -143,7 +143,7 @@ class UserModelCase(unittest.TestCase):
 
     def test_zip_encrypt(self):
         encrypt_zip_file("infected", "test.zip", ["aucr_app/plugins/main/static/img/loading.gif"])
-        test_file = decrypt_zip_file_map("upload/test.zip", "infected")
+        test_file = decrypt_zip_file_map(str(self.app.config["TMP_FILE_FOLDER"] + "/test.zip"), "infected")
         test_result = create_upload_file(test_file, "upload")
         self.assertEqual("73e57937304d89f251e7e540a24b095a", test_result)
 

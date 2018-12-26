@@ -25,6 +25,7 @@ class Config(object):
     MS_TRANSLATOR_KEY = os.environ.get('MS_TRANSLATOR_KEY')
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
     FILE_FOLDER = os.environ.get('FILE_FOLDER') or os.path.join(basedir, 'upload')
+    TMP_FILE_FOLDER = os.environ.get('TMP_FILE_FOLDER') or os.path.join(basedir, '/tmp/')
     OBJECT_STORAGE = os.environ.get('OBJECT_STORAGE') or None
     OBJECT_STORAGE_TYPE = os.environ.get('OBJECT_STORAGE_TYPE') or None
     ALLOWED_EXTENSIONS = os.environ.get('ALLOWED_EXTENSIONS') or ['txt', 'pdf', 'png', 'jpg',

@@ -1,5 +1,6 @@
 """Zip file parsing"""
 # coding=utf-8
+import os
 import hashlib
 import subprocess
 import fleep
@@ -44,4 +45,5 @@ def get_file_hash(file_name):
 
 def encrypt_zip_file(password, zip_file, items_to_encrypt):
     """Subprocess call to encrypt zip file."""
-    subprocess.call(['7z', 'a', str("-p" + password), '-y', str("/tmp/" + zip_file)] + items_to_encrypt)
+    subprocess.call(['7z', 'a', str("-p" + password), '-y', str(os.environ.get('TMP_FILE_FOLDER') + zip_file)] +
+                    items_to_encrypt)
