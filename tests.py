@@ -12,7 +12,7 @@ class UserModelCase(unittest.TestCase):
     """Unittests automated AUCR test case framework."""
 
     def setUp(self):
-        """Set up needed base environment data for unittests."""
+        """Set up needed base environment data for unittest."""
         self.app = aucr_app()
         self.app.config['TESTING'] = True
         self.app.config['SECRET_KEY'] = "testing"
@@ -28,7 +28,15 @@ class UserModelCase(unittest.TestCase):
         self.test_user = test_user
         self.client = self.app.test_client()
 
+    def test_public_pages(self):
+        """Public page unit test function."""
+        with self.app.app_context():
+            self.assertEqual(self.client.get('/main/help').status_code, 200)
+            self.assertEqual(self.client.get('/main/privacy').status_code, 200)
+            self.assertEqual(self.client.get('/main/about_us').status_code, 200)
+
     def test_auth(self):
+        """Authentication unit test function."""
         with self.app.app_context():
             test0 = self.client.get('/auth/login')
             test1 = self.client.get('/auth/register')
@@ -66,38 +74,46 @@ class UserModelCase(unittest.TestCase):
             headers = {'Authorization': 'Bearer ' + test28.json["token"]}
             test36 = self.client.post('/analysis/upload_file', data={"files": "test"}, headers=headers)
             test37 = self.client.post('/analysis/upload_file',
-                                      data={'file': (('aucr_app/plugins/main/static/img/loading.gif'), 'test.txt')},
+                                      data={'file': ('aucr_app/plugins/main/static/img/loading.gif', 'test.txt')},
                                       headers=headers)
-            test39 = self.client.post('/auth/register', data=dict(email="admin+test@aucr.io", password="test",
-                                                                  password2="test2", submit=True),
+            test39 = self.client.post('/auth/register',
+                                      data=dict(email="admin+test@aucr.io",
+                                                password="test",
+                                                password2="test2",
+                                                submit=True),
                                       follow_redirects=True)
             test15 = self.client.get('/auth/logout', follow_redirects=True)
-            test38 = self.client.post('/auth/reset_password_request', data=dict(email="admin@aucr.io",
-                                                                                submit=True), follow_redirects=True)
+            test38 = self.client.post('/auth/reset_password_request',
+                                      data=dict(email="admin@aucr.io",
+                                                submit=True),
+                                      follow_redirects=True)
             test40 = self.client.get('/auth/reset_password/' + self.token)
             test41 = self.client.post('/auth/reset_password/' + self.token,
                                       data=dict(password="apitest", password2="apitest", submit=True),
                                       follow_redirects=True)
 
-            test20 = self.client.get('/main/help')
-            test21 = self.client.get('/main/privacy')
-            test22 = self.client.get('/main/about_us')
             test23 = self.client.get('/analysis/upload_file', follow_redirects=True)
             test24 = self.client.get('/auth/remove_user_from_group', follow_redirects=True)
-
             test25 = self.client.get('/api/users/1', headers=headers)
             test26 = self.client.get('/api/groups/1', headers=headers)
             test31 = self.client.get('/api/groups', headers=headers)
-
             test27 = self.client.get('/api/users', headers=headers)
             test29 = self.client.post('/api/users', json={'username': 'testapi', 'password': 'testing',
-                                                            'email': 'test@localhost.local'}, headers=headers)
+                                                          'email': 'test@localhost.local'}, headers=headers)
             test32 = self.client.post('/api/groups', json={'group_name': 'testapi'}, headers=headers)
             test33 = self.client.post('/api/groups', json={'group_name': 'testapi'}, headers=headers)
-            test34 = self.client.post('/api/users', json={'username': 'testapi', 'password': 'testing',
-                                                            'email': 'test@localhost.local'}, headers=headers)
-            test35 = self.client.post('/api/users', json={'username': 'testapi', 'password': 'testing',
-                                                            'email': 'test@localhost.local'}, headers=headers)
+            test34 = self.client.post('/api/users',
+                                      json={'username': 'testapi',
+                                            'password': 'testing',
+                                            'email': 'test@localhost.local'
+                                            },
+                                      headers=headers)
+            test35 = self.client.post('/api/users',
+                                      json={'username': 'testapi',
+                                            'password': 'testing',
+                                            'email': 'test@localhost.local'
+                                            },
+                                      headers=headers)
             self.assertEqual(test0.status_code, 200)
             self.assertEqual(test1.status_code, 200)
             self.assertEqual(test2.status_code, 200)
@@ -118,9 +134,7 @@ class UserModelCase(unittest.TestCase):
             self.assertTrue(test17)
             self.assertTrue(test18)
             self.assertTrue(test19)
-            self.assertEqual(test20.status_code, 200)
-            self.assertEqual(test21.status_code, 200)
-            self.assertEqual(test22.status_code, 200)
+
             self.assertEqual(test23.status_code, 200)
             self.assertEqual(test24.status_code, 200)
             self.assertEqual(test25.status_code, 200)
@@ -142,16 +156,16 @@ class UserModelCase(unittest.TestCase):
             self.assertEqual(test41.status_code, 200)
 
     def test_zip_encrypt(self):
+        """Return result of zip file function."""
         encrypt_zip_file("infected", "test.zip", ["aucr_app/plugins/main/static/img/loading.gif"])
         test_file = decrypt_zip_file_map(str(self.app.config["TMP_FILE_FOLDER"] + "/test.zip"), "infected")
-        test_result = create_upload_file(test_file, "upload")
+        test_result = create_upload_file(test_file, str(self.app.config["TMP_FILE_FOLDER"]))
         self.assertEqual("73e57937304d89f251e7e540a24b095a", test_result)
 
     def tearDown(self):
         """Destroy base environment data for unittests."""
         # Drop the database
         db.drop_all()
-        db.session.commit()
         db.session.remove()
 
 

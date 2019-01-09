@@ -86,9 +86,13 @@ RUN apk add --no-cache \
     lapack-dev \
     gfortran \
     build-base \
-  && pip install cython \
+    git \
+    p7zip \
+  && pip install cython numpy \
   && pip install --upgrade pip \
-  && pip install --no-cache-dir mmbot \
+  && git clone https://github.com/egaus/MaliciousMacroBot \
+  && cd MaliciousMacroBot \
+  && python setup.py install \
   && pip install -r /opt/aucr/requirements.txt --upgrade \
   && apk del --purge gcc \
     libc-dev \
@@ -100,7 +104,8 @@ RUN apk add --no-cache \
     g++ \
     python3-dev \
     build-base \
-    gcc
+    gcc \
+    git
 
 COPY aucr.py /opt/aucr
 COPY aucr_app /opt/aucr/aucr_app
@@ -108,8 +113,9 @@ COPY babel.cfg /opt/aucr
 COPY LICENSE /opt/aucr
 COPY projectinfo.yml /opt/aucr
 COPY config.py /opt/aucr
-COPY migrations /opt/aucr/migrations
+COPY upload /opt/aucr/upload
 
+RUN mkdir /opt/aucr/migrations
 
 EXPOSE 5000
 
