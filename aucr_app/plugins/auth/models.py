@@ -8,15 +8,14 @@ import jwt
 import redis
 import rq
 import pyotp
-from aucr_app import login, db
 from datetime import timedelta
 from hashlib import md5
 from time import time
 from flask import current_app, url_for
 from flask_login import UserMixin
-from flask_bcrypt import generate_password_hash
-from flask_bcrypt import check_password_hash
+from flask_bcrypt import generate_password_hash, check_password_hash
 from yaml_info.yamlinfo import YamlInfo
+from aucr_app import login, db
 from aucr_app.plugins.reports.storage.elastic_search import query_index, add_model_to_index
 from aucr_app.plugins.auth.ldap_utils import get_ldap_user_email_address
 
@@ -132,7 +131,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     def set_password(self, password):
         """Set the user password."""
-        self.password_hash = generate_password_hash(password)
+        self.password_hash = generate_password_hash(password).decode("utf-8")
 
     def enable_api(self):
         """Enable API"""

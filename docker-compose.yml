@@ -1,19 +1,6 @@
 version: "3.4"
 
 services:
-  mysql:
-    container_name: mysql
-    image: mysql
-    restart: always
-    ports:
-      - 3306:3306
-    volumes:
-      - ./mysql/:/var/lib/mysql/
-    env_file:
-      - ./mysql-config.env
-    networks:
-      - aucr
-
   kibana:
     image: docker.elastic.co/kibana/kibana:6.5.0
     container_name: kibana
@@ -56,6 +43,9 @@ services:
     image: rabbitmq
     ports:
       - 5672:5672
+    environment:
+      - RABBITMQ_DEFAULT_USER=aucradmin
+      - RABBITMQ_DEFAULT_PASS=rabbitmqpassword
     networks:
       - aucr
     env_file:
@@ -68,6 +58,19 @@ services:
     - 27017:27017
     volumes:
     - ./mongo-data:/data/db
+    networks:
+      - aucr
+
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: aucr
+      POSTGRES_PASSWORD: postgrespassword
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data/pgdata
     networks:
       - aucr
 

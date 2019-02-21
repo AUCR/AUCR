@@ -10,7 +10,7 @@ class FileUpload(db.Model):
     __searchable__ = ['id', 'md5_hash', 'uploaded_by', 'file_type', 'time_stamp']
     __tablename__ = 'uploaded_file_table'
     id = db.Column(db.Integer, primary_key=True)
-    md5_hash = db.Column(db.String(32), index=True)
+    md5_hash = db.Column(db.String(32), unique=True)
     uploaded_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     file_type = db.Column(db.String(512), index=True)
     time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
