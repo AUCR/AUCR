@@ -10,7 +10,7 @@ class Errors(db.Model):
 
     __tablename__ = "errors"
     id = db.Column(db.Integer, primary_key=True)
-    error_name = db.Column(db.String(128), index=True)
+    error_name = db.Column(db.Integer, index=True)
     error_message = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
 

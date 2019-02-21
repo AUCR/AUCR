@@ -74,27 +74,6 @@ class Label(db.Model):
         return '<Label {}>'.format(self.label_name)
 
 
-class TaskTable(db.Model):
-    """Task Table models Class defines default database table's all tasks plugins use."""
-
-    __tablename__ = 'task_table'
-    id = db.Column(db.Integer, primary_key=True)
-    task_name = db.Column(db.String(128), index=True)
-    description = db.Column(db.String(256), index=True)
-    time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
-    created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
-    group_access = db.Column(db.String(128), db.ForeignKey('groups.name'))
-    is_starred = db.Column(db.Boolean, default=False)
-    task_subject = db.Column(db.String(256), index=True)
-    task_category = db.Column(db.String(128), db.ForeignKey('task_category.task_category_name'))
-    main_business_coverage = db.Column(db.String(128), db.ForeignKey('business_coverage.business_coverage'))
-    current_state = db.Column(db.Integer, db.ForeignKey('task_states.id'), index=True)
-
-    def __repr__(self):
-        """Official Task Table database name object representation."""
-        return '<TaskTable {}>'.format(self.task_name)
-
-
 class TaskStates(db.Model):
     """Tasks States models class defines default database format for tasks_plugin."""
 

@@ -71,3 +71,4 @@ python-novaclient
 python-openstackclient
 python-swiftclient
 python-ldap
+psycopg2-binary
