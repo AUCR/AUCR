@@ -54,7 +54,6 @@ RUN apk add --no-cache -t .build-deps \
   && rm -rf /tmp/* \
   && apk del --purge .build-deps
 
-RUN mkdir /opt
 RUN mkdir /opt/aucr/
 
 ENV FLASK_APP=aucr.py

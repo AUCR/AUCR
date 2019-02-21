@@ -324,7 +324,7 @@ def insert_initial_user_values(*args, **kwargs):
     run = YamlInfo("aucr_app/plugins/auth/auth.yml", "none", "none")
     admin_data = run.get()
     for items in admin_data:
-        hashed_password = generate_password_hash(admin_data[items]["password"])
+        hashed_password = generate_password_hash(admin_data[items]["password"]).decode('utf-8')
         default_groups = Groups.__call__(name="admin")
         default_user_groups = Groups.__call__(name="user")
         default_system_groups = Groups.__call__(name="system")
