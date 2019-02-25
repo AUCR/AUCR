@@ -22,6 +22,6 @@ setup(
     author_email=project_data["info"]["authors_email"],
     description=project_data["info"]["description"],
     classifiers=project_data["info"]["classifiers"],
-    package_dir={'.': ['aucr/', 'config.py', '*.html']},
+    package_dir={'.': ['aucr_app/', 'config.py', '*.html']},
     scripts=['aucr.py'],
 )

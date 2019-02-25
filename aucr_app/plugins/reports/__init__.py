@@ -3,7 +3,7 @@
 import os
 from aucr_app.plugins.reports.routes import search_page
 # If you want the model to create the a table for the database at run time, import it here in the init
-from aucr_app.plugins.reports.models import ReportPlugins, ReportTable, Log, SearchForm
+from aucr_app.plugins.reports.models import Log, SearchForm
 from aucr_app.plugins.tasks.mq import get_a_task_mq
 from aucr_app.plugins.tasks.log import log_call_back
 from multiprocessing import Process
