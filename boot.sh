@@ -1,6 +1,5 @@
 #!/bin/sh
 # this script is used to boot a Docker container
-source="ENV_PATH"
 while true; do
     flask db upgrade
     if [[ "$?" == "0" ]]; then

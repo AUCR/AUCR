@@ -1,9 +1,11 @@
 """The AUCR FLASK APP."""
 # coding=utf-8
 from aucr_app import aucr_app, db
+from aucr_app.plugins.main import cli
 from aucr_app.plugins.auth.models import User, Message, Notification, Task
 
 app = aucr_app()
+cli.register(app)
 
 
 @app.shell_context_processor

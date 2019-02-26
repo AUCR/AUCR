@@ -1,12 +1,12 @@
 FROM python:3.7-alpine AS aucr
 
 MAINTAINER Wyatt Roersma <wyatt@aucr.io>
-
+RUN adduser -D aucr
 RUN mkdir /opt/aucr/
 
 ENV FLASK_APP=aucr.py
 
-COPY requirements.txt /opt/aucr
+COPY stable-requirements.txt /opt/aucr
 
 WORKDIR /opt/aucr
 
@@ -34,7 +34,9 @@ RUN apk add --no-cache \
     build-base \
     git \
     p7zip \
-  && pip install -r /opt/aucr/requirements.txt --upgrade \
+    postgresql-dev \
+  && pip install psycopg2-binary \
+  && pip install -r /opt/aucr/stable-requirements.txt \
   && apk del --purge gcc \
     libc-dev \
     musl-dev \
@@ -45,7 +47,6 @@ RUN apk add --no-cache \
     g++ \
     python3-dev \
     build-base \
-    openldap-dev \
     gcc \
     git
 
@@ -56,9 +57,12 @@ COPY LICENSE /opt/aucr
 COPY projectinfo.yml /opt/aucr
 COPY config.py /opt/aucr
 COPY upload /opt/aucr/upload
-
-RUN mkdir /opt/aucr/migrations
+COPY migrations /opt/aucr/migrations
+COPY boot.sh  /opt/aucr/
+RUN chmod a+x /opt/aucr/boot.sh
+RUN chown -R aucr:aucr /opt/
+USER aucr
 
 EXPOSE 5000
 
-CMD ["flask", "run", "--host=0.0.0.0"]
+ENTRYPOINT ["./boot.sh"]
