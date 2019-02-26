@@ -1,58 +1,6 @@
-FROM python:3.6-alpine AS aucr
+FROM python:3.7-alpine AS aucr
 
 MAINTAINER Wyatt Roersma <wyatt@aucr.io>
-
-ENV SURICATA_VERSION 4.1.0
-
-RUN apk add --no-cache \
-    suricata
-
-
-ENV YARA_VERSION 3.8.1
-
-RUN apk add --no-cache \
-    openssl \
-    file \
-    jansson \
-    bison \
-    python \
-    tini \
-    su-exec
-
-RUN apk add --no-cache -t .build-deps \
-    py-setuptools \
-    openssl-dev \
-    jansson-dev \
-    python-dev \
-    build-base \
-    libc-dev \
-    file-dev \
-    automake \
-    autoconf \
-    libtool \
-    flex \
-    git \
-  && set -x \
-  && echo "Install Yara from source..." \
-  && cd /tmp/ \
-  && git clone --recursive --branch v$YARA_VERSION https://github.com/VirusTotal/yara.git \
-  && cd /tmp/yara \
-  && ./bootstrap.sh \
-  && sync \
-  && ./configure --with-crypto \
-                 --enable-magic \
-                 --enable-cuckoo \
-                 --enable-dotnet \
-  && make \
-  && make install \
-  && echo "Install yara-python..." \
-  && cd /tmp/ \
-  && git clone --recursive --branch v$YARA_VERSION https://github.com/VirusTotal/yara-python \
-  && cd yara-python \
-  && python setup.py build --dynamic-linking \
-  && python setup.py install \
-  && rm -rf /tmp/* \
-  && apk del --purge .build-deps
 
 RUN mkdir /opt/aucr/
 
@@ -78,7 +26,6 @@ RUN apk add --no-cache \
     file \
     jansson \
     bison \
-    python \
     tini \
     su-exec \
     g++ \
@@ -87,11 +34,6 @@ RUN apk add --no-cache \
     build-base \
     git \
     p7zip \
-  && pip install cython numpy \
-  && pip install --upgrade pip \
-  && git clone https://github.com/egaus/MaliciousMacroBot \
-  && cd MaliciousMacroBot \
-  && python setup.py install \
   && pip install -r /opt/aucr/requirements.txt --upgrade \
   && apk del --purge gcc \
     libc-dev \
@@ -103,6 +45,7 @@ RUN apk add --no-cache \
     g++ \
     python3-dev \
     build-base \
+    openldap-dev \
     gcc \
     git
 
