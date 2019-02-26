@@ -13,7 +13,7 @@ Analyst Unknown Cyber Range is a micro services flask framework. The goal of thi
 services in a master framework so users have a single web interface to do all the things from. Think of what GCP/AWS is
  for admin users but for users(currently with a DFIR focus). 
 
-###Database support
+### Database support
 
 - sqllite
 - mysql
@@ -42,12 +42,12 @@ Example Setup with Temporary an example and just running with flask. If you use 
 Here is an example env variables the aucr flask app will need. I use aucr.local as my host for all systems but normally 
 in a production environment. 
 
-###Required Services
+### Required Services
 
 - RabbitMQ 
 - Database
 
-###Optional Services
+### Optional Services
 
 - Elasticsearch
 - Object Storage

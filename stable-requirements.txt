@@ -103,7 +103,7 @@ python-openstackclient==3.17.0
 python-socketio==3.1.2
 python-swiftclient==3.6.0
 pytz==2018.9
-pyyaml>=4.2b1
+PyYAML
 redis==3.2.0
 requests==2.21.0
 requestsexceptions==1.4.0
