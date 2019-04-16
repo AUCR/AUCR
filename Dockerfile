@@ -6,7 +6,7 @@ RUN mkdir /opt/aucr/
 
 ENV FLASK_APP=aucr.py
 
-COPY stable-requirements.txt /opt/aucr
+COPY requirements.txt /opt/aucr
 
 WORKDIR /opt/aucr
 
@@ -36,7 +36,7 @@ RUN apk add --no-cache \
     p7zip \
     postgresql-dev \
   && pip install psycopg2-binary \
-  && pip install -r /opt/aucr/stable-requirements.txt \
+  && pip install -r /opt/aucr/requirements.txt \
   && apk del --purge gcc \
     libc-dev \
     musl-dev \
