@@ -112,8 +112,8 @@ rq==0.13.0
 rsa==4.0
 simplejson==3.16.0
 six==1.12.0
-SQLAlchemy==1.2.18
-SQLAlchemy-Utils==0.33.11
+SQLAlchemy>=1.3.0
+SQLAlchemy-Utils
 stevedore==1.30.0
 udatetime==0.0.16
 ujson==1.35
