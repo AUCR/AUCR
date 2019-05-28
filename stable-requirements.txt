@@ -131,7 +131,7 @@ stevedore==1.30.1
 udatetime==0.0.16
 ujson==1.35
 uritemplate==3.0.0
-urllib3==1.24.1
+urllib3
 visitor==0.1.3
 warlock==1.3.0
 watchdog==0.9.0
