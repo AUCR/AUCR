@@ -389,7 +389,7 @@ class Message(SearchableMixin, db.Model):
     __searchable__ = ['id', 'body', 'sender_id', 'recipient_id', 'timestamp']
     __tablename__ = 'message'
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(3072))
+    body = db.Column(db.String(4912000))
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)

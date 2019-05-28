@@ -30,7 +30,7 @@ def call_back(ch, method, properties, md5_hash):
     elif object_storage_type == "swift":
         index_mq_aucr_report(("Processing file_hash " + file_hash), str(rabbit_mq_server_ip), "logging")
         swift = SwiftConnection()
-        with open(str(upload_folder + file_hash), 'rb') as swift_file:
+        with open(str(upload_folder + "/" + file_hash), 'rb') as swift_file:
             swift_file_object = swift_file.read()
         swift.put(file_name=file_hash, file_content=swift_file_object)
 
