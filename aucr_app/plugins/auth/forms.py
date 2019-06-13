@@ -1,11 +1,23 @@
 """AUCR auth plugin default page forms."""
 # coding=utf-8
-from flask import flash, current_app
+from flask import flash, current_app, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from flask_babel import _, lazy_gettext as _l
 from aucr_app.plugins.auth.models import User, Group, Groups
+
+
+class SearchForm(FlaskForm):
+    """SearchForm wtf search form builder."""
+    q = StringField(_l('Search'), validators=[DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        if 'formdata' not in kwargs:
+            kwargs['formdata'] = request.args
+        if 'meta.csrf' not in kwargs:
+            kwargs['meta.csrf'] = False
+        super(SearchForm, self).__init__(*args, **kwargs)
 
 
 class LoginForm(FlaskForm):
@@ -149,5 +161,5 @@ class EditProfileForm(FlaskForm):
 class MessageForm(FlaskForm):
     """AUCR auth plugin flask app message form."""
 
-    message = TextAreaField(_l('Message'), validators=[DataRequired(), Length(min=1, max=140)])
+    message = TextAreaField(_l('Message'), validators=[DataRequired(), Length(min=1, max=4000)])
     submit = SubmitField(_l('Submit'))

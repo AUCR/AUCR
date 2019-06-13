@@ -20,6 +20,8 @@ def load(app):
     rabbitmq_username = os.environ.get('RABBITMQ_USERNAME')
     rabbitmq_password = os.environ.get('RABBITMQ_PASSWORD')
     if object_storage:
-        p = Process(target=get_a_task_mq, args=(tasks, call_back, rabbitmq_server, rabbitmq_username,
+        p = Process(target=get_a_task_mq, args=(tasks, call_back,
+                                                rabbitmq_server,
+                                                rabbitmq_username,
                                                 rabbitmq_password))
         p.start()

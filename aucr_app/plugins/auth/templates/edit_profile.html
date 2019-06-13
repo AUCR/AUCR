@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% import 'bootstrap/wtf.html' as wtf %}
+
 
 {% block app_content %}
         <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
@@ -13,9 +13,16 @@
                 <div class="mdl-card__actions mdl-card--border ">
                     <form class="form" method="post" role="form">
                         {{ form.hidden_tag() }}
-                        {{ wtf.form_field(form.username) }}
-                        {{ wtf.form_field(form.about_me) }}
-                        {{ wtf.form_field(form.otp_token_checkbox) }}
+                        <div class="mdl-layout-spacer"></div>
+                        {{ _('Username: Feel free to change if what you want is available!') }}
+                        {{ form.username }}
+                        <div class="mdl-layout-spacer"></div>
+                        {{ _('About me: Tell us More about your player type!') }}
+                        {{ form.about_me }}
+                        <div class="mdl-layout-spacer"></div>
+                        {{ _('2fA Enabled - Check and Save To Enable!') }}
+                        {{form.otp_token_checkbox }}
+                        <div class="mdl-layout-spacer"></div>
                         <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                             {{ _('Save Changes') }}
                         </button>

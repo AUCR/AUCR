@@ -65,4 +65,3 @@ def change_password(user_name, old_password, new_password):
     ]
     ldap_connection.modify_s(test_dn, mod_list)
     ldap_connection.unbind_s()
-

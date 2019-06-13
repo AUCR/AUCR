@@ -4,10 +4,11 @@
 403:
   message: "An authorization error has occurred"
 
+405:
+  message: "Method Not Allowed"
 
 429:
   message: "Too many requests! Please stop that before I give you a time out"
-
 
 500:
   message: "An unexpected error has occurred on the server! We will put this in a log no one will ever look at"

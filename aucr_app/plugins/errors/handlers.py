@@ -17,7 +17,10 @@ def render_error_page_template(error_code):
     """Return http error code page template."""
     # TODO add random message from a list of more than a single message
     if wants_json_response():
-        index_mq_aucr_report(error_code.code, current_app.config["RABBITMQ_SERVER"], "logging")
+        try:
+            index_mq_aucr_report(error_code.code, current_app.config["RABBITMQ_SERVER"], "logging")
+        except AttributeError as e:
+            logging.error(str(e))
         return api_error_response(error_code)
     if error_code is int:
         error_info = Errors.query.filter_by(error_name=error_code).first()

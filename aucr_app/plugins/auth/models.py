@@ -5,8 +5,6 @@ import base64
 import ujson as json
 import os
 import jwt
-import redis
-import rq
 import pyotp
 from datetime import timedelta
 from hashlib import md5
@@ -179,13 +177,6 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
         n = Notification(name=name, payload_json=json.dumps(data), user=self)
         db.session.add(n)
         return n
-
-    def launch_task(self, name, description, *args, **kwargs):
-        """Create task in AUCR redis mq."""
-        rq_job = current_app.task_queue.enqueue('app.tasks.' + name, self.id, *args, **kwargs)
-        task = Task(id=rq_job.get_id(), name=name, description=description, user=self)
-        db.session.add(task)
-        return task
 
     def get_tasks_in_progress(self):
         """Return tasks progress from AUCR redis mq service."""
@@ -368,19 +359,6 @@ class Task(db.Model):
     description = db.Column(db.String(128))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     complete = db.Column(db.Boolean, default=False)
-
-    def get_rq_job(self):
-        """Return redis mq job."""
-        try:
-            rq_job = rq.job.Job.fetch(self.id, connection=current_app.redis)
-        except (redis.exceptions.RedisError, rq.exceptions.NoSuchJobError):
-            return None
-        return rq_job
-
-    def get_progress(self):
-        """Return message progress from redis mq."""
-        job = self.get_rq_job()
-        return job.meta.get('progress', 0) if job is not None else 100
 
 
 class Message(SearchableMixin, db.Model):

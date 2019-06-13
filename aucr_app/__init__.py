@@ -12,10 +12,8 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_pymongo import PyMongo
-from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_babel import Babel, lazy_gettext as _l
-from flask_socketio import SocketIO
 from logging.handlers import SMTPHandler, RotatingFileHandler
 from yaml_info.yamlinfo import YamlInfo
 from aucr_app.plugins import init_task_plugins
@@ -29,10 +27,8 @@ login = LoginManager()
 login.login_view = 'auth.login'
 login.login_message = _l("Please log in to access this page.")
 mail = Mail()
-bootstrap = Bootstrap()
 moment = Moment()
 babel = Babel()
-socketio = SocketIO()
 
 
 def create_app(config_class=Config):
@@ -84,11 +80,9 @@ def init_app(app):
     migrate.init_app(app, db)
     login.init_app(app)
     mail.init_app(app)
-    bootstrap.init_app(app)
     moment.init_app(app)
     babel.init_app(app)
     init_task_plugins(app)
-    socketio.init_app(app)
     return app
 
 

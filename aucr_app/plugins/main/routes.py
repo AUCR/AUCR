@@ -7,7 +7,7 @@ from flask_babel import _, get_locale
 from flask_login import current_user, login_required
 from aucr_app import db
 from flask import Blueprint
-from aucr_app.plugins.reports.forms import SearchForm
+from aucr_app.plugins.auth.forms import SearchForm
 
 
 main_template_page = Blueprint('main', __name__, static_folder='static', template_folder='templates')

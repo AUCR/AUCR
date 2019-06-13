@@ -5,8 +5,7 @@ from flask import current_app, g
 from flask_login import current_user
 from aucr_app import db
 from aucr_app.plugins.analysis.models import FileUpload
-from aucr_app.plugins.analysis.file.zip import write_file_map, encrypt_zip_file
-from aucr_app.plugins.reports.storage.googlecloudstorage import upload_blob, get_blob
+from aucr_app.plugins.analysis.file.zip import write_file_map
 from aucr_app.plugins.reports.storage.swift import SwiftConnection
 from aucr_app.plugins.tasks.mq import index_mq_aucr_report
 
@@ -14,20 +13,10 @@ from aucr_app.plugins.tasks.mq import index_mq_aucr_report
 def call_back(ch, method, properties, md5_hash):
     """File upload call back."""
     file_hash = md5_hash.decode('utf8')
-    zip_password = os.environ.get('ZIP_PASSWORD')
     upload_folder = os.environ.get('FILE_FOLDER')
     rabbit_mq_server_ip = os.environ.get('RABBITMQ_SERVER')
     object_storage_type = os.environ.get('OBJECT_STORAGE_TYPE')
-    if object_storage_type == "GCP":
-        file_blob = get_blob("aucr", str(file_hash))
-        if file_blob is None:
-            index_mq_aucr_report(("Processing md5_hash " + file_hash), str(rabbit_mq_server_ip), "logging")
-            file_name = [str(upload_folder + file_hash)]
-            zip_file_name = str(file_hash + ".zip")
-            encrypt_zip_file(zip_password, zip_file_name, file_name)
-            upload_blob("aucr", str(upload_folder + zip_file_name), file_hash)
-            os.remove(str(upload_folder + zip_file_name))
-    elif object_storage_type == "swift":
+    if object_storage_type == "swift":
         index_mq_aucr_report(("Processing file_hash " + file_hash), str(rabbit_mq_server_ip), "logging")
         swift = SwiftConnection()
         with open(str(upload_folder + "/" + file_hash), 'rb') as swift_file:
