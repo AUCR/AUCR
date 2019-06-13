@@ -160,6 +160,15 @@ class UserModelCase(unittest.TestCase):
                                             'email': 'test@localhost.local'
                                             },
                                       headers=headers)
+            self.assertEqual(self.client.put('/api/users/1',
+                                             json={'username': 'admin',
+                                                   'email': 'test232323@localhost.local'
+                                                   },
+                                      headers=headers).status_code, 200)
+            self.assertEqual(self.client.put('/api/groups/1',
+                                             json={'name': 'testerer',
+                                                   },
+                                      headers=headers).status_code, 200)
             self.assertEqual(self.client.post('/auth/remove_user_from_group',
                              data=dict(group_name="admin", admin_user="admin", submit=True),
                              follow_redirects=True).status_code, 200)

@@ -35,7 +35,7 @@ def create_group() -> object:
     if Groups.query.filter_by(name=data['group_name']).first():
         return bad_request('please use a different group_name')
     group = Groups(name=data['group_name'])
-    group.from_dict(data, new_group=True)
+    group.from_dict(data)
     db.session.add(group)
     db.session.commit()
     response = jsonify(group.to_dict())
@@ -47,11 +47,11 @@ def create_group() -> object:
 @token_auth.login_required
 def update_group(group_id):
     """API update group call."""
-    group = Group.query.get_or_404(group_id)
+    group = Groups.query.get_or_404(group_id)
     data = request.get_json() or {}
-    if 'group_name' in data and data['group_name'] != group.group_name and \
-            Group.query.filter_by(name=data['group_name']).first():
+    if 'name' in data and data['name'] != group.name and \
+            Groups.query.filter_by(name=data['name']).first():
         return bad_request('please use a different group_name')
-    Group.from_dict(data, new_group=False)
+    group.from_dict(data)
     db.session.commit()
-    return jsonify(Group.to_dict())
+    return jsonify(group.to_dict())

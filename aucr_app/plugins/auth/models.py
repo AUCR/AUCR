@@ -175,16 +175,11 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
         """Return tasks progress from AUCR redis mq service."""
         return Task.query.filter_by(user=self, complete=False).all()
 
-    def get_task_in_progress(self, name):
-        """Return a single task progress from the AUCR redis mq service."""
-        return Task.query.filter_by(name=name, user=self, complete=False).first()
-
     def to_dict(self, include_email=False):
         """Return dictionary object type for API calls."""
+        last_seen = None
         if self.last_seen:
             last_seen = self.last_seen.isoformat() + 'Z'
-        else:
-            last_seen = None
         data = {
             'id': self.id,
             'username': self.username,
@@ -296,9 +291,9 @@ class Groups(PaginatedAPIMixin, db.Model):
             'last_seen': self.timestamp.isoformat() + 'Z'}
         return data
 
-    def from_dict(self, data, new_group=False):
+    def from_dict(self, data):
         """Process from dictionary object type for API Posts."""
-        for field in ['group_name']:
+        for field in ['name']:
             if field in data:
                 setattr(self, field, data[field])
 
