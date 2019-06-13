@@ -23,9 +23,7 @@ def create_upload_file(file, upload_folder) -> str:
         file_type = file_info_dict
         uploaded_by_id = 1
     duplicate_file = FileUpload.query.filter_by(md5_hash=md5_hash).first()
-    if duplicate_file:
-        pass
-    else:
+    if not duplicate_file:
         uploaded_file = FileUpload.__call__(md5_hash=md5_hash, uploaded_by=uploaded_by_id, file_type=str(file_type))
         db.session.add(uploaded_file)
         db.session.commit()

@@ -49,12 +49,9 @@ pyqrcode
 flask-bcrypt
 yamlinfo
 udatetime
-greenlet
-eventlet
 pika
 pyotp
 fleep
-python-swiftclient
 DataParserLib
-python-ldap
 psycopg2-binary
+gunicorn

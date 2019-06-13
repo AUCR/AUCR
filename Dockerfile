@@ -21,7 +21,6 @@ RUN apk add --no-cache \
     libffi-dev \
     py-pillow \
     python3-dev \
-    openldap-dev \
     openssl \
     file \
     jansson \
@@ -35,7 +34,7 @@ RUN apk add --no-cache \
     git \
     p7zip \
     postgresql-dev \
-  && pip install psycopg2-binary \
+  && pip install psycopg2-binary python-dotenv \
   && pip install -r /opt/aucr/requirements.txt \
   && apk del --purge gcc \
     libc-dev \

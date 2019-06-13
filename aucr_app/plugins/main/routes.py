@@ -30,11 +30,7 @@ def before_request() -> None:
 def index():
     """Return default home page flask app blueprint route."""
     page = request.args.get('page', 1, type=int)
-    try:
-        return render_template('index.html', title=_('Home'), page=page, app_title=current_app.config["APP_TITLE"])
-    except AttributeError:
-        logging.info("No groups found for this user")
-        return render_template('index.html', title=_('Home'), page=page, app_title=current_app.config["APP_TITLE"])
+    return render_template('index.html', title=_('Home'), page=page, app_title=current_app.config["APP_TITLE"])
 
 
 @main_template_page.route('/about_us', methods=['GET'])
@@ -52,8 +48,7 @@ def help_page():
 @main_template_page.route('/privacy', methods=['GET'])
 def privacy():
     """Return the Privacy AUCR page."""
+    privacy_policy_url = "None"
     if current_app.config["PRIVACY_POLICY_URL"]:
         privacy_policy_url = current_app.config["PRIVACY_POLICY_URL"]
-    else:
-        privacy_policy_url = "None"
     return render_template('privacy.html', title=_('Privacy & Terms'), privacy_policy_url=privacy_policy_url)

@@ -29,23 +29,8 @@ def index_model_data_to_es(index, model):
 
 def add_model_to_index(index, model):
     """Ad to Elasticsearch index."""
-    if not current_app.elasticsearch:
-        return
-    index_model_data_to_es(index, model)
-
-
-def add_to_index(index, payload):
-    """Ad to Elasticsearch index."""
-    if not current_app.elasticsearch:
-        return
-    index_data_to_es(index, payload)
-
-
-def remove_from_index(index, model):
-    """Elasticsearch remove field from index."""
-    if not current_app.elasticsearch:
-        return
-    current_app.elasticsearch.delete(index=index, doc_type=index, id=model.id, request_timeout=120)
+    if current_app.elasticsearch:
+        index_model_data_to_es(index, model)
 
 
 def query_index(index, query, page, per_page):

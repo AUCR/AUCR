@@ -2,7 +2,6 @@
 # coding=utf-8
 import logging
 from flask import render_template, request, current_app
-from aucr_app import db
 from aucr_app.plugins.errors.models import Errors
 from aucr_app.plugins.errors.api.errors import error_response as api_error_response
 from aucr_app.plugins.tasks.mq import index_mq_aucr_report

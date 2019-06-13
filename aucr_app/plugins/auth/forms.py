@@ -104,13 +104,13 @@ class CreateGroupForm(FlaskForm):
 class RemoveUserFromGroup(FlaskForm):
     """Flask app form to remove user from a group."""
 
-    group_name = StringField(_l('Group Name'), validators=[DataRequired()])
-    username = StringField(_l('User Name'), validators=[DataRequired()])
+    group_name = StringField(_l('Group_Name'), validators=[DataRequired()])
+    username = StringField(_l('User_Name'), validators=[DataRequired()])
     submit = SubmitField('Remove User From Group')
 
     def validate_group_name(self, group_name):
         """Check possible group duplicates."""
-        group_name = Groups.query.filter_by(group_name=group_name.data).first()
+        group_name = Groups.query.filter_by(name=group_name.data).first()
         if group_name is None:
             raise ValidationError(_("Please use a different Group Name as we can't find that"))
 

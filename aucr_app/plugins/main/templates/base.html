@@ -34,7 +34,7 @@
     <script>
         {% if current_user.is_authenticated %}
             function translate(sourceElem, destElem, sourceLang, destLang) {
-                $(destElem).html('<img src="\{\{ url_for(\'static\', filename=\'loading.gif\') \}\}">');
+                $(destElem).html('<img src="{{ url_for('main.static', filename='img/loading.gif') }}">');
                 $.post('/translate', {
                     text: $(sourceElem).text(),
                     source_language: sourceLang,
@@ -45,7 +45,6 @@
                     $(destElem).text("{{ _('Error: Could not contact server.') }}");
                 });
             }
-
             $(function () {
                 var timer = null;
                 var xhr = null;
