@@ -30,16 +30,10 @@ class Config(object):
     OBJECT_STORAGE_TYPE = os.environ.get('OBJECT_STORAGE_TYPE') or None
     ALLOWED_EXTENSIONS = os.environ.get('ALLOWED_EXTENSIONS') or ['txt', 'pdf', 'png', 'jpg',
                                                                   'jpeg', 'gif', 'doc', 'docx', 'exe', 'yar', 'zip', '']
-    REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
     POSTS_PER_PAGE = os.environ.get('POSTS_PER_PAGE') or 25
-    ALLOWED_EMAIL_LIST = os.environ.get("ALLOWED_EMAIL_LIST")
-    if ALLOWED_EMAIL_LIST:
-        ALLOWED_EMAIL_LIST = ALLOWED_EMAIL_LIST.split(', ')
+    ALLOWED_EMAIL_LIST = (os.environ.get("ALLOWED_EMAIL_LIST") or "*").split(', ')
     LDAP_PROVIDER_URL = os.environ.get("LDAP_PROVIDER_URL") or None
-    if os.environ.get("LDAP_PROTOCOL_VERSION"):
-        LDAP_PROTOCOL_VERSION = int(os.environ.get("LDAP_PROTOCOL_VERSION"))
-    else:
-        LDAP_PROTOCOL_VERSION = None
+    LDAP_PROTOCOL_VERSION = os.environ.get("LDAP_PROTOCOL_VERSION") or None
     LDAP_CONNECTION_STRING = os.environ.get("LDAP_CONNECTION_STRING") or None
     LDAP_BASE = os.environ.get("LDAP_BASE") or 3
     LDAP_CERTIFICATE = os.environ.get("LDAP_CERTIFICATE") or None

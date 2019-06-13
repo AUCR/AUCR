@@ -14,8 +14,7 @@ from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash, check_password_hash
 from yaml_info.yamlinfo import YamlInfo
 from aucr_app import login, db
-from aucr_app.plugins.reports.storage.elastic_search import query_index, add_model_to_index
-from aucr_app.plugins.auth.ldap_utils import get_ldap_user_email_address
+from aucr_app.plugins.tasks.storage.elastic_search import query_index, add_model_to_index
 
 
 class SearchableMixin(object):
@@ -138,13 +137,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     def check_password(self, password):
         """Verify bcrypt stored hash against password parameter."""
-        if current_app.config['LDAP_PROVIDER_URL']:
-            if get_ldap_user_email_address(self.username, password):
-                result = True
-            else:
-                result = False
-        else:
-            result = check_password_hash(self.password_hash, password)
+        result = check_password_hash(self.password_hash, password)
         return result
 
     def avatar(self, size):

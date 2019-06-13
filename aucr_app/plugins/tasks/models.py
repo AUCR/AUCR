@@ -4,6 +4,18 @@ import udatetime
 from aucr_app import db, YamlInfo
 
 
+class Log(db.Model):
+    """Log tracking for report_plugin."""
+
+    id = db.Column(db.Integer, primary_key=True)
+    log_name = db.Column(db.String(128), index=True)
+    time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
+
+    def __repr__(self):
+        """Log table change tracking."""
+        return '<Log {}>'.format(self.report_name)
+
+
 class TasksPlugins(db.Model):
     """The TasksPlugins models Class defines the default database format for tasks_plugin."""
 

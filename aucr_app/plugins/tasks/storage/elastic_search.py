@@ -1,6 +1,5 @@
 # coding=utf-8
 import os
-from multiprocessing import Process
 from flask import current_app
 from elasticsearch import Elasticsearch
 
@@ -32,16 +31,14 @@ def add_model_to_index(index, model):
     """Ad to Elasticsearch index."""
     if not current_app.elasticsearch:
         return
-    p = Process(target=index_model_data_to_es, args=(index, model))
-    p.start()
+    index_model_data_to_es(index, model)
 
 
 def add_to_index(index, payload):
     """Ad to Elasticsearch index."""
     if not current_app.elasticsearch:
         return
-    p = Process(target=index_data_to_es, args=(index, payload))
-    p.start()
+    index_data_to_es(index, payload)
 
 
 def remove_from_index(index, model):

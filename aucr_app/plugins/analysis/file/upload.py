@@ -6,22 +6,6 @@ from flask_login import current_user
 from aucr_app import db
 from aucr_app.plugins.analysis.models import FileUpload
 from aucr_app.plugins.analysis.file.zip import write_file_map
-from aucr_app.plugins.reports.storage.swift import SwiftConnection
-from aucr_app.plugins.tasks.mq import index_mq_aucr_report
-
-
-def call_back(ch, method, properties, md5_hash):
-    """File upload call back."""
-    file_hash = md5_hash.decode('utf8')
-    upload_folder = os.environ.get('FILE_FOLDER')
-    rabbit_mq_server_ip = os.environ.get('RABBITMQ_SERVER')
-    object_storage_type = os.environ.get('OBJECT_STORAGE_TYPE')
-    if object_storage_type == "swift":
-        index_mq_aucr_report(("Processing file_hash " + file_hash), str(rabbit_mq_server_ip), "logging")
-        swift = SwiftConnection()
-        with open(str(upload_folder + "/" + file_hash), 'rb') as swift_file:
-            swift_file_object = swift_file.read()
-        swift.put(file_name=file_hash, file_content=swift_file_object)
 
 
 def create_upload_file(file, upload_folder) -> str:
