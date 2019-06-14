@@ -1,8 +1,17 @@
-404:
-  message: "This Page Was not Found, It was lost in the wires."
+400:
+  message: "This server will not process your malformed size. you too big!"
 
 403:
   message: "An authorization error has occurred"
+
+404:
+  message: "This Page Was not Found, It was lost in the wires."
+
+405:
+  message: "Method not allowed, Computer says No"
+
+410:
+  message: "Resource requested is Goneee!"
 
 
 429:
@@ -15,4 +24,11 @@
 502:
   message: "Bad Gateway, It seems we got too close to the black hole"
 
-  # Test MSG - will delete in future push before i get started with error msgs2
+503:
+  message: "I cannot handle this many!"
+
+504:
+  message: "Im a gateway and im having timeout"
+
+511:
+  message: "You Need to auth to get past me!" 
