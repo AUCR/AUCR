@@ -1,3 +1,9 @@
+301:
+  message: "This and all future requests have moved"
+
+305:
+  message: "The requested resource is available through a proxy, sure you want to do that ;)"
+
 400:
   message: "This server will not process your malformed size. you too big!"
 
