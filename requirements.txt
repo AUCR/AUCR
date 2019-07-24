@@ -49,6 +49,8 @@ pyqrcode
 flask-bcrypt
 yamlinfo
 udatetime
+greenlet
+eventlet
 pika
 pyotp
 fleep
