@@ -49,7 +49,7 @@ pyqrcode
 flask-bcrypt
 yamlinfo
 udatetime
-pika
+pika==1.0.1
 pyotp
 fleep
 DataParserLib
