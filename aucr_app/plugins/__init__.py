@@ -5,17 +5,8 @@ import importlib
 import os
 import logging
 
-# TODO make it so we can render the entire nav bar based on group permissions and allow plugins to add to it
 
-
-def register_plugin_assets_directory(app, base_path)-> None:
-    """Register AUCR plugin flask app blueprint assets directory."""
-    base_path = base_path.strip('/')
-    rule = '/' + base_path + '/<path:path>'
-    app.add_url_rule(rule=rule, endpoint=base_path)
-
-
-def init_task_plugins(app)-> None:
+def init_task_plugins(app) -> None:
     """Load all AUCR Plugin flask blueprints."""
     modules = glob.glob(os.path.dirname(__file__) + "/*")
     blacklist = {'__pycache__'}

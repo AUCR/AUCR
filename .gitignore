@@ -37,6 +37,7 @@ nosetests.xml
 
 venv
 app.db
+aucr.env
 aucr.log*
 /config.yml
 .idea/

@@ -1,11 +1,31 @@
 {% extends "base.html" %}
-{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <h3>{{ _('Send Message to %(recipient)s', recipient=recipient) }}</h3>
-    <div class="row">
-        <div class="mdl-cell">
-            {{ wtf.quick_form(form) }}
-        </div>
-    </div>
+        <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+            <div class="mdl-card mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
+                <div class="mdl-card__title">
+                    <i class="material-icons">
+                        message
+                    </i>
+                    <div class="mdl-layout-spacer"></div>
+                </div>
+                <h3 class="mdl-card__title-text">{{ _('Send Message to %(recipient)s', recipient=recipient) }}</h3>
+                <div class="mdl-card__supporting-text">
+                    {{ _("Please register here to access the site! By creating account you're agreeing to our privacy policy!!") }}
+                    <form class="form" method="post" role="form">
+                        {{ form.hidden_tag() }}
+                        <div class="mdl-layout-spacer"></div>
+                        {% with form_object=message, form_object_name="message", form_object_label="Message",form_object_rows=5, form_object_value=form.data.message  if form.data.message != None else "", form_text_type="text" %}
+                            {% include "subtemplates/_form_object_textfield.html" %}
+                        {% endwith %}
+                        <div class="mdl-layout-spacer"></div>
+                        <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                                value=data-val.value>
+                            Send
+                        </button>
+                    </form>
+                    <div class="mdl-layout-spacer"></div>
+                </div>
+            </div>
+        </section>
 {% endblock %}

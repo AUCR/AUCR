@@ -2,6 +2,7 @@
 
 {% block app_content %}
     <h3>{{ _('Messages') }}</h3>
+    <section class="section--center mdl-cell mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
     {% for post in messages %}
         {% include 'subtemplates/_post.html' %}
     {% endfor %}
@@ -15,4 +16,5 @@
             </ul>
         </nav>
     {% endif %}
+    </section>
 {% endblock %}

@@ -1,16 +1,4 @@
-{% extends "bootstrap/base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
-
-{% block title %}
-    {% if title %}
-        {{ title }}
-    {% else %}
-        {{ _('Welcome to AUCR') }}
-    {% endif %}
-{% endblock %}
-
 {% block styles %}
-    {{super()}}
     {# Styling block for both the MDL styles and custom style sheets #}
     <link rel="shortcut icon" href="{{ url_for('main.static', filename='img/favicon.ico') }}">
     <link rel="apple-touch-icon" sizes="57x57" href="{{ url_for('main.static', filename='img/apple-icon-57x57.png') }}">
@@ -37,7 +25,6 @@
 {% endblock %}
 
 {% block scripts %}
-    {{ super() }}
     {# Script block for static scripts #}
     <script src="{{ url_for("main.static", filename="js/material.min.js") }}"></script>
     <script src="{{ url_for("main.static", filename="js/main.js") }}"></script>
@@ -47,7 +34,7 @@
     <script>
         {% if current_user.is_authenticated %}
             function translate(sourceElem, destElem, sourceLang, destLang) {
-                $(destElem).html('<img src="\{\{ url_for(\'static\', filename=\'loading.gif\') \}\}">');
+                $(destElem).html('<img src="{{ url_for('main.static', filename='img/loading.gif') }}">');
                 $.post('/translate', {
                     text: $(sourceElem).text(),
                     source_language: sourceLang,
@@ -58,7 +45,6 @@
                     $(destElem).text("{{ _('Error: Could not contact server.') }}");
                 });
             }
-
             $(function () {
                 var timer = null;
                 var xhr = null;

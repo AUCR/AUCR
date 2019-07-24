@@ -14,9 +14,9 @@ from aucr_app.plugins.auth.email import send_password_reset_email
 from aucr_app.plugins.auth.utils import get_group_permission_navbar, get_groups
 from aucr_app.plugins.auth.models import Group, Message, User, Notification, Groups
 from aucr_app.plugins.errors.handlers import render_error_page_template
-from aucr_app.plugins.auth.ldap_utils import get_ldap_user_email_address
 
 auth_page = Blueprint('auth', __name__, template_folder='templates')
+search_page = Blueprint('search', __name__, template_folder='templates')
 
 
 @auth_page.route('/users')
@@ -109,7 +109,7 @@ def send_message(recipient):
     else:
         for error in form.errors:
             flash(str(form.errors[error][0]), 'error')
-    return render_template('send_message.html', title=_('Send Message'), form=form, recipient=recipient)
+    return render_template('send_message.html', form=form, recipient=recipient)
 
 
 @auth_page.route('/notifications')
@@ -165,7 +165,7 @@ def reset_password_request():
     else:
         for error in form.errors:
             flash(str(form.errors[error][0]), 'error')
-        return render_template('reset_password_request.html', title=_('Register'), form=form)
+        return render_template('reset_password_request.html', form=form)
 
 
 @auth_page.route('/reset_password/<token>', methods=['GET', 'POST'])
@@ -297,28 +297,14 @@ def login():
         form = LoginForm()
         if form.validate_on_submit():
             user_name = User.query.filter_by(username=form.username.data).first()
-            if current_app.config['LDAP_PROVIDER_URL'] and not user_name:
-                result_data = get_ldap_user_email_address(form.username.data, form.password.data)
-                if result_data:
-                    new_user_name = User.__call__(username=form.username.data, email=result_data)
-                    db.session.add(new_user_name)
-                    db.session.commit()
-                    user_group = Group.__call__(groups_id=2, username_id=new_user_name.id)
-                    db.session.add(user_group)
-                    db.session.commit()
-                    user_name = User.query.filter_by(username=form.username.data).first()
-                    session['username'] = new_user_name.username
-                else:
-                    flash('Invalid username, password or token.')
-                    return redirect(url_for('auth.login'))
             if user_name is not None and user_name.otp_secret is not None:
                 otp_auth_check = user_name.verify_totp(form.token.data)
                 if otp_auth_check is False or not user_name.check_password(form.password.data):
                     flash('Invalid username, password or token.')
                     return redirect(url_for('auth.login'))
             if user_name is None or not user_name.check_password(form.password.data):
-                    flash('Invalid username, password or token.')
-                    return redirect(url_for('auth.login'))
+                flash('Invalid username, password or token.')
+                return redirect(url_for('auth.login'))
             # log user in
             if form.remember_me.data:
                 login_user(user_name, remember=form.remember_me.data)
@@ -353,8 +339,6 @@ def logout():
 @login_required
 def search():
     """AUCR search plugin flask blueprint."""
-    if not g.search_form.validate():
-        return redirect(url_for('auth.search'))
     page = request.args.get('page', 1, type=int) or 1
     posts, total = Message.search(g.search_form.q.data, page, int(current_app.config['POSTS_PER_PAGE']))
     search_messages, total = Message.search(g.search_form.q.data, page, int(current_app.config['POSTS_PER_PAGE']))

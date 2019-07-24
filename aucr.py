@@ -1,14 +1,11 @@
 """The AUCR FLASK APP."""
 # coding=utf-8
-from aucr_app import aucr_app, db
+from aucr_app import aucr_app
 from aucr_app.plugins.main import cli
-from aucr_app.plugins.auth.models import User, Message, Notification, Task
 
 app = aucr_app()
 cli.register(app)
 
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
 
-@app.shell_context_processor
-def make_shell_context():
-    """Main flask app running service for production use."""
-    return {'db': db, 'User': User, 'Message': Message, 'Notification': Notification, 'Task': Task}

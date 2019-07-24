@@ -2,9 +2,6 @@
 [![Build Status](https://travis-ci.org/AUCR/AUCR.svg?branch=master)](https://travis-ci.org/AUCR/AUCR)
 [![codecov](https://codecov.io/gh/AUCR/AUCR/branch/master/graph/badge.svg)](https://codecov.io/gh/AUCR/AUCR)
 [![Docker Repository on Quay](https://quay.io/repository/wroersma/aucr/status "Docker Repository on Quay")](https://quay.io/repository/wroersma/aucr)
-[![Coverage Status](https://coveralls.io/repos/github/AUCR/AUCR/badge.svg)](https://coveralls.io/github/AUCR/AUCR)
-[![Code Health](https://landscape.io/github/AUCR/AUCR/master/landscape.svg?style=flat)](https://landscape.io/github/AUCR/AUCR/master)
-[![AUCR Slack](https://slack.aucr.io/badge.svg)](https://slack.aucr.io/)
 
 
 ## Overview
@@ -19,12 +16,16 @@ services in a master framework so users have a single web interface to do all th
 - mysql
 - postgres
 
+### Web Framework
+Currently only supports Google's MDL
+Bootstrap was recently removed due to jquery vulnerability  
+Support for Google's MD ~ WIP
+
 ## Developer setup
 
 Example Setup with Temporary an example and just running with flask. If you use pycharm you can setup flask app to debug
  through the code. Python >= 3.6  
 
-    pip install PyYAML
     pip install -r requiremnets.txt
     export FLASK_APP=aucr.py
     export FLASK_DEBUG=1
@@ -50,7 +51,6 @@ in a production environment.
 ### Optional Services
 
 - Elasticsearch
-- Object Storage
 
 Example: Environment Variables
 
@@ -71,7 +71,6 @@ Example: Environment Variables
         MAIL_USERNAME=some_user_name_@gmail.com
         MAIL_PASSWORD=some_api_app_password_for_account
         ALLOWED_EXTENSIONS=['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'docx', 'exe', 'yar', 'zip', 'dll', 'rar', '']
-        MONGO_URI=mongodb://aucr.local:27017/aucr
         PRIVACY_POLICY_URL=https://app.termly.io/document/privacy-policy/ccb75cb3-f03e-43b6-bd09-de3b8c9e4d48
         MAIL_USE_TLS=True
         ALLOWED_EMAIL_LIST=gmail.com

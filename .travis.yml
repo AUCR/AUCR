@@ -2,12 +2,12 @@ language: python
 
 python:
 - 3.6
-- 3.6-dev
+- 3.7-dev
 before_install:
 - sudo apt-get update
 - sudo apt-get -y install python-pip
 - sudo pip install --upgrade pip
-- sudo apt-get -y install p7zip-full ldap-utils lcov valgrind libldap2-dev libsasl2-dev build-essential
+- sudo apt-get -y install p7zip-full build-essential
 - pip install --upgrade pip
 - pip install codecov
 - pip install pycodestyle

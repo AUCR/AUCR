@@ -1,5 +1,7 @@
 # How to write a processing plugin for AUCR    
 This is a simple guide on how to write a processing plugin for AUCR
+Processing plugins are designed to be run from the Flask app because it makes the application easy to run as a 
+standalone all in one or as a highly scalable web app.
 
 ## Example plugin #1 A cuckoo file processing submission plugin
 

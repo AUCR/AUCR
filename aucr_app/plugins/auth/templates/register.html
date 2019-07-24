@@ -1,15 +1,7 @@
 {% extends 'base.html' %}
-{% import 'bootstrap/wtf.html' as wtf %}
+
 
 {% block app_content %}
-    <style>
-        .demo-list-action {
-          width: 400px;
-        }
-        .mdl-textfield{
-          width:500px;
-        }
-    </style>
     <main class="mdl-layout__content">
         <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
             <div class="mdl-card mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
@@ -26,34 +18,41 @@
                 <div class="mdl-card__actions mdl-card--border ">
                         <form class="form" method="post" role="form">
                             {{ form.hidden_tag() }}
-
+                            <div class="mdl-layout-spacer"></div>
                             {% with form_object=username, form_object_name="username", form_object_label="Username", form_object_value=form.data.username  if form.data.username != None else "", form_text_type="text" %}
                                 {% include "subtemplates/_form_object_textfield_singleline_required.html" %}
                             {% endwith %}
+                            <div class="mdl-layout-spacer"></div>
 
                             {% with form_object=email, form_object_name="email", form_object_label="Email", form_object_value=form.data.email  if form.data.username != None else "", form_text_type="text" %}
                                 {% include "subtemplates/_form_object_textfield_singleline_required.html" %}
                             {% endwith %}
+                             <div class="mdl-layout-spacer"></div>
 
                             {% with form_object=password, form_object_name="password", form_object_label="Password", form_object_value=form.data.password  if form.data.password != None else "" %}
                                 {% include "subtemplates/_form_object_password_textfield_required.html" %}
                             {% endwith %}
+                            <div class="mdl-layout-spacer"></div>
 
                             {% with form_object=password2, form_object_name="password2", form_object_label="Repeat Password", form_object_value=form.data.password2  if form.data.password2 != None else "" %}
                                 {% include "subtemplates/_form_object_password_textfield_required.html" %}
                             {% endwith %}
+                            <div class="mdl-layout-spacer"></div>
 
                             {% with form_object=website, form_object_name="website", form_object_label="Website", form_object_value=form.data.website  if form.data.website != None else "", form_text_type="text" %}
                                 {% include "subtemplates/_form_object_textfield_singleline_required.html" %}
                             {% endwith %}
+                            <div class="mdl-layout-spacer"></div>
 
                             {% with form_object=affiliation, form_object_name="affiliation", form_object_label="Affiliation", form_object_value=form.data.affiliation  if form.data.affiliation != None else "", form_text_type="text" %}
                                 {% include "subtemplates/_form_object_textfield_singleline_required.html" %}
                             {% endwith %}
+                            <div class="mdl-layout-spacer"></div>
 
                             {% with form_object=country, form_object_name="country", form_object_label="Country", form_object_value=form.data.country  if form.data.country != None else "", form_text_type="text" %}
                                 {% include "subtemplates/_form_object_textfield_singleline_required.html" %}
                             {% endwith %}
+                            <div class="mdl-layout-spacer"></div>
 
                             <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
                                     value=data-val.value>

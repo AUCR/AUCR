@@ -1,11 +1,23 @@
 """AUCR auth plugin default page forms."""
 # coding=utf-8
-from flask import flash, current_app
+from flask import flash, current_app, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from flask_babel import _, lazy_gettext as _l
 from aucr_app.plugins.auth.models import User, Group, Groups
+
+
+class SearchForm(FlaskForm):
+    """SearchForm wtf search form builder."""
+    q = StringField(_l('Search'), validators=[DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        if 'formdata' not in kwargs:
+            kwargs['formdata'] = request.args
+        if 'meta.csrf' not in kwargs:
+            kwargs['meta.csrf'] = False
+        super(SearchForm, self).__init__(*args, **kwargs)
 
 
 class LoginForm(FlaskForm):
@@ -92,13 +104,13 @@ class CreateGroupForm(FlaskForm):
 class RemoveUserFromGroup(FlaskForm):
     """Flask app form to remove user from a group."""
 
-    group_name = StringField(_l('Group Name'), validators=[DataRequired()])
-    username = StringField(_l('User Name'), validators=[DataRequired()])
+    group_name = StringField(_l('Group_Name'), validators=[DataRequired()])
+    username = StringField(_l('User_Name'), validators=[DataRequired()])
     submit = SubmitField('Remove User From Group')
 
     def validate_group_name(self, group_name):
         """Check possible group duplicates."""
-        group_name = Groups.query.filter_by(group_name=group_name.data).first()
+        group_name = Groups.query.filter_by(name=group_name.data).first()
         if group_name is None:
             raise ValidationError(_("Please use a different Group Name as we can't find that"))
 
@@ -149,5 +161,5 @@ class EditProfileForm(FlaskForm):
 class MessageForm(FlaskForm):
     """AUCR auth plugin flask app message form."""
 
-    message = TextAreaField(_l('Message'), validators=[DataRequired(), Length(min=1, max=140)])
+    message = TextAreaField(_l('Message'), validators=[DataRequired(), Length(min=1, max=4000)])
     submit = SubmitField(_l('Submit'))

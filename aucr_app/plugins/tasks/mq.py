@@ -23,7 +23,7 @@ def get_mq_aucr_tasks(call_back, rabbit_mq_server, rabbit_mq_que, rabbitmq_usern
     connection = pika.BlockingConnection(pika.ConnectionParameters(credentials=credentials, host=rabbit_mq_server))
     channel = connection.channel()
     channel.queue_declare(queue=rabbit_mq_que)
-    channel.basic_consume(call_back, queue=rabbit_mq_que, no_ack=True)
+    channel.basic_consume(on_message_callback=call_back, queue=rabbit_mq_que)
     channel.start_consuming()
     connection.close()
 

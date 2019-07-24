@@ -5,8 +5,6 @@ import base64
 import ujson as json
 import os
 import jwt
-import redis
-import rq
 import pyotp
 from datetime import timedelta
 from hashlib import md5
@@ -16,8 +14,7 @@ from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash, check_password_hash
 from yaml_info.yamlinfo import YamlInfo
 from aucr_app import login, db
-from aucr_app.plugins.reports.storage.elastic_search import query_index, add_model_to_index
-from aucr_app.plugins.auth.ldap_utils import get_ldap_user_email_address
+from aucr_app.plugins.tasks.storage.elastic_search import query_index, add_model_to_index
 
 
 class SearchableMixin(object):
@@ -140,13 +137,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     def check_password(self, password):
         """Verify bcrypt stored hash against password parameter."""
-        if current_app.config['LDAP_PROVIDER_URL']:
-            if get_ldap_user_email_address(self.username, password):
-                result = True
-            else:
-                result = False
-        else:
-            result = check_password_hash(self.password_hash, password)
+        result = check_password_hash(self.password_hash, password)
         return result
 
     def avatar(self, size):
@@ -180,27 +171,15 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
         db.session.add(n)
         return n
 
-    def launch_task(self, name, description, *args, **kwargs):
-        """Create task in AUCR redis mq."""
-        rq_job = current_app.task_queue.enqueue('app.tasks.' + name, self.id, *args, **kwargs)
-        task = Task(id=rq_job.get_id(), name=name, description=description, user=self)
-        db.session.add(task)
-        return task
-
     def get_tasks_in_progress(self):
         """Return tasks progress from AUCR redis mq service."""
         return Task.query.filter_by(user=self, complete=False).all()
 
-    def get_task_in_progress(self, name):
-        """Return a single task progress from the AUCR redis mq service."""
-        return Task.query.filter_by(name=name, user=self, complete=False).first()
-
     def to_dict(self, include_email=False):
         """Return dictionary object type for API calls."""
+        last_seen = None
         if self.last_seen:
             last_seen = self.last_seen.isoformat() + 'Z'
-        else:
-            last_seen = None
         data = {
             'id': self.id,
             'username': self.username,
@@ -312,9 +291,9 @@ class Groups(PaginatedAPIMixin, db.Model):
             'last_seen': self.timestamp.isoformat() + 'Z'}
         return data
 
-    def from_dict(self, data, new_group=False):
+    def from_dict(self, data):
         """Process from dictionary object type for API Posts."""
-        for field in ['group_name']:
+        for field in ['name']:
             if field in data:
                 setattr(self, field, data[field])
 
@@ -368,19 +347,6 @@ class Task(db.Model):
     description = db.Column(db.String(128))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     complete = db.Column(db.Boolean, default=False)
-
-    def get_rq_job(self):
-        """Return redis mq job."""
-        try:
-            rq_job = rq.job.Job.fetch(self.id, connection=current_app.redis)
-        except (redis.exceptions.RedisError, rq.exceptions.NoSuchJobError):
-            return None
-        return rq_job
-
-    def get_progress(self):
-        """Return message progress from redis mq."""
-        job = self.get_rq_job()
-        return job.meta.get('progress', 0) if job is not None else 100
 
 
 class Message(SearchableMixin, db.Model):
