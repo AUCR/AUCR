@@ -1,0 +1,365 @@
+# English translations for PROJECT.
+# Copyright (C) 2019 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-06-12 21:46-0700\n"
+"PO-Revision-Date: 2019-06-12 21:46-0700\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.7.0\n"
+
+#: aucr_app/__init__.py:25
+msgid "Please log in to access this page."
+msgstr ""
+
+#: aucr_app/plugins/auth/email.py:36
+msgid "[AUCR] Reset Your Password"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:13
+msgid "Search"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:26 aucr_app/plugins/auth/forms.py:36
+#: aucr_app/plugins/auth/forms.py:135
+#: aucr_app/plugins/auth/templates/users.html:11
+msgid "Username"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:27 aucr_app/plugins/auth/forms.py:38
+#: aucr_app/plugins/auth/forms.py:79
+msgid "Password"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:29
+msgid "Remember Me"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:30 aucr_app/plugins/auth/routes.py:328
+msgid "Sign In"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:37 aucr_app/plugins/auth/forms.py:72
+msgid "Email"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:39 aucr_app/plugins/auth/forms.py:80
+msgid "Repeat Password"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:40
+msgid "Website"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:41
+msgid "Affiliation"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:42
+msgid "Country"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:43 aucr_app/plugins/auth/routes.py:150
+#: aucr_app/plugins/auth/templates/register.html:13
+msgid "Register"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:49 aucr_app/plugins/auth/forms.py:151
+msgid "Please use a different username."
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:55
+msgid "Please use a different email address."
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:66
+msgid "Please use a whitelisted email address."
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:73 aucr_app/plugins/auth/forms.py:81
+msgid "Request Password Reset"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:87 aucr_app/plugins/auth/forms.py:107
+msgid "Group Name"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:88
+msgid "Admin ID"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:95
+msgid "Please use a different User Name as this is not a valid user"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:101
+msgid "Please use a different Group name this name is taken"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:108
+msgid "User Name"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:115
+msgid "Please use a different Group Name as we can't find that"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:121
+msgid "The selected user name is not in the selected group"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:127
+msgid "Say something"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:128 aucr_app/plugins/auth/forms.py:139
+#: aucr_app/plugins/auth/forms.py:165
+msgid "Submit"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:136
+msgid "About me"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:137
+msgid "OTP Token"
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:158
+msgid "The OTP token has already been set."
+msgstr ""
+
+#: aucr_app/plugins/auth/forms.py:164
+msgid "Message"
+msgstr ""
+
+#: aucr_app/plugins/auth/routes.py:75
+#: aucr_app/plugins/auth/templates/edit_profile.html:8
+msgid "Edit Profile"
+msgstr ""
+
+#: aucr_app/plugins/auth/routes.py:107
+msgid "Your message has been sent."
+msgstr ""
+
+#: aucr_app/plugins/auth/routes.py:144
+msgid "Congratulations, you are now a registered user!"
+msgstr ""
+
+#: aucr_app/plugins/auth/routes.py:163
+msgid ""
+"If that is a valid email the instructions have been sent to reset your "
+"password"
+msgstr ""
+
+#: aucr_app/plugins/auth/routes.py:183
+msgid "Your password has been reset."
+msgstr ""
+
+#: aucr_app/plugins/auth/routes.py:348
+msgid "auth.search"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/create_group.html:13
+msgid "Create a Group"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/create_group.html:16
+#: aucr_app/plugins/auth/templates/remove_user_from_group.html:17
+msgid "Please create a group with a default admin user to manage that group"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/create_group.html:28
+msgid "Create the Group"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/edit_profile.html:11
+msgid ""
+"Tell us more about yourself! If you want to level up enable two-factor "
+"auth. If you have it enabled click the checkbox to flash your token."
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/edit_profile.html:17
+msgid "Username: Feel free to change if what you want is available!"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/edit_profile.html:20
+msgid "About me: Tell us More about your player type!"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/edit_profile.html:23
+msgid "2fA Enabled - Check and Save To Enable!"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/edit_profile.html:27
+msgid "Save Changes"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/login.html:13
+#: aucr_app/plugins/main/templates/subtemplates/left_navbar/_left_navbar.html:6
+msgid "Login"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/login.html:16
+msgid "Please enter your user information here to login!"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/login.html:37
+msgid "Not a member? Register "
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/login.html:40
+msgid "Forgot your password? Reset Password "
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/messages.html:4
+msgid "Messages"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/register.html:16
+#: aucr_app/plugins/auth/templates/send_message.html:14
+msgid ""
+"Please register here to access the site! By creating account you're "
+"agreeing to our privacy policy!!"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/register.html:63
+msgid "Read the privacy policy "
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/remove_user_from_group.html:14
+msgid "Remove User From Group"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/remove_user_from_group.html:29
+msgid "Remove"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/reset_password.html:10
+msgid "Request your password."
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/reset_password.html:12
+msgid "This will only work for links that are still valid!"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/reset_password.html:25
+#: aucr_app/plugins/auth/templates/reset_password_request.html:22
+msgid "Reset Password!"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/reset_password_request.html:10
+msgid "Request a password reset."
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/reset_password_request.html:12
+msgid "This will only work for valid users!"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/search.html:4
+msgid "Message Search Results"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/send_message.html:12
+#, python-format
+msgid "Send Message to %(recipient)s"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/two-factor-setup.html:9
+msgid "Two Factor Authentication Setup"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/two-factor-setup.html:16
+msgid ""
+"You are almost done! Please start an OTP app on your smartphone, tablet "
+"or computer\n"
+"                        and scan the following QR Code with it:"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/user.html:10
+msgid "User"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/user.html:13
+#: aucr_app/plugins/auth/templates/user_popup.html:9
+#: aucr_app/plugins/auth/templates/users.html:14
+msgid "Last seen on"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/user.html:18
+#: aucr_app/plugins/auth/templates/users.html:26
+msgid "Edit your profile"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/user.html:23
+#: aucr_app/plugins/auth/templates/users.html:31
+msgid "Send private message"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/users.html:19
+msgid "Last used IP"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/subtemplates/_post.html:16
+#, python-format
+msgid "%(username)s said %(when)s"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/subtemplates/_post.html:30
+msgid "Translate"
+msgstr ""
+
+#: aucr_app/plugins/auth/templates/subtemplates/_post.html:35
+msgid "Reply"
+msgstr ""
+
+#: aucr_app/plugins/errors/templates/error.html:15
+msgid "Back"
+msgstr ""
+
+#: aucr_app/plugins/main/routes.py:34 aucr_app/plugins/main/routes.py:37
+msgid "Home"
+msgstr ""
+
+#: aucr_app/plugins/main/routes.py:43
+#: aucr_app/plugins/main/templates/about_us.html:7
+msgid "About Us"
+msgstr ""
+
+#: aucr_app/plugins/main/routes.py:49
+#: aucr_app/plugins/main/templates/help.html:6
+msgid "Help"
+msgstr ""
+
+#: aucr_app/plugins/main/routes.py:59
+#: aucr_app/plugins/main/templates/privacy.html:6
+msgid "Privacy & Terms"
+msgstr ""
+
+#: aucr_app/plugins/main/templates/base.html:45
+msgid "Error: Could not contact server."
+msgstr ""
+
+#: aucr_app/plugins/main/templates/index.html:5
+#, python-format
+msgid "Welcome, %(username)s!"
+msgstr ""
+
+#: aucr_app/plugins/main/templates/index.html:12
+msgid "Newer posts"
+msgstr ""
+
+#: aucr_app/plugins/main/templates/index.html:17
+msgid "Older posts"
+msgstr ""
+
