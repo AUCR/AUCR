@@ -20,6 +20,11 @@ services:
  - rabbitmq
  - elasticsearch
 
+addons:
+  apt:
+    packages:
+    - rabbitmq-server
+
 install:
 - pip install -r requirements.txt
 
