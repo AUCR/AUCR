@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/AUCR/AUCR/branch/master/graph/badge.svg)](https://codecov.io/gh/AUCR/AUCR)
 [![Docker Repository on Quay](https://quay.io/repository/wroersma/aucr/status "Docker Repository on Quay")](https://quay.io/repository/wroersma/aucr)
 [![Coverage Status](https://coveralls.io/repos/github/AUCR/AUCR/badge.svg)](https://coveralls.io/github/AUCR/AUCR)
-
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d1f608a25a974e98a478595b0f6cf9dc)](https://www.codacy.com/gh/AUCR/AUCR?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AUCR/AUCR&amp;utm_campaign=Badge_Grade)
 
 ## Overview
 
