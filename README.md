@@ -13,9 +13,9 @@ services in a master framework so users have a single web interface to do all th
 
 ### Database support
 
-- sqllite
-- mysql
-- postgres
+-  sqllite
+-  mysql
+-  postgres
 
 ## Developer setup
 
@@ -28,12 +28,10 @@ Example Setup with Temporary an example and just running with flask. If you use 
     export FLASK_DEBUG=1
     flask run
 
-
 ## Easy Docker use
 
     sudo docker pull quay.io/wroersma/aucr
     sudo docker run aucr -p 5000:5000
-
 
 ## Environment Variables
 
@@ -42,12 +40,12 @@ in a production environment.
 
 ### Required Services
 
-- RabbitMQ 
-- Database
+-  RabbitMQ 
+-  Database
 
 ### Optional Services
 
-- Elasticsearch
+-  Elasticsearch
 
 Example: Environment Variables
 
