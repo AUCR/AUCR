@@ -13,9 +13,9 @@ services in a master framework so users have a single web interface to do all th
 
 ### Database support
 
--  sqllite
--  mysql
--  postgres
+-   sqllite
+-   mysql
+-   postgres
 
 ## Developer setup
 
@@ -40,12 +40,12 @@ in a production environment.
 
 ### Required Services
 
--  RabbitMQ 
--  Database
+-   RabbitMQ 
+-   Database
 
 ### Optional Services
 
--  Elasticsearch
+-   Elasticsearch
 
 Example: Environment Variables
 
