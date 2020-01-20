@@ -1,6 +1,5 @@
 FROM python:3.7-alpine AS aucr
 
-MAINTAINER Wyatt Roersma <wyatt@aucr.io>
 RUN adduser -D aucr
 RUN mkdir /opt/aucr/
 
