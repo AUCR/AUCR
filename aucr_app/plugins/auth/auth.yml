@@ -1,4 +1,4 @@
 admin:
   username: "admin"
-  password: "admin"
+  password: "aucradmin"
   email: "admin@localhost.local"
