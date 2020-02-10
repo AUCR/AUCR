@@ -104,7 +104,7 @@ class UserModelCase(unittest.TestCase):
                                                            'main.css'
                                                            )),
                                                 headers=headers)
-            self.assertEqual(test_upload_file.status_code, 200)
+            self.assertEqual(test_upload_file.status_code, 302)
             tes230 = (self.client.get('/message/_search?=messagesdfsdfsfsdfsdfsf',
                                       headers=headers,
                                       follow_redirects=True))
