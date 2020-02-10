@@ -79,7 +79,7 @@ class UserModelCase(unittest.TestCase):
             test11 = self.client.post('/auth/create_group',
                                       data=dict(group_name="testgroup", username="admin", submit=True),
                                       follow_redirects=True)
-            self.assertEqual(self.client.get('/auth/remove_user_from_group').status_code, 200)
+            self.assertEqual(self.client.get('/auth/remove_user_from_group').status_code, 302)
             self.assertEqual(self.client.post('/auth/remove_user_from_group',
                                       data=dict(group_name="testgroup", username="admin", submit=True),
                                       follow_redirects=True).status_code, 200)
