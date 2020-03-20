@@ -64,7 +64,7 @@ class UserModelCase(unittest.TestCase):
             test3 = self.client.get('/main/')
             self.assertEqual(self.client.get('/auth/groups', follow_redirects=True).status_code, 200)
             test154 = self.client.get('/auth/logout', follow_redirects=True)
-            test2 = self.client.post('/auth/login', data=dict(username="admin", password="admin", submit=True),
+            test2 = self.client.post('/auth/login', data=dict(username="admin", password="aucradmin", submit=True),
                                      follow_redirects=True)
             test3 = self.client.get('/main/')
             test16 = self.client.post('/auth/reset_password_request', data=dict(email="admin@aucr.io", submit=True),
@@ -79,7 +79,7 @@ class UserModelCase(unittest.TestCase):
             test11 = self.client.post('/auth/create_group',
                                       data=dict(group_name="testgroup", username="admin", submit=True),
                                       follow_redirects=True)
-            self.assertEqual(self.client.get('/auth/remove_user_from_group').status_code, 302)
+            self.assertEqual(self.client.get('/auth/remove_user_from_group').status_code, 200)
             self.assertEqual(self.client.post('/auth/remove_user_from_group',
                                       data=dict(group_name="testgroup", username="admin", submit=True),
                                       follow_redirects=True).status_code, 200)
@@ -104,7 +104,7 @@ class UserModelCase(unittest.TestCase):
                                                            'main.css'
                                                            )),
                                                 headers=headers)
-            self.assertEqual(test_upload_file.status_code, 302)
+            self.assertEqual(test_upload_file.status_code, 200)
             tes230 = (self.client.get('/message/_search?=messagesdfsdfsfsdfsdfsf',
                                       headers=headers,
                                       follow_redirects=True))
@@ -233,4 +233,3 @@ class UserModelCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
-
