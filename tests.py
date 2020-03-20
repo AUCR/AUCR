@@ -64,7 +64,7 @@ class UserModelCase(unittest.TestCase):
             test3 = self.client.get('/main/')
             self.assertEqual(self.client.get('/auth/groups', follow_redirects=True).status_code, 200)
             test154 = self.client.get('/auth/logout', follow_redirects=True)
-            test2 = self.client.post('/auth/login', data=dict(username="admin", password="admin", submit=True),
+            test2 = self.client.post('/auth/login', data=dict(username="admin", password="aucradmin", submit=True),
                                      follow_redirects=True)
             test3 = self.client.get('/main/')
             test16 = self.client.post('/auth/reset_password_request', data=dict(email="admin@aucr.io", submit=True),
@@ -233,4 +233,3 @@ class UserModelCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
-

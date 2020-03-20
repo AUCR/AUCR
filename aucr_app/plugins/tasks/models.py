@@ -104,8 +104,8 @@ class TaskStates(db.Model):
 def insert_initial_tasks_states_values(*args, **kwargs):
     """Insert TLP default database values from a yaml template file."""
     run = YamlInfo("aucr_app/plugins/tasks/task_states.yaml", "none", "none")
-    tlp_data = run.get()
-    for items in tlp_data:
+    task_data = run.get()
+    for items in task_data:
         new_task_state_table_row = TaskStates(task_state_name=items)
         db.session.add(new_task_state_table_row)
         db.session.commit()

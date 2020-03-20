@@ -1,8 +1,10 @@
 """AUCR main analysis plugin api features."""
 # coding=utf-8
 import os
+
 from flask import current_app, g
 from flask_login import current_user
+
 from aucr_app import db
 from aucr_app.plugins.analysis.models import FileUpload
 from aucr_app.plugins.analysis.file.zip import write_file_map
@@ -24,6 +26,7 @@ def create_upload_file(file, upload_folder) -> str:
         uploaded_by_id = 1
     duplicate_file = FileUpload.query.filter_by(md5_hash=md5_hash).first()
     if not duplicate_file:
+        # TODO Add sha1-sha512 hash values into db here.
         uploaded_file = FileUpload.__call__(md5_hash=md5_hash, uploaded_by=uploaded_by_id, file_type=str(file_type))
         db.session.add(uploaded_file)
         db.session.commit()
