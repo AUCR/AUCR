@@ -57,3 +57,4 @@ fleep
 DataParserLib
 psycopg2-binary
 gunicorn
+email_validator
