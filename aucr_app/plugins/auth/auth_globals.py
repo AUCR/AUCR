@@ -12,7 +12,7 @@ with app.app_context():
         group_data = Groups.query.all()
     except OperationalError:
         group_data = {"admin": 0, "user": 1, "system": 2}
-    except TypeError:
+    except:
         # Default to basic User dict if database is not available.
         group_data = {"admin": 0, "user": 1, "system": 2}
     for items in group_data:
