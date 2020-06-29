@@ -24,7 +24,7 @@ class Config(object):
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = os.environ.get("ADMIN_EMAILS") or ['admin@aucr.io']
     LANGUAGES = ['en']
-    MAX_CONTENT_LENGTH = os.environ.get('MAX_CONTENT_LENGTH1') or 2048 * 2048 * 2048
+    MAX_CONTENT_LENGTH = os.environ.get('MAX_CONTENT_LENGTH') or 2048 * 2048 * 2048
     MS_TRANSLATOR_KEY = os.environ.get('MS_TRANSLATOR_KEY')
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
     FILE_FOLDER = os.environ.get('FILE_FOLDER') or os.path.join(basedir, 'upload')
