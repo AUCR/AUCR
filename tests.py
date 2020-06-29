@@ -23,6 +23,8 @@ class UserModelCase(unittest.TestCase):
         self.app.config['SECRET_KEY'] = "testing"
         self.app.config['WTF_CSRF_ENABLED'] = False
         self.app.config['LANG_VALUE'] = "en"
+        self.app.config['SQLALCHEMY_POOL_SIZE'] = None
+        self.app.config['SQLALCHEMY_POOL_TIMEOUT'] = None
         cli.register(self.app)
         # Create a default sqlite database for testing
         self.test_user_password = "0Qk9Bata3EO69U5T2qH57lAV1r67Wu"
