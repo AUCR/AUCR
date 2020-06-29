@@ -1,4 +1,4 @@
-from sqlalchemy.exc import OperationalError, TypeError
+from sqlalchemy.exc import OperationalError
 from aucr_app import db, create_app
 from aucr_app.plugins.auth.models import Groups
 
