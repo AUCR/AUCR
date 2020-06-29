@@ -18,7 +18,7 @@
                 </div>
                 <div class="mdl-card__actions mdl-card--border ">
                     <form class="form" method="post" role="form">
-                       {{ form.csrf_token() }}{{ form.hidden_tag() }}
+                       {{ form.hidden_tag() }}
 
                         {% with form_object=group_name, form_object_name="group_name", form_object_rows=1, form_object_label="Group Name" %}
                             {% include "subtemplates/_form_object_textfield.html" %}

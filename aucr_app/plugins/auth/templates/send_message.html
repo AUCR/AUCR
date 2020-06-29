@@ -13,7 +13,7 @@
                 <div class="mdl-card__supporting-text">
                     {{ _("Please register here to access the site! By creating account you're agreeing to our privacy policy!!") }}
                     <form class="form" method="post" role="form">
-                       {{ form.csrf_token() }}{{ form.hidden_tag() }}
+                       {{ form.hidden_tag() }}
 
                         <div class="mdl-layout-spacer"></div>
                         {% with form_object=message, form_object_name="message", form_object_label="Message",form_object_rows=5, form_object_value=form.data.message  if form.data.message != None else "", form_text_type="text" %}

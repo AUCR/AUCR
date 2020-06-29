@@ -62,7 +62,7 @@ class UserModelCase(unittest.TestCase):
             test234 = self.client.post('/auth/login', data=dict(username="testuser1", password="test", submit=True),
                                      follow_redirects=True)
             test3 = self.client.get('/main/')
-            self.assertEqual(self.client.get('/auth/groups', follow_redirects=True).status_code, 200)
+            self.assertEqual(self.client.get('/auth/groups', follow_redirects=True).status_code, 403)
             test154 = self.client.get('/auth/logout', follow_redirects=True)
             test2 = self.client.post('/auth/login', data=dict(username="admin", password="aucradmin", submit=True),
                                      follow_redirects=True)
