@@ -1,4 +1,4 @@
-from sqlalchemy.exc import OperationalError
+from sqlalchemy.exc import OperationalError, TypeError
 from aucr_app import db, create_app
 from aucr_app.plugins.auth.models import Groups
 
@@ -11,6 +11,9 @@ with app.app_context():
     try:
         group_data = Groups.query.all()
     except OperationalError:
+        group_data = {"admin": 0, "user": 1, "system": 2}
+    except TypeError:
+        # Default to basic User dict if database is not available.
         group_data = {"admin": 0, "user": 1, "system": 2}
     for items in group_data:
         count += 1
