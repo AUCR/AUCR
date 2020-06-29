@@ -34,6 +34,7 @@ class Config(object):
     ALLOWED_EXTENSIONS = os.environ.get('ALLOWED_EXTENSIONS') or ['txt', 'pdf', 'png', 'jpg',
                                                                   'jpeg', 'gif', 'doc', 'docx', 'exe', 'yar', 'zip', '']
     POSTS_PER_PAGE = os.environ.get('POSTS_PER_PAGE') or 25
+    SQLALCHEMY_POOL_TIMEOUT = os.environ.get('SQLALCHEMY_POOL_TIMEOUT') or None
     ALLOWED_EMAIL_LIST = (os.environ.get("ALLOWED_EMAIL_LIST") or "*").split(', ')
     LDAP_PROVIDER_URL = os.environ.get("LDAP_PROVIDER_URL") or None
     LDAP_PROTOCOL_VERSION = os.environ.get("LDAP_PROTOCOL_VERSION") or None
