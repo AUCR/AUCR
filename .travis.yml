@@ -1,8 +1,8 @@
 language: python
 
 python:
-- 3.6
-- 3.7-dev
+- 3.8
+- 3.8-dev
 before_install:
 - sudo apt-get update
 - sudo apt-get -y install python-pip
@@ -36,8 +36,8 @@ script:
 - codecov
 matrix:
   include:
-  - python: 3.6
-    env: TOXENV=py36
+  - python: 3.8
+    env: TOXENV=py38
 after_success:
 - coverage combine && codecov
 - coveralls
