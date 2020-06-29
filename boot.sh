@@ -10,4 +10,4 @@ while true; do
     flask translate init en
     flask translate pybabel-compile
 done
-exec gunicorn -b :5000 -w 4 --access-logfile - --error-logfile - aucr:app
+exec uwsgi --http :5000 --enable-threads --plugin python38  --module aucr:app --processes 2 --threads 4

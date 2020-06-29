@@ -17,7 +17,8 @@
                 </div>
                 <div class="mdl-card__actions mdl-card--border ">
                         <form class="form" method="post" role="form">
-                            {{ form.hidden_tag() }}
+                           {{ form.csrf_token() }}{{ form.hidden_tag() }}
+
                             <div class="mdl-layout-spacer"></div>
                             {% with form_object=username, form_object_name="username", form_object_label="Username", form_object_value=form.data.username  if form.data.username != None else "", form_text_type="text" %}
                                 {% include "subtemplates/_form_object_textfield_singleline_required.html" %}

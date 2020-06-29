@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.5.0
+    image: docker.elastic.co/kibana/kibana:7.8.0
     container_name: kibana1
     ports:
       - 5601:5601
@@ -17,7 +17,7 @@ services:
       - ./config-file.env
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
     container_name: elasticsearch1
     environment:
       - cluster.name=aucr

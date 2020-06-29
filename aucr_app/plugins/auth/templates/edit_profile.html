@@ -12,8 +12,8 @@
                 </div>
                 <div class="mdl-card__actions mdl-card--border ">
                     <form class="form" method="post" role="form">
-                        {{ form.hidden_tag() }}
-                        <div class="mdl-layout-spacer"></div>
+                       {{ form.csrf_token() }} {{ form.hidden_tag() }}
+<div class="mdl-layout-spacer"></div>
                         {{ _('Username: Feel free to change if what you want is available!') }}
                         {{ form.username }}
                         <div class="mdl-layout-spacer"></div>

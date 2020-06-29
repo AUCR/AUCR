@@ -21,6 +21,7 @@ Flask-Migrate
 Flask-Moment
 Flask-SQLAlchemy
 Flask-WTF
+WTForm
 Flask-Table
 guess-language-spirit
 idna
@@ -44,7 +45,6 @@ ujson
 urllib3
 visitor
 Werkzeug
-WTForms
 pyqrcode
 flask-bcrypt
 yamlinfo
@@ -56,5 +56,5 @@ pyotp
 fleep
 DataParserLib
 psycopg2-binary
-gunicorn
 email_validator
+uwsgi

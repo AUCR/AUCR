@@ -1,6 +1,5 @@
 """AUCR main plugin path importer for all plugins flask app blueprints."""
 # coding=utf-8
-import logging
 import udatetime
 from flask import render_template, request, g, current_app
 from flask_babel import _, get_locale

@@ -19,7 +19,6 @@ from aucr_app.plugins.tasks.storage.elastic_search import query_index, add_model
 
 class SearchableMixin(object):
     """Process ES interaction with the sql tables."""
-
     @classmethod
     def search(cls, expression, page, per_page):
         """Return searchable data from ES."""
@@ -29,7 +28,11 @@ class SearchableMixin(object):
         when = []
         for i in range(len(ids)):
             when.append((ids[i], i))
-        return cls.query.filter(cls.id.in_(ids)).order_by(db.case(when, value=cls.id)), total
+        try:
+            return_search = cls.query.filter(cls.id.in_(ids)).order_by(db.case(when, value=cls.id)), total
+        except:
+            return_search = [], total
+        return return_search
 
     @classmethod
     def before_commit(cls, session):
