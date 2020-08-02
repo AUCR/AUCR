@@ -314,7 +314,9 @@ def insert_initial_user_values(*args, **kwargs):
         db.session.add(default_user_groups)
         db.session.add(default_system_groups)
         db.session.commit()
-        default_admin = User.__call__(username=items, password_hash=hashed_password, email=admin_data[items]["email"])
+        default_admin = User.__call__(username=admin_data[items]["username"], 
+                                      password_hash=hashed_password, 
+                                      email=admin_data[items]["email"])
         admin_group = Group.__call__(groups_id=1, username_id=1)
         user_group = Group.__call__(groups_id=2, username_id=1)
         db.session.add(admin_group)
