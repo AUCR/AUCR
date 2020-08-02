@@ -6,6 +6,7 @@ while true; do
         break
     fi
     echo Deploy command failed, retrying in 5 secs...
+    flask db init
     sleep 5
     flask translate init en
     flask translate pybabel-compile
