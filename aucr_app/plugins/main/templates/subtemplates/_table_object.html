@@ -28,7 +28,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for k,v in table_dict.items() %}
+        {% for k,v in table_data.items() %}
             <tr>
                 {% if checkbox_enabled %}
                 <td><label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
@@ -54,3 +54,4 @@
         {% endfor %}
     </tbody>
 </table>
+
