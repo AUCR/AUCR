@@ -11,7 +11,11 @@
                         <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
                             for="demo-menu-lower-left">
                         {% for items in table_list %}
-                            <li class="mdl-menu__item">{{ items }}</li>
+                            {%  if items.0 %}
+                            <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link" href="{{ url_for(items.0) }}">{{ items.1 }}</a>
+                            </li>
+                            {% endif %}
                         {% endfor %}
                         </ul>
                   {% else %}
@@ -50,4 +54,3 @@
         {% endfor %}
     </tbody>
 </table>
-
