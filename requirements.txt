@@ -9,7 +9,7 @@ cffi
 chardet
 click
 coverage
-cryptography
+cryptography==3.3.2
 dominate
 elasticsearch
 Flask
