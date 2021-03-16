@@ -1,4 +1,5 @@
 PyYAML
+sqlalchemy==1.3.23
 alembic
 asn1crypto
 Babel
