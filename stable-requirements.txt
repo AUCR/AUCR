@@ -15,7 +15,7 @@ DataParserLib==0.0.0.5
 dnspython==1.16.0
 dominate==2.3.5
 elasticsearch==7.5.0
-eventlet==0.25.0
+eventlet==0.31.0
 Flask==1.0.3
 Flask-Babel==0.12.2
 Flask-Bcrypt==0.7.1
