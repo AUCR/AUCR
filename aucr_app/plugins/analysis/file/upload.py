@@ -1,4 +1,4 @@
-"""AUCR main analysis plugin api features."""
+"""AUCR main analysis plugin apiv2 features."""
 # coding=utf-8
 import os
 

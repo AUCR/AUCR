@@ -140,32 +140,32 @@ class UserModelCase(unittest.TestCase):
 
             test23 = self.client.get('/analysis/upload_file', follow_redirects=True)
             test24 = self.client.get('/auth/remove_user_from_group', follow_redirects=True)
-            test25 = self.client.get('/api/users/1', headers=headers)
-            test26 = self.client.get('/api/groups/1', headers=headers)
-            test31 = self.client.get('/api/groups', headers=headers)
-            test27 = self.client.get('/api/users', headers=headers)
-            test29 = self.client.post('/api/users', json={'username': 'testapi', 'password': 'testing',
+            test25 = self.client.get('/apiv2/users/1', headers=headers)
+            test26 = self.client.get('/apiv2/groups/1', headers=headers)
+            test31 = self.client.get('/apiv2/groups', headers=headers)
+            test27 = self.client.get('/apiv2/users', headers=headers)
+            test29 = self.client.post('/apiv2/users', json={'username': 'testapi', 'password': 'testing',
                                                           'email': 'test@localhost.local'}, headers=headers)
-            test32 = self.client.post('/api/groups', json={'group_name': 'testapi'}, headers=headers)
-            test33 = self.client.post('/api/groups', json={'group_name': 'testapi'}, headers=headers)
-            test34 = self.client.post('/api/users',
+            test32 = self.client.post('/apiv2/groups', json={'group_name': 'testapi'}, headers=headers)
+            test33 = self.client.post('/apiv2/groups', json={'group_name': 'testapi'}, headers=headers)
+            test34 = self.client.post('/apiv2/users',
                                       json={'username': 'testapi',
                                             'password': 'testing',
                                             'email': 'test@localhost.local'
                                             },
                                       headers=headers)
-            test35 = self.client.post('/api/users',
+            test35 = self.client.post('/apiv2/users',
                                       json={'username': 'testapi',
                                             'password': 'testing',
                                             'email': 'test@localhost.local'
                                             },
                                       headers=headers)
-            self.assertEqual(self.client.put('/api/users/1',
+            self.assertEqual(self.client.put('/apiv2/users/1',
                                              json={'username': 'admin',
                                                    'email': 'test232323@localhost.local'
                                                    },
                                       headers=headers).status_code, 200)
-            self.assertEqual(self.client.put('/api/groups/1',
+            self.assertEqual(self.client.put('/apiv2/groups/1',
                                              json={'name': 'testerer',
                                                    },
                                       headers=headers).status_code, 200)

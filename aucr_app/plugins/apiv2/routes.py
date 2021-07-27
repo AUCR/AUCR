@@ -3,9 +3,9 @@
 from flask import Blueprint, jsonify, request
 from aucr_app import db
 from flask import g
-from aucr_app.plugins.api.auth import token_auth, basic_auth
+from aucr_app.plugins.apiv2.auth import token_auth, basic_auth
 
-api_page = Blueprint('api', __name__, template_folder='templates')
+api_page = Blueprint('apiv2', __name__, template_folder='templates')
 
 
 @api_page.route('/tokens', methods=['POST'])

@@ -1,4 +1,4 @@
-"""Basic AUCR auth api."""
+"""Basic AUCR auth apiv2."""
 # coding=utf-8
 from flask import g
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
