@@ -45,7 +45,7 @@ SQLAlchemy-Utils
 ujson
 urllib3
 visitor
-Werkzeug==1.0.1
+Werkzeug
 pyqrcode
 flask-bcrypt
 yamlinfo
