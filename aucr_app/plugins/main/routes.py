@@ -18,7 +18,10 @@ def before_request() -> None:
     """Set user last seen time user."""
     if current_user.is_authenticated:
         current_user.last_seen = udatetime.utcnow().replace(tzinfo=None)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except:
+            pass
         g.search_form = SearchForm()
     g.locale = str(get_locale())
 
