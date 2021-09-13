@@ -13,7 +13,7 @@ coverage
 cryptography==3.3.2
 dominate
 elasticsearch
-Flask=1.1.4
+Flask==1.1.4
 Flask-Babel
 Flask-HTTPAuth
 Flask-Login
