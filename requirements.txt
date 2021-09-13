@@ -8,7 +8,8 @@ blinker
 certifi
 cffi
 chardet
-click
+click<8.0
+itsdangerous==1.1.0
 coverage
 cryptography==3.3.2
 dominate
@@ -26,8 +27,7 @@ WTForm
 Flask-Table
 guess-language-spirit
 idna
-itsdangerous
-Jinja2
+Jinja2==2.11.3
 Mako
 MarkupSafe
 passlib
