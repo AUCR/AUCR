@@ -13,7 +13,7 @@ coverage
 cryptography==3.3.2
 dominate
 elasticsearch
-Flask
+Flask=1.1.4
 Flask-Babel
 Flask-HTTPAuth
 Flask-Login
@@ -45,7 +45,7 @@ SQLAlchemy-Utils
 ujson
 urllib3
 visitor
-Werkzeug
+Werkzeug==1.0.1
 pyqrcode
 flask-bcrypt
 yamlinfo
