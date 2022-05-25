@@ -49,7 +49,7 @@ pyasn1-modules==0.2.5
 pycodestyle==2.5.0
 pycparser==2.19
 pydocstyle==3.0.0
-PyJWT==1.7.1
+PyJWT==2.4.0
 pyotp==2.2.7
 pyparsing==2.4.0
 PyQRCode==1.2.1
