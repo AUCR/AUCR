@@ -64,3 +64,6 @@ Would skip repository aucr_app/plugins/Sermo/
 notepad.py
 serve.py
 /aucr_app/plugins/yara/
+upload/
+tmp/
+postgres-data

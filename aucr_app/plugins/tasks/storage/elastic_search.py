@@ -22,7 +22,7 @@ def index_model_data_to_es(index, model):
         if model.__searchable__:
             for field in model.__searchable__:
                 payload[field] = getattr(model, field)
-            current_app.elasticsearch.index(index=index, doc_type=index, id=model.id, body=payload, request_timeout=120)
+            current_app.elasticsearch.index(index=index, id=model.id, body=payload, request_timeout=120)
     except AttributeError:
         pass
 
@@ -46,8 +46,10 @@ def query_index(index, query, page, per_page):
                 index=index,
                 body={"query": {"multi_match": {"query": query, "type":  "best_fields"}}},
                 request_timeout=120)
-            ids = [int(hit['_id']) for hit in search['hits']['hits']]
-
+            if search['hits']['hits']:
+                ids = [int(hit['_id']) for hit in search['hits']['hits']]
+            else:
+                ids = []
         return ids, search['hits']['total']
     else:
         try:

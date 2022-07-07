@@ -1,4 +1,4 @@
-FROM python:3.7-alpine AS aucr
+FROM python:3.8.3-alpine3.12 as aucr
 
 RUN adduser -D aucr
 RUN mkdir /opt/aucr/
@@ -55,7 +55,6 @@ COPY LICENSE /opt/aucr
 COPY projectinfo.yml /opt/aucr
 COPY config.py /opt/aucr
 COPY upload /opt/aucr/upload
-COPY migrations /opt/aucr/migrations
 COPY boot.sh  /opt/aucr/
 RUN chmod a+x /opt/aucr/boot.sh
 RUN chown -R aucr:aucr /opt/

@@ -1,11 +1,13 @@
-"""Groups auth plugin api functionality."""
+"""Groups auth plugin apiv2 functionality."""
 # coding=utf-8
-from flask import jsonify, request, url_for
+from flask import jsonify, request, Blueprint
 from aucr_app import db
 from aucr_app.plugins.auth.models import Group, Groups
-from aucr_app.plugins.api.routes import api_page
-from aucr_app.plugins.api.auth import token_auth
 from aucr_app.plugins.errors.api.errors import bad_request
+from flask_httpauth import HTTPTokenAuth
+
+api_page = Blueprint('groupsapiv2', __name__, template_folder='templates')
+token_auth = HTTPTokenAuth()
 
 
 @api_page.route('/groups/<int:group_id>', methods=['GET'])
@@ -21,7 +23,7 @@ def get_groups():
     """Return group list API call."""
     page = request.args.get('page', 1, type=int)
     per_page = min(request.args.get('per_page', 10, type=int), 100)
-    data = Group.to_collection_dict(Group.query, page, per_page, 'api.get_groups')
+    data = Group.to_collection_dict(Group.query, page, per_page, 'apiv2.get_groups')
     return jsonify(data)
 
 

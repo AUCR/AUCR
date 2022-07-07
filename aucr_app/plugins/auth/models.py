@@ -1,6 +1,6 @@
 """The auth models.py defines all the database tables we need for our auth plugin."""
 # coding=utf-8
-import udatetime
+from datetime import datetime
 import base64
 import ujson as json
 import os
@@ -19,7 +19,6 @@ from aucr_app.plugins.tasks.storage.elastic_search import query_index, add_model
 
 class SearchableMixin(object):
     """Process ES interaction with the sql tables."""
-
     @classmethod
     def search(cls, expression, page, per_page):
         """Return searchable data from ES."""
@@ -29,7 +28,11 @@ class SearchableMixin(object):
         when = []
         for i in range(len(ids)):
             when.append((ids[i], i))
-        return cls.query.filter(cls.id.in_(ids)).order_by(db.case(when, value=cls.id)), total
+        try:
+            return_search = cls.query.filter(cls.id.in_(ids)).order_by(db.case(when, value=cls.id)), total
+        except:
+            return_search = [], total
+        return return_search
 
     @classmethod
     def before_commit(cls, session):
@@ -94,7 +97,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
     alt_email = db.Column(db.String(240), unique=True)
     password_hash = db.Column(db.String(128))
     about_me = db.Column(db.String(140))
-    last_seen = db.Column(db.DateTime, default=udatetime.utcnow)
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     token = db.Column(db.String(120), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
     website = db.Column(db.String(140))
@@ -161,7 +164,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     def new_messages(self):
         """Check and return new messages for current user."""
-        last_read_time = self.last_message_read_time or udatetime.from_string("1900-01-01T00:00:00.000000")
+        last_read_time = self.last_message_read_time or datetime(1900, 1, 1)
         return Message.query.filter_by(recipient=self).filter(Message.timestamp > last_read_time).count()
 
     def add_notification(self, name, data):
@@ -203,7 +206,7 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     def get_token(self, expires_in=360000):
         """Generate and return a token for user auth."""
-        now = udatetime.utcnow().replace(tzinfo=None)
+        now = datetime.utcnow().replace(tzinfo=None)
         if self.token and self.token_expiration > now - timedelta(seconds=60):
             return self.token
         self.token = base64.b64encode(os.urandom(64)).decode('utf-8')
@@ -213,12 +216,12 @@ class User(UserMixin, PaginatedAPIMixin, db.Model):
 
     def revoke_token(self):
         """Check and expire user token if expiration time is True."""
-        self.token_expiration = udatetime.utcnow().replace(tzinfo=None) - timedelta(seconds=1)
+        self.token_expiration = datetime.utcnow().replace(tzinfo=None) - timedelta(seconds=1)
 
     @staticmethod
     def check_token(token):
         """Check a token against user token."""
-        now = udatetime.utcnow().replace(tzinfo=None)
+        now = datetime.utcnow().replace(tzinfo=None)
         user = User.query.filter_by(token=token).first()
         if user is None or user.token_expiration < now:
             return None
@@ -253,7 +256,7 @@ class Group(PaginatedAPIMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     groups_id = db.Column(db.Integer, db.ForeignKey('groups.id'), index=True)
     username_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
     def __repr__(self):
         """Return string representation of Group Database Object Table."""
@@ -277,7 +280,7 @@ class Groups(PaginatedAPIMixin, db.Model):
     __tablename__ = 'groups'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
-    timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
     def __repr__(self):
         """Return string representation of the Groups Database Object Table."""
@@ -311,7 +314,9 @@ def insert_initial_user_values(*args, **kwargs):
         db.session.add(default_user_groups)
         db.session.add(default_system_groups)
         db.session.commit()
-        default_admin = User.__call__(username=items, password_hash=hashed_password, email=admin_data[items]["email"])
+        default_admin = User.__call__(username=admin_data[items]["username"], 
+                                      password_hash=hashed_password, 
+                                      email=admin_data[items]["email"])
         admin_group = Group.__call__(groups_id=1, username_id=1)
         user_group = Group.__call__(groups_id=2, username_id=1)
         db.session.add(admin_group)
@@ -358,7 +363,7 @@ class Message(SearchableMixin, db.Model):
     body = db.Column(db.String(4912000))
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    timestamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
     def __repr__(self):
         """Return string representation of the Message Database Object Table."""

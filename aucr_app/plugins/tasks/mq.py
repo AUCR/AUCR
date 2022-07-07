@@ -20,10 +20,11 @@ def index_mq_aucr_task(rabbit_mq_server, task_name, routing_key):
 def get_mq_aucr_tasks(call_back, rabbit_mq_server, rabbit_mq_que, rabbitmq_username, rabbitmq_password):
     """Start MQ message consumer."""
     credentials = pika.PlainCredentials(rabbitmq_username, rabbitmq_password)
-    connection = pika.BlockingConnection(pika.ConnectionParameters(credentials=credentials, host=rabbit_mq_server))
+    connection = pika.BlockingConnection(pika.ConnectionParameters(credentials=credentials, host=rabbit_mq_server, socket_timeout=120, blocked_connection_timeout=120))
     channel = connection.channel()
-    channel.queue_declare(queue=rabbit_mq_que)
-    channel.basic_consume(on_message_callback=call_back, queue=rabbit_mq_que)
+    #channel.queue_declare(queue=rabbit_mq_que, durable=True)
+    channel.queue_declare(queue=rabbit_mq_que, durable=True)
+    channel.basic_consume(on_message_callback=call_back, queue=rabbit_mq_que, auto_ack=True)
     channel.start_consuming()
     connection.close()
 

@@ -11,13 +11,14 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_babel import Babel, lazy_gettext as _l
+#from flask_wtf.csrf import CSRFProtect
 from logging.handlers import SMTPHandler, RotatingFileHandler
 from yaml_info.yamlinfo import YamlInfo
 from aucr_app.plugins import init_task_plugins
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
+#csrf = CSRFProtect()
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
@@ -60,7 +61,6 @@ def create_app(config_class=Config):
                                                     '[in %(pathname)s:%(lineno)d]'))
     app.logger.setLevel(logging.INFO)
     app.logger.info('AUCR startup')
-
     return app
 
 
@@ -84,6 +84,7 @@ def aucr_app():
     app.secret_key = app.config['SECRET_KEY']
     app.app_context().push()
     db.create_all()
+    #csrf.init_app(app)
     return app
 
 

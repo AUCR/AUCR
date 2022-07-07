@@ -1,6 +1,5 @@
 """AUCR main plugin path importer for all plugins flask app blueprints."""
 # coding=utf-8
-import logging
 import udatetime
 from flask import render_template, request, g, current_app
 from flask_babel import _, get_locale
@@ -19,7 +18,10 @@ def before_request() -> None:
     """Set user last seen time user."""
     if current_user.is_authenticated:
         current_user.last_seen = udatetime.utcnow().replace(tzinfo=None)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except:
+            pass
         g.search_form = SearchForm()
     g.locale = str(get_locale())
 
