@@ -1,6 +1,6 @@
 """AUCR analysis plugin database table library models."""
 # coding=utf-8
-import udatetime
+from datetime import datetime
 from aucr_app import db
 
 
@@ -13,7 +13,7 @@ class FileUpload(db.Model):
     md5_hash = db.Column(db.String(32), unique=True)
     uploaded_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     file_type = db.Column(db.String(512), index=True)
-    time_stamp = db.Column(db.DateTime, index=True, default=udatetime.utcnow)
+    time_stamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
     def __repr__(self):
         """Official Analysis Plugins Table database name object representation."""

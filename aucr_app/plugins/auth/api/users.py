@@ -1,11 +1,13 @@
 """AUCR main auth plugin apiv2 features."""
 # coding=utf-8
-from flask import jsonify, request, url_for
+from flask import jsonify, request, Blueprint
 from aucr_app import db
 from aucr_app.plugins.auth.models import User
-from aucr_app.plugins.apiv2.routes import api_page
-from aucr_app.plugins.apiv2.auth import token_auth
 from aucr_app.plugins.errors.api.errors import bad_request
+from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
+
+api_page = Blueprint('usersapiv2', __name__, template_folder='templates')
+token_auth = HTTPTokenAuth()
 
 
 @api_page.route('/users/<int:id>', methods=['GET'])
