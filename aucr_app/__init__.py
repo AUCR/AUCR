@@ -86,9 +86,3 @@ def aucr_app():
     db.create_all()
     #csrf.init_app(app)
     return app
-
-
-@babel.localeselector
-def get_locale():
-    """Get default language function returns systems default in config."""
-    return request.accept_languages.best_match(current_app.config['LANGUAGES'])
